@@ -1,0 +1,216 @@
+@font-face {
+	font-family: 'konsum-payroll-icon';
+	src:url('fonts/konsum-payroll-icon.eot?-jsie5b');
+	src:url('fonts/konsum-payroll-icon.eot?#iefix-jsie5b') format('embedded-opentype'),
+		url('fonts/konsum-payroll-icon.ttf?-jsie5b') format('truetype'),
+		url('fonts/konsum-payroll-icon.woff?-jsie5b') format('woff'),
+		url('fonts/konsum-payroll-icon.svg?-jsie5b#konsum-payroll-icon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'konsum-payroll-icon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-system-tools .path1:before {
+	content: "\e62a";
+	color: rgb(103, 200, 70);
+}
+.icon-system-tools .path2:before {
+	content: "\e62b";
+	margin-left: -1em;
+	color: rgb(255, 255, 255);
+}
+.icon-system-tools .path3:before {
+	content: "\e62c";
+	margin-left: -1em;
+	color: rgb(255, 255, 255);
+}
+.icon-system-tools .path4:before {
+	content: "\e62d";
+	margin-left: -1em;
+	color: rgb(255, 255, 255);
+}
+.icon-twitter .path1:before {
+	content: "\e628";
+	color: rgb(85, 172, 238);
+}
+.icon-twitter .path2:before {
+	content: "\e629";
+	margin-left: -1em;
+	color: rgb(255, 255, 255);
+}
+.icon-facebook .path1:before {
+	content: "\e626";
+	color: rgb(59, 89, 152);
+}
+.icon-facebook .path2:before {
+	content: "\e627";
+	margin-left: -1em;
+	color: rgb(255, 255, 255);
+}
+.icon-payslip:before {
+	content: "\e625";
+}
+.icon-company-list:before {
+	content: "\e624";
+}
+.icon-leave-list:before {
+	content: "\e600";
+}
+.icon-signout:before {
+	content: "\e623";
+}
+.icon-overtime:before {
+	content: "\e601";
+}
+.icon-more-profile:before {
+	content: "\e602";
+}
+.icon-hand:before {
+	content: "\e603";
+}
+.icon-info:before {
+	content: "\e604";
+}
+.icon-more:before {
+	content: "\e605";
+}
+.icon-minimize:before {
+	content: "\e606";
+}
+.icon-marker .path1:before {
+	content: "\e607";
+	color: rgb(231, 76, 60);
+}
+.icon-marker .path2:before {
+	content: "\e608";
+	margin-left: -1em;
+	color: rgb(192, 57, 43);
+}
+.icon-creditcard:before {
+	content: "\e609";
+}
+.icon-leave:before {
+	content: "\e60a";
+}
+.icon-fingerprint .path1:before {
+	content: "\e60b";
+	color: rgb(63, 146, 180);
+}
+.icon-fingerprint .path2:before {
+	content: "\e60c";
+	margin-left: -1em;
+	color: rgba(63, 146, 180, 0.8);
+}
+.icon-fingerprint .path3:before {
+	content: "\e60d";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path4:before {
+	content: "\e60e";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path5:before {
+	content: "\e60f";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path6:before {
+	content: "\e610";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path7:before {
+	content: "\e611";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path8:before {
+	content: "\e612";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path9:before {
+	content: "\e613";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path10:before {
+	content: "\e614";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path11:before {
+	content: "\e615";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path12:before {
+	content: "\e616";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path13:before {
+	content: "\e617";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path14:before {
+	content: "\e618";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path15:before {
+	content: "\e619";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path16:before {
+	content: "\e61a";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path17:before {
+	content: "\e61b";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path18:before {
+	content: "\e61c";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-fingerprint .path19:before {
+	content: "\e61d";
+	margin-left: -1em;
+	color: rgb(194, 226, 239);
+}
+.icon-clock-in:before {
+	content: "\e61e";
+}
+.icon-clock:before {
+	content: "\e61f";
+}
+.icon-calendar:before {
+	content: "\e620";
+}
+.icon-bubble:before {
+	content: "\e621";
+}
+.icon-attendance:before {
+	content: "\e622";
+}

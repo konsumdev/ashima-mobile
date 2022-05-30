@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+        <ion-back-button defaultHref="members/profile"></ion-back-button>
+      </ion-buttons>
+    <ion-title>Personal Details</ion-title>
+  </ion-toolbar>
+
+  <div class="ion-padding">
+      <ion-segment [(ngModel)]="pDetails" mode="ios" color="ashima">
+          <ion-segment-button value="basicInfo">
+          Basic Information
+          </ion-segment-button>
+          <ion-segment-button value="dependents">
+          Dependents
+          </ion-segment-button>
+      </ion-segment>
+  </div>
+</ion-header>
+
+<ion-content>
+    <div [ngSwitch]="pDetails">
+        <ion-list *ngSwitchCase="'basicInfo'" class="ash-listing">
+                   
+            <ion-item lines="full">                
+                Name
+                <ion-note slot="end">
+                {{ prsnlDetails.first_name }} {{ prsnlDetails.last_name }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Nickname
+                <ion-note slot="end">
+                {{ prsnlDetails.nickname || '~' }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Address
+                <ion-note slot="end" class="ion-text-wrap" style="width: 200px;">
+                {{ prsnlDetails.address || '~' }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Primary Mobile No.
+                <ion-note slot="end">
+                {{ prsnlDetails.login_mobile_number || '~' }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Secondary Mobile No.
+                <ion-note slot="end">
+                    {{ prsnlDetails.login_mobile_number_2 || '~' }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Telephone
+                <ion-note slot="end">
+                    {{ prsnlDetails.telephone_number || '~' }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Citizenship
+                <ion-note slot="end">
+                {{ prsnlDetails.citizenship_status || '~' }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Date of Birth
+                <ion-note slot="end">
+                {{ prsnlDetails.dob | date:'dd-MMM-yy' }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Gender
+                <ion-note slot="end">
+                {{ prsnlDetails.gender || '~' }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Marital Status                
+                <ion-note slot="end">
+                {{ prsnlDetails.marital_status || '~' }}
+                </ion-note>
+            </ion-item>
+        
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'dependents'" class="ash-listing">
+            <div *ngIf="dpndtsDetails">
+                <div *ngFor="let dep of dpndtsDetails">
+                    <ion-item lines="full">
+                        <ion-label>
+                            <h2>{{ dep.dependents_name }}</h2>
+                            <p>{{ dep.dob }} years old</p>
+                        </ion-label>
+                        
+                        <ion-note slot="end">
+                        {{ dep.relation }}
+                        </ion-note>
+                    </ion-item>
+                </div>                    
+            </div>
+            <div *ngIf="!dpndtsDetails">
+                <div class="no-record-found-cont">
+                    <div class="no-record-found-icon">
+                        <span class="icon-no-record"></span>
+                    </div>
+                    <div class="no-record-holder">No data found.</div>
+                </div>
+            </div>
+        </ion-list>
+    </div>
+</ion-content>

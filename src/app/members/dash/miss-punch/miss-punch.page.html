@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="dashboard"></ion-back-button>
+    </ion-buttons>
+  <ion-title>Missed Punches</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <div *ngIf="missPunches">
+        <div *ngFor="let record of missPunches">
+            <ion-item lines="full">
+                <div slot="start">
+                    <label>{{ record.date | date:'dd-MMM-yy' }}</label> <br>
+                    <span *ngIf="record.time_in_status != 'reject'" class="font-13" 
+                    [ngClass]="{'approve-color': record.time_in_status == 'approved', 
+                    'no-sched-color': record.time_in_status == 'pending'}">{{ record.time_in_status || '' }}</span>
+                    <span *ngIf="record.time_in_status == 'reject'" class="font-13" 
+                    [ngClass]="'reject-color'">Rejected</span>
+                </div>
+                <div class="ion-text-center">
+                    <label>{{ record.time_in || "0:00" }} - {{ record.time_out || "00:00" }}</label><br>
+                    <span class="font-12" *ngIf="record.lunch_in || record.lunch_out">{{ record.lunch_out || "00:00" }} - {{ record.lunch_in || "00:00" }}</span>
+                </div>
+                <ion-note slot="end" style="max-width: 30%;">
+                <label>{{ (record.total_hours | number:'.1-2') || "0.00" }}</label><br><span>hrs</span>
+                </ion-note>
+            </ion-item>
+        </div>
+    </div>
+    <div *ngIf="!missPunches && !fetchingAll">
+      <div class="no-record-found-cont">
+        <div class="no-record-found-icon">
+            <span class="icon-no-record"></span>
+        </div>
+        <div class="no-record-holder">No data found.</div>
+      </div>
+    </div>
+</ion-list>
+</ion-content>

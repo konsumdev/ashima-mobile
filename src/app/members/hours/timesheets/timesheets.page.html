@@ -1,0 +1,322 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+        <ion-button (click)="addLogs()" routerDirection="forward">
+          <ion-icon slot="icon-only" name="add"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+    <ion-title>
+      Timesheets
+    </ion-title>
+  </ion-toolbar>
+
+  <div>
+    <ion-segment [(ngModel)]="tsheets" color="ashima">
+        <ion-segment-button value="all">
+        All
+        </ion-segment-button>
+        <ion-segment-button value="pending" (click)="pendingClick()">
+        Pending
+        </ion-segment-button>
+        <ion-segment-button value="reject" (click)="rejectClick()">
+        Rejected
+        </ion-segment-button>
+    </ion-segment>
+  </div>
+
+</ion-header>
+
+<ion-content>
+    <ion-refresher slot="fixed" *ngIf="tsheets == 'all'" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content>
+        </ion-refresher-content>
+    </ion-refresher>
+    <ion-refresher slot="fixed" *ngIf="tsheets == 'pending'" (ionRefresh)="doRefreshPending($event)">
+        <ion-refresher-content>
+        </ion-refresher-content>
+    </ion-refresher>
+    <ion-refresher slot="fixed" *ngIf="tsheets == 'reject'" (ionRefresh)="doRefreshReject($event)">
+        <ion-refresher-content>
+        </ion-refresher-content>
+    </ion-refresher>
+    <div [ngSwitch]="tsheets" #popoverText>
+        <ng-container *ngSwitchCase="'all'">
+            <ion-list [class.fade-out]="allTsheets" *ngIf="!allTsheets && fetchingAll">            
+                <ion-item *ngFor="let number of fakeUsers">
+                    <ion-grid>
+                        <ion-row>
+                        <ion-col>
+                            <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                            <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+                        </ion-col>
+                        <ion-col size="6">
+                            <div class="ion-text-right" style="margin-left: 30px;">
+                                <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                                <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                            </div>
+                        </ion-col>
+                        <ion-col>
+                            <div class="ion-text-right" style="margin-left: 30px;margin-right: 5px;">
+                                <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                                <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                            </div>
+                            
+                        </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-item>
+            </ion-list>
+            <ion-list class="ash-listing" lines="full">
+                <div *ngIf="allTsheets">
+                    <div *ngFor="let record of allTsheets">
+                        <ion-item detail-push (click)="gotoDetails(record)" routerDirection="forward" [ngClass]="record.holiday_class">
+                            <ion-grid>
+                            <ion-row>
+                                <ion-col>
+                                    <label [ngClass]="{'orange-text' : (((record.tardiness_min != 0)
+                                    || (record.absent_min > 0) || (record.undertime_min > 0)) && (!record.is_resolved)),
+                                    'green-text': ((record.is_resolved) || (record.last_source == 'Adjusted' && record.time_in_status == 'approved')),
+                                    'red-text': (record.has_change_sched),
+                                    'blue-hours': (record.last_source == 'updated' || record.last_source == 'recalculated' || record.last_source == 'import' || record.last_source == 'Dashboard') }">{{ record.date | date:'dd-MMM-yy' }}</label> <br>
+                                    <span class="font-13" 
+                                    [ngClass]="{'orange-text' : (((record.tardiness_min != 0)
+                                    || (record.absent_min > 0) || (record.undertime_min > 0)) && (!record.is_resolved)),
+                                    'green-text': ((record.is_resolved) || (record.last_source == 'Adjusted' && record.time_in_status == 'approved')),
+                                    'red-text': (record.has_change_sched),
+                                    'blue-hours': (record.last_source == 'updated' || record.last_source == 'recalculated' || record.last_source == 'import' || record.last_source == 'Dashboard') }">{{ ((record.time_in_status == 'reject') ? "Rejected" : record.time_in_status) || '' }}</span>
+                                    
+                                </ion-col>
+                                <ion-col size="6">
+                                    <div class="ion-text-center">
+                                    <label [ngClass]="{'orange-text' : (((record.tardiness_min != 0)
+                                    || (record.absent_min > 0) || (record.undertime_min > 0)) && (!record.is_resolved)),
+                                    'green-text': ((record.is_resolved) || (record.last_source == 'Adjusted' && record.time_in_status == 'approved')),
+                                    'red-text': (record.has_change_sched),
+                                    'blue-hours': (record.last_source == 'updated' || record.last_source == 'recalculated' || record.last_source == 'import' || record.last_source == 'Dashboard') }">{{ record.time_in || "0:00" }} - {{ record.time_out || "00:00" }}</label><br>
+                                    <span [ngClass]="{'orange-text' : (((record.tardiness_min != 0)
+                                    || (record.absent_min > 0) || (record.undertime_min > 0)) && (!record.is_resolved)),
+                                    'green-text': ((record.is_resolved) || (record.last_source == 'Adjusted' && record.time_in_status == 'approved')),
+                                    'red-text': (record.has_change_sched),
+                                    'blue-hours': (record.last_source == 'updated' || record.last_source == 'recalculated' || record.last_source == 'import' || record.last_source == 'Dashboard') }" class="font-12" *ngIf="record.lunch_in || record.lunch_out">{{ record.lunch_out || "00:00" }} - {{ record.lunch_in || "00:00" }}</span>
+                                    </div>
+                                </ion-col>
+                                <ion-col>
+                                <div class="ion-text-end" style="padding-right: 5px;">
+                                    <label [ngClass]="{'orange-text' : (((record.tardiness_min != 0)
+                                    || (record.absent_min > 0) || (record.undertime_min > 0)) && (!record.is_resolved)),
+                                    'green-text': ((record.is_resolved) || (record.last_source == 'Adjusted' && record.time_in_status == 'approved')),
+                                    'red-text': (record.has_change_sched),
+                                    'blue-hours': (record.last_source == 'updated' || record.last_source == 'recalculated' || record.last_source == 'import' || record.last_source == 'Dashboard') }">{{ (record.total_hours | number:'.1-2') || "0.00" }}</label><br>
+                                    <span [ngClass]="{'orange-text' : (((record.tardiness_min != 0)
+                                    || (record.absent_min > 0) || (record.undertime_min > 0)) && (!record.is_resolved)),
+                                    'green-text': ((record.is_resolved) || (record.last_source == 'Adjusted' && record.time_in_status == 'approved')),
+                                    'red-text': (record.has_change_sched),
+                                    'blue-hours': (record.last_source == 'updated' || record.last_source == 'recalculated' || record.last_source == 'import' || record.last_source == 'Dashboard') }">hrs</span>
+                                </div>
+                                </ion-col>
+                            </ion-row>
+                            </ion-grid>
+                            
+                        </ion-item>
+                    </div>
+                </div>
+                <div *ngIf="!allTsheets && !fetchingAll">
+                    <div class="no-record-found-cont ion-text-center">   
+                        <div class="no-record-found-icon">
+                            <span class="icon-no-record"></span>
+                        </div>             
+                        <div class="no-record-holder">No Data Found.</div>
+                    </div>
+                </div>
+            </ion-list>
+
+            <ion-infinite-scroll (ionInfinite)="doInfiniteAll($event)" threshold="100px" id="infinite-scroll">
+                <ion-infinite-scroll-content>
+                </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+        </ng-container>
+    </div>
+    <div [ngSwitch]="tsheets">
+        <ng-container *ngSwitchCase="'pending'" class="ash-listing">
+            <ion-list [class.fade-out]="pendingTsheets" *ngIf="!pendingTsheets && fetchingPending">
+                <ion-item *ngFor="let number of [0,1,2,3,4]">
+                    <ion-grid>
+                        <ion-row>
+                        <ion-col>
+                            <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                            <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+                        </ion-col>
+                        <ion-col size="6">
+                            <div class="ion-text-right" style="margin-left: 30px;">
+                                <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                                <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                            </div>
+                        </ion-col>
+                        <ion-col>
+                            <div class="ion-text-right" style="margin-left: 30px;margin-right: 5px;">
+                                <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                                <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                            </div>
+                            
+                        </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-item>
+            </ion-list>
+            <ion-list class="ash-listing" lines="full">
+                <div *ngIf="pendingTsheets">
+                    <div *ngFor="let recordPending of pendingTsheets">
+                        <ion-item detail-push (click)="gotoDetails(recordPending)" [ngClass]="{'hours-border-rd': (recordPending.work_schedule_id == -1),
+                        'hours-border-sp': (recordPending.work_schedule_id == -1),
+                        'hours-border-rg': (recordPending.work_schedule_id == -1),
+                        'hours-border-mn': (recordPending.inclusion_hours == 1)}">
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col>
+                                    <label [ngClass]="{'orange-text' : (((recordPending.tardiness_min != 0)
+                                    || (recordPending.absent_min > 0) || (recordPending.undertime_min > 0)) && (!recordPending.is_resolved)),
+                                    'green-text': ((recordPending.is_resolved) || (recordPending.last_source == 'Adjusted' && recordPending.time_in_status == 'approved')),
+                                    'red-text': (recordPending.has_change_sched),
+                                    'blue-hours': (recordPending.last_source == 'updated' || recordPending.last_source == 'recalculated' || recordPending.last_source == 'import' || recordPending.last_source == 'Dashboard') }">{{ recordPending.date | date:'dd-MMM-yy' }}</label>
+                                </ion-col>
+                                <ion-col size="6">
+                                    <div class="ion-text-center">
+                                        <label [ngClass]="{'orange-text' : (((recordPending.tardiness_min != 0)
+                                        || (recordPending.absent_min > 0) || (recordPending.undertime_min > 0)) && (!recordPending.is_resolved)),
+                                        'green-text': ((recordPending.is_resolved) || (recordPending.last_source == 'Adjusted' && recordPending.time_in_status == 'approved')),
+                                        'red-text': (recordPending.has_change_sched),
+                                        'blue-hours': (recordPending.last_source == 'updated' || recordPending.last_source == 'recalculated' || recordPending.last_source == 'import' || recordPending.last_source == 'Dashboard') }">{{ recordPending.time_in || "0:00" }} - {{ recordPending.time_out || "00:00" }}</label><br>
+                                        <span [ngClass]="{'orange-text' : (((recordPending.tardiness_min != 0)
+                                        || (recordPending.absent_min > 0) || (recordPending.undertime_min > 0)) && (!recordPending.is_resolved)),
+                                        'green-text': ((recordPending.is_resolved) || (recordPending.last_source == 'Adjusted' && recordPending.time_in_status == 'approved')),
+                                        'red-text': (recordPending.has_change_sched),
+                                        'blue-hours': (recordPending.last_source == 'updated' || recordPending.last_source == 'recalculated' || recordPending.last_source == 'import' || recordPending.last_source == 'Dashboard') }"
+                                            class="font-12" *ngIf="recordPending.lunch_in || recordPending.lunch_out">{{ recordPending.lunch_out || "00:00" }} - {{ recordPending.lunch_in || "00:00" }}</span>
+                                    </div>
+                                </ion-col>
+                                <ion-col>
+                                    <div class="ion-text-end" style="padding-right: 5px;">                        
+                                        <label [ngClass]="{'orange-text' : (((recordPending.tardiness_min != 0)
+                                        || (recordPending.absent_min > 0) || (recordPending.undertime_min > 0)) && (!recordPending.is_resolved)),
+                                        'green-text': ((recordPending.is_resolved) || (recordPending.last_source == 'Adjusted' && recordPending.time_in_status == 'approved')),
+                                        'red-text': (recordPending.has_change_sched),
+                                        'blue-hours': (recordPending.last_source == 'updated' || recordPending.last_source == 'recalculated' || recordPending.last_source == 'import' || recordPending.last_source == 'Dashboard') }">{{ (recordPending.total_hours | number:'.1-2') || "0.00" }}</label><br>
+                                        <span [ngClass]="{'orange-text' : (((recordPending.tardiness_min != 0)
+                                        || (recordPending.absent_min > 0) || (recordPending.undertime_min > 0)) && (!recordPending.is_resolved)),
+                                        'green-text': ((recordPending.is_resolved) || (recordPending.last_source == 'Adjusted' && recordPending.time_in_status == 'approved')),
+                                        'red-text': (recordPending.has_change_sched),
+                                        'blue-hours': (recordPending.last_source == 'updated' || recordPending.last_source == 'recalculated' || recordPending.last_source == 'import' || recordPending.last_source == 'Dashboard') }">hrs</span>
+                    
+                                    </div>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                        </ion-item>
+                    </div>
+                </div>
+            
+                <div *ngIf="!pendingTsheets && !fetchingPending">
+                    <div class="ion-text-center no-record-found-cont">   
+                        <div class="no-record-found-icon">
+                            <span class="icon-no-record"></span>
+                        </div>             
+                        <div class="no-record-holder">No Data Found.</div>
+                    </div>
+                </div>
+            </ion-list>
+        </ng-container>
+    </div>
+    <div [ngSwitch]="tsheets">
+    <ion-list *ngSwitchCase="'reject'" class="ash-listing">
+        <div *ngIf="rejectTsheets">
+            <div *ngFor="let recordReject of rejectTsheets">
+                <ion-item detail-push (click)="gotoDetails(recordReject)">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col>
+                                <label [ngClass]="{'orange-text' : (((recordReject.tardiness_min != 0)
+                                || (recordReject.absent_min > 0) || (recordReject.undertime_min > 0)) && (!recordReject.is_resolved)),
+                                'green-text': ((recordReject.is_resolved) || (recordReject.last_source == 'Adjusted' && recordReject.time_in_status == 'approved')),
+                                'red-text': (recordReject.has_change_sched),
+                                'blue-hours': (recordReject.last_source == 'updated' || recordReject.last_source == 'recalculated' || recordReject.last_source == 'import' || recordReject.last_source == 'Dashboard') }">{{ recordReject.date | date:'dd-MMM-yy' }}</label>
+                            </ion-col>
+                            <ion-col size="6">
+                                <div class="ion-text-center">
+                                    <label [ngClass]="{'orange-text' : (((recordReject.tardiness_min != 0)
+                                    || (recordReject.absent_min > 0) || (recordReject.undertime_min > 0)) && (!recordReject.is_resolved)),
+                                    'green-text': ((recordReject.is_resolved) || (recordReject.last_source == 'Adjusted' && recordReject.time_in_status == 'approved')),
+                                    'red-text': (recordReject.has_change_sched),
+                                    'blue-hours': (recordReject.last_source == 'updated' || recordReject.last_source == 'recalculated' || recordReject.last_source == 'import' || recordReject.last_source == 'Dashboard') }">{{ recordReject.time_in || "0:00" }} - {{ recordReject.time_out || "00:00" }}</label><br>
+                                    <span [ngClass]="{'orange-text' : (((recordReject.tardiness_min != 0)
+                                    || (recordReject.absent_min > 0) || (recordReject.undertime_min > 0)) && (!recordReject.is_resolved)),
+                                    'green-text': ((recordReject.is_resolved) || (recordReject.last_source == 'Adjusted' && recordReject.time_in_status == 'approved')),
+                                    'red-text': (recordReject.has_change_sched),
+                                    'blue-hours': (recordReject.last_source == 'updated' || recordReject.last_source == 'recalculated' || recordReject.last_source == 'import' || recordReject.last_source == 'Dashboard') }"
+                                        class="font-12" *ngIf="recordReject.lunch_in || recordReject.lunch_out">{{ recordReject.lunch_out || "00:00" }} - {{ recordReject.lunch_in || "00:00" }}</span>
+                                </div>
+                            </ion-col>
+                            <ion-col>
+                                <div class="ion-text-end" style="padding-right: 5px;">
+                                    <label [ngClass]="{'orange-text' : (((recordReject.tardiness_min != 0)
+                                    || (recordReject.absent_min > 0) || (recordReject.undertime_min > 0)) && (!recordReject.is_resolved)),
+                                    'green-text': ((recordReject.is_resolved) || (recordReject.last_source == 'Adjusted' && recordReject.time_in_status == 'approved')),
+                                    'red-text': (recordReject.has_change_sched),
+                                    'blue-hours': (recordReject.last_source == 'updated' || recordReject.last_source == 'recalculated' || recordReject.last_source == 'import' || recordReject.last_source == 'Dashboard') }">{{ (recordReject.total_hours | number:'.1-2') || "0.00" }}</label><br>
+                                    <span [ngClass]="{'orange-text' : (((recordReject.tardiness_min != 0)
+                                    || (recordReject.absent_min > 0) || (recordReject.undertime_min > 0)) && (!recordReject.is_resolved)),
+                                    'green-text': ((recordReject.is_resolved) || (recordReject.last_source == 'Adjusted' && recordReject.time_in_status == 'approved')),
+                                    'red-text': (recordReject.has_change_sched),
+                                    'blue-hours': (recordReject.last_source == 'updated' || recordReject.last_source == 'recalculated' || recordReject.last_source == 'import' || recordReject.last_source == 'Dashboard') }">hrs</span>
+                                </div>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                    <div item-start>
+                        
+                    </div>
+
+                    
+
+                    
+                </ion-item>
+            </div>
+        </div>
+        <div *ngIf="!rejectTsheets && !fetchingReject">
+            <div class="ion-text-center no-record-found-cont">   
+                <div class="no-record-found-icon">
+                    <span class="icon-no-record"></span>
+                </div>             
+                <div class="no-record-holder">No Data Found.</div>
+            </div>
+        </div>
+        <div *ngIf="!rejectTsheets && fetchingReject">
+            <ion-item *ngFor="let number of [0,1,2,3,4]">
+                <ion-grid>
+                    <ion-row>
+                      <ion-col>
+                          <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                          <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+                      </ion-col>
+                      <ion-col size="6">
+                          <div class="ion-text-right" style="margin-left: 30px;">
+                            <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                            <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                          </div>
+                      </ion-col>
+                      <ion-col>
+                        <div class="ion-text-right" style="margin-left: 30px;margin-right: 5px;">
+                            <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                            <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                        </div>
+                          
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+            </ion-item>
+        </div>
+    </ion-list>
+  </div>
+</ion-content>

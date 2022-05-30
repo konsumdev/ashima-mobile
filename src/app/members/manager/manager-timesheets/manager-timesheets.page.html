@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar color="ashima-mg">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Timesheets
+    </ion-title>
+  </ion-toolbar>
+  <div class="ion-padding">
+    <ion-segment [(ngModel)]="tsheets" mode="ios" color="ashima">
+        <ion-segment-button value="today">
+            Today
+        </ion-segment-button>
+        <ion-segment-button value="all">
+            All
+        </ion-segment-button>
+    </ion-segment>
+  </div>
+</ion-header>
+
+<ion-content>
+  <div [ngSwitch]="tsheets">
+      <div *ngSwitchCase="'today'">
+          <ion-list *ngIf="curTsheets">
+              <ng-container *ngFor="let emp of curTsheets">
+                  <ion-item>
+                      <ion-avatar item-start class="applicant-avatar">
+                          <img *ngIf="!emp.profile_image" src="assets/imgs/default-profile-pic.png">
+                          <img *ngIf="emp.profile_image" [src]="apiUrl + '/uploads/companies/' + emp.company_id + '/' + emp.profile_image">
+                      </ion-avatar>
+                      
+                      <div class="applicant-info" style="width: 40% !important;">
+                          <div class="applicant-name">{{ emp.first_name }} {{ emp.last_name }}</div>
+                          <div class="applicant-id">{{ emp.payroll_cloud_id }}</div>
+                      </div>
+
+                      <ion-note item-end class="application-info" style="width: 50% !important;">
+                          <div class="application-time" [ngClass]="{'orange-text' : (((emp.tardiness_min != 0)
+                          || (emp.absent_min > 0) || (emp.undertime_min > 0)) && (!emp.is_resolved)),
+                          'green-text': ((emp.is_resolved) || (emp.last_source == 'Adjusted' && emp.time_in_status == 'approved')),
+                          'red-text': (emp.has_change_sched) }" style="margin-top: 5px;">{{ emp.total_hours_required }} hrs</div>
+                          <div class="application-status" [ngClass]="{'orange-text' : (((emp.tardiness_min != 0)
+                          || (emp.absent_min > 0) || (emp.undertime_min > 0)) && (!emp.is_resolved)),
+                          'green-text': ((emp.is_resolved) || (emp.last_source == 'Adjusted' && emp.time_in_status == 'approved')),
+                          'red-text': (emp.has_change_sched) }">{{ emp.time_in }} - {{ emp.time_out }}</div>
+
+                          <div class="application-status" [ngClass]="{'orange-text' : (((emp.tardiness_min != 0)
+                          || (emp.absent_min > 0) || (emp.undertime_min > 0)) && (!emp.is_resolved)),
+                          'green-text': ((emp.is_resolved) || (emp.last_source == 'Adjusted' && emp.time_in_status == 'approved')),
+                          'red-text': (emp.has_change_sched) }" style="margin-bottom: 5px;">{{ emp.date | date:'dd-MMM-yy' }}</div>
+                      </ion-note>
+                  </ion-item>
+              </ng-container>
+          </ion-list>
+          <div *ngIf="!curTsheets">
+              <div class="no-record-found-cont ion-text-center">   
+                  <div class="no-record-found-icon">
+                      <span class="icon-no-record"></span>
+                  </div>             
+                  <div class="no-record-holder">No Data Found.</div>
+              </div>
+          </div>
+      </div>
+
+      <div *ngSwitchCase="'all'">
+          <ion-list *ngIf="allTsheets">
+              <ng-container *ngFor="let emp of allTsheets">
+                  <ion-item>
+                      <ion-avatar item-start class="applicant-avatar">
+                          <img *ngIf="!emp.profile_image" src="assets/imgs/default-profile-pic.png">
+                          <img *ngIf="emp.profile_image" [src]="apiUrl + '/uploads/companies/' + emp.company_id + '/' + emp.profile_image">
+                      </ion-avatar>
+                      
+                      <div class="applicant-info" style="width: 40% !important;">
+                          <div class="applicant-name">{{ emp.first_name }} {{ emp.last_name }}</div>
+                          <div class="applicant-id">{{ emp.payroll_cloud_id }}</div>
+                      </div>
+
+                      <ion-note item-end class="application-info" style="width: 50% !important;">
+                          <div class="application-time" [ngClass]="{'orange-text' : (((emp.tardiness_min != 0)
+                          || (emp.absent_min > 0) || (emp.undertime_min > 0)) && (!emp.is_resolved)),
+                          'green-text': ((emp.is_resolved) || (emp.last_source == 'Adjusted' && emp.time_in_status == 'approved')),
+                          'red-text': (emp.has_change_sched) }" style="margin-top: 5px;">{{ emp.total_hours_required }} hrs</div>
+                          <div class="application-status" [ngClass]="{'orange-text' : (((emp.tardiness_min != 0)
+                          || (emp.absent_min > 0) || (emp.undertime_min > 0)) && (!emp.is_resolved)),
+                          'green-text': ((emp.is_resolved) || (emp.last_source == 'Adjusted' && emp.time_in_status == 'approved')),
+                          'red-text': (emp.has_change_sched) }">{{ emp.time_in }} - {{ emp.time_out }}</div>
+
+                          <div class="application-status" [ngClass]="{'orange-text' : (((emp.tardiness_min != 0)
+                          || (emp.absent_min > 0) || (emp.undertime_min > 0)) && (!emp.is_resolved)),
+                          'green-text': ((emp.is_resolved) || (emp.last_source == 'Adjusted' && emp.time_in_status == 'approved')),
+                          'red-text': (emp.has_change_sched) }" style="margin-bottom: 5px;">{{ emp.date | date:'dd-MMM-yy' }}</div>
+                      </ion-note>
+                  </ion-item>
+              </ng-container>
+          </ion-list>
+          <div *ngIf="!allTsheets">
+              <div class="no-record-found-cont ion-text-center">   
+                  <div class="no-record-found-icon">
+                      <span class="icon-no-record"></span>
+                  </div>             
+                  <div class="no-record-holder">No Data Found.</div>
+              </div>
+          </div>
+      </div>  
+  </div>
+</ion-content>
+

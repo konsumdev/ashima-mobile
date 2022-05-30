@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-back-button  defaultHref="overtime" (click)="gotoBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Apply OT
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="submitOt()" >
+        Submit
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+        <ion-label>Start Date</ion-label>
+        <ion-datetime displayFormat="DD-MMM-YYYY hh:mm A" placeholder="Select date/time" (ionChange)="onSelectDate()" [(ngModel)]="startDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>End Date</ion-label>
+        <ion-datetime displayFormat="DD-MMM-YYYY hh:mm A" [disabled]="!startDate" min="{{ minDate }}" max="{{ maxDate }}" placeholder="Select date/time" (ionChange)="onSelectDate()" [(ngModel)]="endDate"></ion-datetime>
+    </ion-item>
+    <ion-item no-lines>
+        <ion-label>Reason</ion-label>
+    </ion-item>
+    <ion-item>
+        <ion-textarea rows="2" [(ngModel)]="reason" placeholder="Purpose of working overtime"></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label class="bold-me">Total Hours</ion-label>
+        <ion-note item-end class="bold-me">
+            <span *ngIf="!isPristine">{{ totalHrs || '0.00' }}</span>
+            <ion-spinner *ngIf="isPristine" name="dots"></ion-spinner>
+        </ion-note>
+    </ion-item>
+</ion-list>
+</ion-content>

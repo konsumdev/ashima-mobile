@@ -1,0 +1,64 @@
+.chart-card {
+
+    background: #1172ad !important;
+    border-radius: 0px;
+    color: #eee;
+    font-family: open_sanslight;
+    margin: 0px;
+    width: 100%;
+}
+
+.header-ios .toolbar-background-ios, .footer-ios .toolbar-background-ios {
+    border-style: none;
+}
+
+.timesheet-ctr-circle {
+    @media (max-width : 460px) {
+        top: 95px;
+    }
+    @media (max-width : 420px) {
+        top: 75px;
+    }
+    @media (max-width : 390px) {
+        top: 85px;
+    }
+    @media (max-width : 380px) {
+        top: 75px;
+    }
+    @media (max-width : 360px) {
+        top: 60px;
+    }
+    @media (max-width : 320px) {
+        top: 50px;      
+    } 
+}
+
+.card-ios + ion-card {
+    margin-top: 12px;
+}
+
+.card-md + ion-card {
+    margin-top: 12px;
+}
+
+ion-card {
+    .item-inner {
+        height: 45px;
+    }
+    .header {
+        ion-label, ion-note  {
+            // font-size: 1.6rem;
+            font-weight: bold;
+            // color: #333;
+            // padding: 16px;
+        }                
+    }
+}
+
+.alert-ios .alert-message, .alert-ios .alert-input-group {
+    text-align: left !important;
+}
+ion-item {
+    font-size: 14px !important;
+    --border-color: #efefef;
+}

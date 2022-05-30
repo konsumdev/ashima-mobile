@@ -1,0 +1,804 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Payslip
+    </ion-title>
+  </ion-toolbar>
+
+  <div class="ion-padding segment-div" style="padding-bottom: 0px;">
+    <ion-segment [(ngModel)]="selectedSegment" mode="md" class="md">
+        <ion-segment-button value="latest" mode="md" style="color: #fff;">
+          Latest
+        </ion-segment-button>
+        <ion-segment-button value="previous" mode="md" style="color: #fff;">
+          Previous
+        </ion-segment-button>
+    </ion-segment>
+  </div>
+</ion-header>
+
+<ion-content>
+
+    <div [ngSwitch]="selectedSegment" style="width: 100%;">
+        <div *ngSwitchCase="'latest'" style="width: 100%;">
+            <ion-list>
+                <!-- <ng-container *ngIf="true" class="skeleton-list"> -->
+                <ng-container *ngIf="!latestPay && fetchingLatest" class="skeleton-list">
+                    <div class='fakeItem'>
+                        <div class="latest-netpay-cont">
+                            <div class="latest-netpay-sub">
+                                <div class="latest-netpay-date">
+                                    <p></p>
+                                </div>
+                                <div class="latest-netpay-amount"><p></p></div>
+                                <div class="latest-netpay-lbl"><p></p></div>
+                            </div>	
+                        </div>
+                        <div class="latest-earnings-cont" style="margin-top: 40px;">
+                            <div class="latest-earnings-lbl"></div>
+                            <div class="latest-earnings-amnt"></div>
+                        </div>
+                        <ion-item class='fakeItem' *ngFor="let fake of fakeUsers">
+                            <label></label>
+                            <p></p>                            
+                            <ion-note item-end style="width: 50%;">
+                                <h3 style="width: 50%; float: right;"></h3>
+                            </ion-note>
+                        </ion-item>
+                    </div>
+                </ng-container>
+                <div *ngIf="latestPay">
+                <!-- <div *ngIf="false"> -->
+                    <div>
+                        <div class="latest-netpay-cont">
+                            <div class="latest-netpay-sub">
+                                <div class="latest-netpay-date">
+                                    {{ latestPay.payroll_date | date:'dd-MMM-yy' }}
+                                    <em *ngIf="isLatestDraft"[ngClass]="{'red-text': isLatestDraft}"><strong> - DRAFT</strong></em>
+                                </div>
+                                <div class="latest-netpay-amount" [ngClass]="{'red-text': isLatestDraft}">{{ latestPay.net_pay || '0.00' }} Php</div>
+                                <div class="latest-netpay-lbl">NET PAY</div>
+                            </div>	
+                        </div>
+                    </div>
+
+                    <div class="latest-paycheck-range">
+                        Worked from <span [ngClass]="{'red-text': isLatestDraft}">{{ latestPay.period_from | date:'dd-MMM-yy' }}</span> 
+                    to
+                    <span [ngClass]="{'red-text': isLatestDraft}">{{ latestPay.period_to | date:'dd-MMM-yy' }}</span></div>
+                                    
+                    <div class="latest-earnings-cont">
+                        <div class="latest-earnings-lbl">Earnings</div>
+                        <div class="latest-earnings-amnt">{{ latestPay.total_earnings || '0.00' }} Php</div>
+                    </div>
+
+                    <!-- Earnings -->
+                    <div class="latest-details-summ">
+                        <div class="latest-details-cont" >
+                            <div class="paycheck-drop-up" >
+                                <ion-icon *ngIf="regularHrs" ios="ios-arrow-up" md="ios-arrow-up" (click)="regularHrs = false"></ion-icon>
+                                <ion-icon *ngIf="!regularHrs" ios="ios-arrow-down" md="ios-arrow-down" (click)="regularHrs = true"></ion-icon>
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Regular Hours</div>
+                                <div class="latest-details-right">{{ latestPay.regular_hours || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+
+                        <div *ngIf="regularHrs">
+                            <div class="latest-details-cont">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Hoursworked</div>
+                                    <div class="latest-details-right">{{ latestPay.regular_hours || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Absences</div>
+                                    <div class="latest-details-right">({{ latestPay.absences || '0.00' }}) Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Tardiness</div>
+                                    <div class="latest-details-right">({{ latestPay.tardiness_pay || '0.00' }}) Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Undertime</div>
+                                    <div class="latest-details-right">({{ latestPay.undertime_pay || '0.00' }}) Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                        </div>
+
+                        <div class="latest-details-cont">
+                            <div class="paycheck-drop-up">
+                                &nbsp;
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Paid/Unpaid Leave</div>
+                                <div class="latest-details-right">{{ latestPay.paid_leave || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                        
+                        <div class="latest-details-cont">
+                            <div class="paycheck-drop-up">
+                                &nbsp;
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Leave Conversion</div>
+                                <div class="latest-details-right">{{ latestPay.leave_conversion || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                        
+                        <div class="latest-details-cont">
+                            <div class="paycheck-drop-up">
+                                &nbsp;
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Overtime</div>
+                                <div class="latest-details-right">{{ latestPay.overtime_pay || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                        
+                        <div class="latest-details-cont">
+                            <div class="paycheck-drop-up">
+                                &nbsp;
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Holiday Hours</div>
+                                <div class="latest-details-right">{{ latestPay.holiday_sunday || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                        
+                        <div class="latest-details-cont">
+                            <div class="paycheck-drop-up">
+                                &nbsp;
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Night Shift Differential</div>
+                                <div class="latest-details-right">{{ latestPay.night_diff || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+
+                        <!-- Adjustment Start -->
+
+                        <div class="latest-details-cont">
+                            <!-- <div class="paycheck-drop-down" ng-if="ps.adjustments == '0'" ng-click="ps.adjustments = '1'">
+                                <span class="ion-chevron-down"></span>
+                            </div> -->
+                            <div class="paycheck-drop-up">
+                                <ion-icon *ngIf="adjstmntShow" ios="ios-arrow-up" md="ios-arrow-up" (click)="adjstmntShow = false"></ion-icon>
+                                <ion-icon *ngIf="!adjstmntShow" ios="ios-arrow-down" md="ios-arrow-dwon" (click)="adjstmntShow = true"></ion-icon>
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Adjustments</div>
+                                <div class="latest-details-right">{{ latestPay.adjustment_total_amount || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                        
+                        <div *ngIf="adjstmntShow && latestPay.adjustment_total_amount > 0">
+                            <div class="latest-details-cont" *ngIf="latestPay.adjustments.adjustment_workday > 0">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Workday</div>
+                                    <div class="latest-details-right">{{ latestPay.adjustments.adjustment_workday || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" >
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Advance Payment</div>
+                                    <div class="latest-details-right">{{ latestPay.adjustments.adjustment_advance_pay || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" >
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Overtime</div>
+                                    <div class="latest-details-right">{{ latestPay.adjustments.adjustment_overtime || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" >
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Holiday Premium</div>
+                                    <div class="latest-details-right">{{ latestPay.adjustments.adjustment_holiday || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" >
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Night Differential</div>
+                                    <div class="latest-details-right">{{ latestPay.adjustments.adjustment_night_diff || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" >
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Paid Leave</div>
+                                    <div class="latest-details-right">{{ latestPay.adjustments.adjustment_leave || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" *ngIf="latestPay.adjustments.adjustment_allowance">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Allowances</div>
+                                    <div class="latest-details-right">{{ latestPay.adjustments.adjustment_allowance || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" *ngIf="latestPay.adjustments.adjustment_commission > 0">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Commission</div>
+                                    <div class="latest-details-right">{{ latestPay.adjustments.adjustment_commission || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" *ngIf="latestPay.adjustments.adjustment_de_minimis > 0">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">De Minimis</div>
+                                    <div class="latest-details-right">{{ latestPay.adjustments.adjustment_de_minimis || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" *ngIf="latestPay.adjustments.adjustment_service_charge > 0">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Service Charge</div>
+                                    <div class="latest-details-right">{{ latestPay.adjustments.adjustment_service_charge || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" *ngIf="latestPay.adjustments.adjustment_hazard_pay > 0">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">
+                                    <div class="latest-details-left slant-me">Hazard Pay</div>
+                                    <div class="latest-details-right">{{ latestPay.adjustments.adjustment_hazard_pay || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                        </div>
+
+                        <!-- Adjustment - end here -->
+                        <!-- allowances - start here  -->
+                        <div class="latest-details-cont">
+                            <div class="paycheck-drop-down" >
+                                <ion-icon *ngIf="allwncShow" ios="ios-arrow-up" md="ios-arrow-up" (click)="allwncShow = false"></ion-icon>
+                                <ion-icon *ngIf="!allwncShow" ios="ios-arrow-down" md="ios-arrow-down" (click)="allwncShow = true"></ion-icon>
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Allowance</div>
+                                <div class="latest-details-right">{{ latestPay.allowances_total_amount || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                        
+                        <ng-container *ngIf="allwncShow ">
+                            <div *ngFor="let allowance of latestPay.allowances">
+                                <div class="latest-details-cont">
+                                    <div class="paycheck-drop-up">
+                                        &nbsp;
+                                    </div>
+                                    <div class="latest-list-cont" style="padding-left: 10px;">
+                                        <div class="latest-details-left slant-me">{{ allowance.description }}</div>
+                                        <div class="latest-details-right">{{ allowance.amount }} Php</div>
+                                    </div>
+                                    <div class="paycheck-list-padding"></div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        
+                        <!-- allowances - end here -->
+
+                        <!-- Commission - start here -->
+                                        
+                        <div class="latest-details-cont" >
+                            <div class="paycheck-drop-down" >
+                                <ion-icon *ngIf="cmmssnShow" ios="ios-arrow-up" md="ios-arrow-up" (click)="cmmssnShow = false"></ion-icon>
+                                <ion-icon *ngIf="!cmmssnShow" ios="ios-arrow-down" md="ios-arrow-down" (click)="cmmssnShow = true"></ion-icon>
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Commission</div>
+                                <div class="latest-details-right">{{ latestPay.commissions_total_amount || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                        
+                        <ng-container *ngIf="cmmssnShow ">
+                            <div *ngFor="let comm of latestPay.commissions">
+                                <div class="latest-details-cont">
+                                    <div class="paycheck-drop-up">
+                                        &nbsp;
+                                    </div>
+                                    <div class="latest-list-cont" style="padding-left: 10px;">	
+                                        <div class="latest-details-left slant-me">{{ comm.description }}</div>
+                                        <div class="latest-details-right">{{ comm.amount }} Php</div>
+                                    </div>
+                                    <div class="paycheck-list-padding"></div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <!-- Commission - end here -->
+
+                        <!-- De Minimis - start here -->
+                        <div class="latest-details-cont" >
+                            <div class="paycheck-drop-down">
+                                <ion-icon *ngIf="dmnmsShow" ios="ios-arrow-up" md="ios-arrow-up" (click)="dmnmsShow = false"></ion-icon>
+                                <ion-icon *ngIf="!dmnmsShow" ios="ios-arrow-down" md="ios-arrow-down" (click)="dmnmsShow = true"></ion-icon>
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">De Minimis</div>
+                                <div class="latest-details-right">{{ latestPay.de_minimis_total_amount || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                        
+                        <ng-container *ngIf="dmnmsShow">
+                            <div *ngFor="let de_minimis of latestPay.de_minimis">
+                                <div class="latest-details-cont">
+                                    <div class="paycheck-drop-up">
+                                        &nbsp;
+                                    </div>
+                                    <div class="latest-list-cont" style="padding-left: 10px;">
+                                        <div class="latest-details-left slant-me">{{ de_minimis.description }}</div>
+                                        <div class="latest-details-right">{{ de_minimis.description_amount || '0.00' }} Php</div>
+                                    </div>
+                                    <div class="paycheck-list-padding"></div>
+                                </div>
+                                
+                                <div class="latest-details-cont">
+                                    <div class="paycheck-drop-up">
+                                        &nbsp;
+                                    </div>
+                                    <div class="latest-list-cont" style="padding-left: 10px;">
+                                        <div class="latest-details-left slant-me">{{ de_minimis.excess }}</div>
+                                        <div class="latest-details-right">{{ de_minimis.excess_amount || '0.00' }} Php</div>
+                                    </div>
+                                    <div class="paycheck-list-padding"></div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        
+                        <!-- De Minimis - end here -->
+                        <!-- service charge - start here -->
+                                        
+                        <div class="latest-details-cont" >
+                            <div class="paycheck-drop-up">
+                                &nbsp;
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Service Charge</div>
+                                <div class="latest-details-right">{{ latestPay.service_charge || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+            
+                        <!-- service charge - end here -->
+                        
+                        <!-- Hazard pay - start here -->
+                        
+                        <div class="latest-details-cont" >
+                            <div class="paycheck-drop-up">
+                                &nbsp;
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Hazard Pay</div>
+                                <div class="latest-details-right">{{ latestPay.hazard_pay || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+            
+                        <!-- Hazard pay - end here -->
+
+                        <!-- other earnings - start here -->
+                        <div class="latest-details-cont" >
+                            <div class="paycheck-drop-down">
+                                <ion-icon *ngIf="oearnShow" ios="ios-arrow-up" md="ios-arrow-up" (click)="oearnShow = false"></ion-icon>
+                                <ion-icon *ngIf="!oearnShow" ios="ios-arrow-down" md="ios-arrow-down" (click)="oearnShow = true"></ion-icon>
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Other Earnings</div>
+                                <div class="latest-details-right">{{ latestPay.other_earnings_total_amount || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                        
+                        <ng-container *ngIf="oearnShow ">
+                            <div *ngFor="let other_earnings of latestPay.other_earnings">
+                                <div class="latest-details-cont">
+                                    <div class="paycheck-drop-up">
+                                        &nbsp;
+                                    </div>
+                                    <div class="latest-list-cont" style="padding-left: 10px;">	
+                                        <div class="latest-details-left slant-me">{{ other_earnings.description }}</div>
+                                        <div class="latest-details-right">{{ other_earnings.amount || '0.00' }} Php</div>
+                                    </div>
+                                    <div class="paycheck-list-padding"></div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        
+                        <!-- other earnings - end here -->
+
+                    </div>
+                    <div class="latest-earnings-cont">
+                        <div class="latest-earnings-lbl">Deductions</div>
+                        <div class="latest-earnings-amnt">{{ latestPay.total_deductions_amount || '0.00' }} Php</div>
+                    </div>
+
+                    <!-- Deductions -->
+                    <div class="latest-details-summ">
+                        <div class="latest-details-cont">
+                            <div class="paycheck-drop-up">
+                                &nbsp;
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Withholding Tax</div>
+                                <div class="latest-details-right">{{ latestPay.withholding_tax || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+
+                        <div class="latest-details-cont">
+                            <div class="paycheck-drop-up">
+                                &nbsp;
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">SSS</div>
+                                <div class="latest-details-right">{{ latestPay.sss || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                        
+                        <div class="latest-details-cont">
+                            <div class="paycheck-drop-up">
+                                &nbsp;
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">HDMF</div>
+                                <div class="latest-details-right">{{ latestPay.pp_pagibig || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+
+                        <div class="latest-details-cont">
+                            <div class="paycheck-drop-up">
+                                &nbsp;
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Philhealth</div>
+                                <div class="latest-details-right">{{ latestPay.pp_pagibig || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                        
+                        <div class="latest-details-cont">
+                            <div class="paycheck-drop-up">
+                                &nbsp;
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Withholding Tax (Fixed)</div>
+                                <div class="latest-details-right">{{ latestPay.withholding_tax_fixed || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+
+                        <!-- Insurance - start here -->
+                                                                
+                        <div class="latest-details-cont" >
+                            <div class="paycheck-drop-down" >
+                                <ion-icon *ngIf="insrnceShow" ios="ios-arrow-up" md="ios-arrow-up" (click)="insrnceShow = false"></ion-icon>
+                                <ion-icon *ngIf="!insrnceShow" ios="ios-arrow-down" md="ios-arrow-down" (click)="insrnceShow = true"></ion-icon>
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Insurance</div>
+                                <div class="latest-details-right">{{ latestPay.insurances_total_amount || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                
+                        <ng-container *ngIf="insrnceShow">
+                            <div *ngFor="let insurance of latestPay.insurances">
+                                <div class="latest-details-cont">
+                                    <div class="paycheck-drop-up">
+                                        &nbsp;
+                                    </div>
+                                    <div class="latest-list-cont" style="padding-left: 10px;">	
+                                        <div class="latest-details-left slant-me">{{ insurance.insurance_type }}</div>
+                                        <div class="latest-details-right">{{ insurance.amount || '0.00' }} Php</div>
+                                    </div>
+                                    <div class="paycheck-list-padding"></div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        
+                        <!-- Insurance - end here -->
+
+                        <!-- Deduction Third PT Loans - start here -->
+                        <div class="latest-details-cont" >
+                            <div class="paycheck-drop-down" >
+                                <ion-icon *ngIf="thrdprtyShow" ios="ios-arrow-up" md="ios-arrow-up" (click)="thrdprtyShow = false"></ion-icon>
+                                <ion-icon *ngIf="!thrdprtyShow" ios="ios-arrow-down" md="ios-arrow-down" (click)="thrdprtyShow = true"></ion-icon>
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Third Party Loans</div>
+                                <div class="latest-details-right">{{ latestPay.third_pt_total_amount || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                        
+                        <ng-container *ngIf="thrdprtyShow">
+                            <div *ngFor="let deduc_loan_t of latestPay.third_pt_loans">
+                                <div class="latest-details-cont">
+                                    <div class="paycheck-drop-up">
+                                        &nbsp;
+                                    </div>
+                                    <div class="latest-list-cont" style="padding-left: 10px;">	
+                                        <div class="latest-details-left slant-me">{{ deduc_loan_t.loan_type_name }}</div>
+                                        <div class="latest-details-right">{{ deduc_loan_t.installment || '0.00' }} Php</div>
+                                    </div>
+                                    <div class="paycheck-list-padding"></div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        
+                        <!-- Deduction Third PT Loans - end here -->
+
+                        <!-- Deduction Gov Loans - start here -->
+                        <div class="latest-details-cont" >
+                            <div class="paycheck-drop-down" >
+                                <ion-icon *ngIf="govloanShow" ios="ios-arrow-up" md="ios-arrow-up" (click)="govloanShow = false"></ion-icon>
+                                <ion-icon *ngIf="!govloanShow" ios="ios-arrow-down" md="ios-arrow-down" (click)="govloanShow = true"></ion-icon>
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Government Loans</div>
+                                <div class="latest-details-right">{{ latestPay.gov_total_amount || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                
+                        <ng-container *ngIf="govloanShow">
+                            <div *ngFor="let deduc_loan_g of latestPay.gov_loans">
+                                <div class="latest-details-cont">
+                                    <div class="paycheck-drop-up">
+                                        &nbsp;
+                                    </div>
+                                    <div class="latest-list-cont" style="padding-left: 10px;">	
+                                        <div class="latest-details-left slant-me">{{ deduc_loan_g.loan_type_name }}</div>
+                                        <div class="latest-details-right">{{ deduc_loan_g.installment || '0.00' }} Php</div>
+                                    </div>
+                                    <div class="paycheck-list-padding"></div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        
+                        <!-- Deduction Gov Loans - end here -->
+
+                        <!-- Other Deductions - start here -->
+                        <div class="latest-details-cont" >
+                            <div class="paycheck-drop-down" >
+                                <ion-icon *ngIf="othrdedShow" ios="ios-arrow-up" md="ios-arrow-up" (click)="othrdedShow = false"></ion-icon>
+                                <ion-icon *ngIf="!othrdedShow" ios="ios-arrow-down" md="ios-arrow-down" (click)="othrdedShow = true"></ion-icon>
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Other Deductions</div>
+                                <div class="latest-details-right">{{ latestPay.other_deductions_total_amount || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                
+                        <ng-container *ngIf="othrdedShow">
+                            <div *ngFor="let other_deduc of latestPay.other_deductions">
+                                <div class="latest-details-cont">
+                                    <div class="paycheck-drop-up">
+                                        &nbsp;
+                                    </div>
+                                    <div class="latest-list-cont" style="padding-left: 10px;">	
+                                        <div class="latest-details-left slant-me">{{ other_deduc.deduction_type_name }}</div>
+                                        <div class="latest-details-right">{{ other_deduc.amount || '0.00' }} Php</div>
+                                    </div>
+                                    <div class="paycheck-list-padding"></div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <!-- Other Adjustments - start here -->
+                        <div class="latest-details-cont" >
+                            <div class="paycheck-drop-down" >
+                                <ion-icon *ngIf="othradjShow" ios="ios-arrow-up" md="ios-arrow-up" (click)="othradjShow = false"></ion-icon>
+                                <ion-icon *ngIf="!othradjShow" ios="ios-arrow-down" md="ios-arrow-down" (click)="othradjShow = true"></ion-icon>
+                            </div>
+                            <div class="latest-list-cont">
+                                <div class="latest-details-left">Other Adjustments</div>
+                                <div class="latest-details-right">{{ latestPay.other_adjustment_total_amount || '0.00' }} Php</div>
+                            </div>
+                            <div class="paycheck-list-padding"></div>
+                        </div>
+                
+                        <div *ngIf="othradjShow && latestPay.other_adjustment_total_amount > 0">
+                            <div class="latest-details-cont" *ngIf="latestPay.other_adustments.other_adjustments_absences > 0">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">	
+                                    <div class="latest-details-left slant-me">Absences</div>
+                                    <div class="latest-details-right">{{ latestPay.other_adustments.other_adjustments_absences || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" *ngIf="latestPay.other_adustments.other_adjustments_tardiness > 0">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">	
+                                    <div class="latest-details-left slant-me">Tardiness</div>
+                                    <div class="latest-details-right">{{ latestPay.other_adustments.other_adjustments_tardiness || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" *ngIf="latestPay.other_adustments.other_adjustments_undertime > 0">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">	
+                                    <div class="latest-details-left slant-me">Undertime</div>
+                                    <div class="latest-details-right">{{ latestPay.other_adustments.other_adjustments_undertime || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" *ngIf="latestPay.other_adustments.other_adjustments_thrd_pt_loans_total_amount > 0">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">	
+                                    <div class="latest-details-left slant-me">Third Party Loans</div>
+                                    <div class="latest-details-right">{{ latestPay.other_adustments.other_adjustments_thrd_pt_loans_total_amount || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" *ngIf="latestPay.other_adustments.other_adjustments_gov_loans_total_amount > 0">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">	
+                                    <div class="latest-details-left slant-me">Government Loans</div>
+                                    <div class="latest-details-right">{{ latestPay.other_adustments.other_adjustments_gov_loans_total_amount || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                            
+                            <div class="latest-details-cont" *ngIf="latestPay.other_adustments.other_adjustments_total_amount > 0">
+                                <div class="paycheck-drop-up">
+                                    &nbsp;
+                                </div>
+                                <div class="latest-list-cont" style="padding-left: 10px;">	
+                                    <div class="latest-details-left slant-me">Other Deductions</div>
+                                    <div class="latest-details-right">{{ latestPay.other_adustments.other_adjustments_total_amount || '0.00' }} Php</div>
+                                </div>
+                                <div class="paycheck-list-padding"></div>
+                            </div>
+                        </div>
+                        <!-- Other Adjustments - end here -->
+                    </div>
+                </div>
+                <div *ngIf="!latestPay && !fetchingLatest" class="no-record-found-cont">
+                    <div class="no-record-found-icon">
+                        <span class="icon-no-record"></span>
+                    </div>
+                    <div class="no-record-holder">No latest payslip yet.</div>
+                </div>
+
+            </ion-list>
+        </div>
+        <div *ngSwitchCase="'previous'" style="width: 100%;">
+            <ion-list [class.fade-out]="psDetails" *ngIf="!psDetails && fetchingList">            
+                <ion-item *ngFor="let number of fakeUsers" lines="full">
+                    <ion-label>
+                        <ion-skeleton-text animated style="width: 300px"></ion-skeleton-text>
+                        <ion-skeleton-text animated style="width: 130px"></ion-skeleton-text>
+                    </ion-label>
+                </ion-item>
+            </ion-list>
+            
+            <ion-list *ngIf="psDetails">
+                
+                <ion-item *ngFor="let payslip of psDetails" lines="full">
+  
+                    <ion-label>
+                        <h3>{{ payslip.payroll_date | date:'dd-MMM-yy' }}</h3>
+                        <p>{{ payslip.period_from | date: 'dd-MMM-yy' || '~' }} to {{ payslip.period_to | date: 'dd-MMM-yy' || '~' }}</p>                      
+                    </ion-label>
+                  <ion-note slot="end" class="ion-text-end" style="padding-right: 5px;">
+                      {{ (payslip.net_amount | number:'.1-2') || '0.00' }} Php
+                  </ion-note>
+                    
+                </ion-item>
+                
+            </ion-list>
+            <div *ngIf="!psDetails && !fetchingList">
+                <div class="ion-text-center" class="no-record-found-cont">   
+                    <div class="no-record-found-icon">
+                        <span class="icon-no-record"></span>
+                    </div>             
+                    <div class="no-record-holder">No Data Found.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>

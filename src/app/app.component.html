@@ -1,3 +1,120 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
-</ion-app>
+
+    <ion-menu class="ash-menu" side="start" menuId="managerMenu" contentId="content1">      
+        <ion-content class="mp_menu">
+          <div class="user-email-pic">
+            <div class="menu-user-info">                        
+              <div class="sidebar-menu-pp left" [style.backgroundImage]="'url(' + menuDP + ')'" style="margin-left: 0px;"></div>
+              <div class="sidebar-name left" style="color: #3c4f5e;">{{ menuName || '' }}</div>
+              <div class="sidebar-email left" style="color: #3c4f5e;">{{ menuEmail || '' }}</div>
+              <div class="clearB"></div>  
+            </div>
+          </div>
+  
+          
+              
+            <ion-list class="bg-transparent" style="border-bottom: 1px solid #a7bccc;">
+              <ion-menu-toggle>
+                <ion-item color="none" lines="none" (click)="closeMenu()" routerDirection="root" [routerLink]="'/members/dashboard'" detail="false" style="padding: 7px 0 7px 15px; color: #3c4f5e !important;">
+                    <div class="menu-manager-logo" slot="start">EP</div>
+                    <ion-label style="font-size: 14px;">
+                        Switch to Employee Portal
+                    </ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+            </ion-list>
+  
+            <ion-list *ngFor="let mn of managerMenus" class="bg-transparent">
+              <ion-menu-toggle *ngIf="mn.href">
+                <ion-item [routerLink]="mn.href" color="none" lines="none" routerDirection="root" routerLinkActive="active" detail="false" style="color: #3c4f5e !important;">              
+                  {{mn.name}} 
+                </ion-item>
+              </ion-menu-toggle>
+
+              <ion-item class="bg-transparent" *ngIf="mn.subitem?.length > 0" (click)="mn.open = !mn.open" [class.active-parent]="mn.open" detail="false" lines="none">
+                  <ion-icon slot="end" name="add" *ngIf="!mn.open"></ion-icon>
+                  <ion-icon slot="end" name="remove" *ngIf="mn.open"></ion-icon>
+                  {{mn.name}} 
+              </ion-item>
+  
+              <ion-list *ngIf="mn.open" class="bg-transparent">
+                  <ion-menu-toggle>
+                      <ion-item class="sub-item" *ngFor="let sub of mn.subitem" [routerLink]="sub.subref" color="none" lines="none" routerDirection="root" routerLinkActive="active" detail="false">
+                        {{sub.subname}} 
+                      </ion-item>
+                  </ion-menu-toggle>
+              </ion-list>
+            </ion-list>
+  
+            <ion-list class="bg-transparent">
+                <ion-menu-toggle>
+                  <ion-item color="none" lines="none" (click)="logoutUser()" routerDirection="root" detail="false">
+                      Logout
+                  </ion-item>
+                </ion-menu-toggle>
+            </ion-list>
+  
+          
+        </ion-content>
+    </ion-menu>
+
+    <ion-menu class="ash-menu" side="start" menuId="employeeMenu" contentId="content1">      
+      <ion-content class="ep_menu">
+        <div class="user-email-pic">
+          <div class="menu-user-info">                        
+            <div class="sidebar-menu-pp left" [style.backgroundImage]="'url(' + menuDP + ')'" style="margin-left: 0px;"></div>
+            <div class="sidebar-name left">{{ menuName || '' }}</div>
+            <div class="sidebar-email left">{{ menuEmail || '' }}</div>
+            <div class="clearB"></div>  
+          </div>
+        </div>
+
+      
+          <ion-list class="bg-transparent" style="border-bottom: 1px solid #6dbdd9;" *ngIf="isManager">
+              <ion-menu-toggle>
+                <ion-item color="none" lines="none" (click)="closeMenu()" routerDirection="root" [routerLink]="'/members/manager-dashboard'" detail="false" style="padding: 7px 0 7px 15px;">
+                    <div class="menu-manager-logo" slot="start">MP</div>
+                    <ion-label style="font-size: 14px;">
+                        Switch to Manager Portal
+                    </ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+          </ion-list>
+
+          <ion-list *ngFor="let mn of employeeMenus" class="bg-transparent">
+            <ion-menu-toggle *ngIf="mn.href">
+                <ion-item [routerLink]="mn.href" color="none" lines="none" routerDirection="root" routerLinkActive="active" detail="false">
+                  {{mn.name}} 
+                </ion-item>
+            </ion-menu-toggle>
+
+            <ion-item class="bg-transparent" *ngIf="mn.subitem?.length > 0" (click)="mn.open = !mn.open" [class.active-parent]="mn.open" detail="false" lines="none">
+              <ion-icon slot="end" name="add" *ngIf="!mn.open"></ion-icon>
+              <ion-icon slot="end" name="remove" *ngIf="mn.open"></ion-icon>
+              {{mn.name}} 
+            </ion-item>
+
+            <ion-list *ngIf="mn.open" class="bg-transparent">
+                <ion-menu-toggle>
+                    <ion-item class="sub-item" *ngFor="let sub of mn.subitem" [routerLink]="sub.subref" color="none" lines="none" routerDirection="root" routerLinkActive="active" detail="false">
+                      {{sub.subname}} 
+                    </ion-item>
+                </ion-menu-toggle>
+            </ion-list>
+            
+          </ion-list>
+
+          <ion-list class="bg-transparent">
+              <ion-menu-toggle>
+                <ion-item color="none" lines="none" (click)="logoutUser()" routerDirection="root" detail="false">
+                    Logout
+                </ion-item>
+              </ion-menu-toggle>
+          </ion-list>
+
+      </ion-content>
+    </ion-menu>
+
+    <ion-router-outlet id="content1"></ion-router-outlet>
+  </ion-app>
+  

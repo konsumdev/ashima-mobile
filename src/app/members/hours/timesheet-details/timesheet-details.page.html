@@ -1,0 +1,197 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-back-button  defaultHref="timesheets" (click)="gotoBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Timesheet Details
+    </ion-title>
+    <ion-buttons slot="end">
+        <ion-button (click)="changeLogs()" routerDirection="forward" [disabled]="timeinStatus">
+          {{ submitText }}
+        </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-card class="chart-card">
+        <ion-card-content>
+            <div class="timesheet-header-left">
+                <div style="height: 30vh;">
+                    <canvas id="doughnutCanvas"></canvas>
+                </div>
+                <div class="timesheet-ctr-circle">
+						<div class="timesheet-ctr-worked">
+					  		WORKED
+					  	</div>
+					  	<div class="timesheet-ctr-total-worked">
+					  		{{ passedDetails.total_hours || "0.00"}}
+					  	</div>
+					  	<div class="timesheet-ctr-hrs-mins">
+					  		hours mins
+					  	</div>
+					  	<div class="timesheet-ctr-of-hrs">
+					  		of {{ passedDetails.total_hours_required || "0.00"}} hrs
+					  	</div>
+					</div>
+                <div class="timesheet-workday">Work Day</div>
+            </div>
+            <div class="timesheet-header-right">
+                <div class="timesheet-logs">
+                    <label class="timesheet-logs-lbl">Clock In</label><br>
+                    <label>{{ (passedDetails.time_in) || '00:00 am' }}</label>
+                </div>
+                <div class="timesheet-logs">
+                    <label class="timesheet-logs-lbl">Clock Out</label><br>
+                    <label>{{ (passedDetails.time_out) || '00:00 am' }}</label>
+                </div>
+            </div>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="passedDetails.lunch_out || passedDetails.lunch_in || passedDetails.break1_out || passedDetails.break1_in || passedDetails.break2_out || passedDetails.break2_in">
+        <ion-card-header>
+            Breaks
+        </ion-card-header>
+        
+        <ion-list lines="none">
+            <ion-item *ngIf="passedDetails.lunch_out || passedDetails.lunch_in">
+                Lunch Out
+                <ion-note slot="end">
+                    {{ passedDetails.lunch_out || '--:--' }}
+                </ion-note>
+            </ion-item>
+        
+            <ion-item *ngIf="passedDetails.lunch_out || passedDetails.lunch_in">
+                Lunch In
+                <ion-note slot="end">
+                    {{ passedDetails.lunch_in || '--:--' }}
+                </ion-note>
+            </ion-item>
+        
+            <ion-item *ngIf="passedDetails.break1_out || passedDetails.break1_in">
+                First Break Out
+                <ion-note slot="end">
+                    {{ passedDetails.break1_out || '--:--' }}
+                </ion-note>
+            </ion-item>
+            
+            <ion-item *ngIf="passedDetails.break1_out || passedDetails.break1_in">
+                First Break In
+                <ion-note slot="end">
+                    {{ passedDetails.break1_in || '--:--' }}
+                </ion-note>
+            </ion-item>
+
+            <ion-item *ngIf="passedDetails.break2_out || passedDetails.break2_in">
+                Second Break Out
+                <ion-note slot="end">
+                    {{ passedDetails.break2_out || '--:--' }}
+                </ion-note>
+            </ion-item>
+
+            <ion-item *ngIf="passedDetails.break2_out || passedDetails.break2_in">
+                Second Break In
+                <ion-note slot="end">
+                    {{ passedDetails.break2_in || '--:--' }}
+                </ion-note>
+            </ion-item>
+        </ion-list>
+    </ion-card>
+    
+    <ion-card>
+        <ion-list lines="none">
+            <ion-item class="header">
+                Tardiness
+                <ion-note slot="end">
+                        {{ passedDetails.tardiness_min || '0.00' }} mins
+                </ion-note>
+            </ion-item>
+            
+            <ion-item>
+                Late
+                <ion-note slot="end">
+                    {{ passedDetails.late_min || '0.00' }} mins
+                </ion-note>
+            </ion-item>
+            <ion-item>
+                Overbreak
+                <ion-note slot="end">
+                    {{ passedDetails.overbreak_min || '0.00' }} mins
+                </ion-note>
+            </ion-item>
+
+            <ion-item class="header">
+                Undertime
+                <ion-note slot="end">
+                    {{ passedDetails.undertime_min || '0.00' }} mins
+                </ion-note>
+            </ion-item>
+
+            <ion-item>
+                Undertime
+                <ion-note slot="end">
+                    {{ passedDetails.undertime_min || '0.00' }} mins
+                </ion-note>
+            </ion-item>
+            <ion-item>
+                Absence
+                <ion-note slot="end">
+                    {{ passedDetails.absent_min || '0.00' }} mins
+                </ion-note>
+            </ion-item>
+        </ion-list>
+    </ion-card>
+        
+    <ion-card>
+        <ion-card-header>
+            Overview
+        </ion-card-header>
+        <ion-list lines="none">
+            <ion-item>
+                Regular Work Hours
+                <ion-note slot="end">
+                    {{ passedDetails.total_hours_required || '0.00' }}
+                </ion-note>
+            </ion-item>
+            <ion-item>
+                Shift
+                <ion-note slot="end">
+                    {{ shiftName || '~' }}
+                </ion-note>
+            </ion-item>
+            <ion-item>
+                Source
+                <ion-note slot="end">
+                    {{ passedDetails.source || '~' }}
+                </ion-note>
+            </ion-item>
+
+            <ion-item class="reason">
+                Location
+                <br>
+                <div class="reason-val">{{ passedDetails.location || '~' }}</div>                
+            </ion-item>
+
+            <ion-item class="reason">
+                Reason
+                <br>
+                <div class="reason-val">{{ passedDetails.reason || '~' }}</div>                
+            </ion-item>
+        </ion-list>
+    </ion-card>
+
+    <ion-card *ngIf="approvers">
+        <ion-card-header>
+            Status
+        </ion-card-header>
+        <ion-list lines="none">
+            <ion-item *ngFor="let approver of approvers">
+                {{ approver.name || "~" }}
+            </ion-item>
+        </ion-list>
+    </ion-card>
+
+</ion-content>

@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="members/compensation"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Compensation History</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list *ngIf="historyDetails">
+        <ion-item lines="full">                
+            New Basic Pay
+            <ion-note slot="end">
+            {{ historyDetails.old_basic_pay || "~" }}
+            </ion-note>
+        </ion-item>
+        <ion-item lines="full">                
+            Old Basic
+            <ion-note slot="end">
+            {{ historyDetails.previous_basic_pay || "~" }}
+            </ion-note>
+        </ion-item>
+        <ion-item lines="full">                
+            Effective Date
+            <ion-note slot="end">
+            {{ historyDetails.effective_date || "~" }}
+            </ion-note>
+        </ion-item>
+        <ion-item lines="full">                
+            Adjustment Date
+            <ion-note slot="end">
+            {{ historyDetails.adjustment_date || "~" }}
+            </ion-note>
+        </ion-item>
+        <ion-item lines="full">                
+            Adjustment Details
+            <ion-note slot="end">
+            {{ historyDetails.adjustment_details || "~" }}
+            </ion-note>
+        </ion-item>        
+    </ion-list>
+    <ion-list *ngIf="!historyDetails">
+        <div class="no-record-found-cont">
+            <div class="no-record-found-icon">
+                <span class="icon-no-record"></span>
+            </div>
+            <div class="no-record-holder">No data found.</div>
+        </div>
+    </ion-list>
+</ion-content>

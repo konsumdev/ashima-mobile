@@ -1,0 +1,191 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Personal
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="background-color: #f2f2f2;">
+    <ion-card class="dash-time-card">
+        <ion-row>
+            <ion-col col-6 style="padding: 20px 0px;">
+                <div style="margin-left: 15px;">                    
+                    <label class="dash-curr-date">{{ myDate | date: 'mediumDate' }}</label><br>
+                    <label class="dash-curr-time">{{ time | date: 'hh:mm':'+0800' }}</label>
+                    <label class="dash-curr-ampm" style="margin-top: auto;margin-bottom: 7px;">{{ time | date: 'a':'+0800' }}</label>
+                </div>
+            </ion-col>
+
+            <ion-col col-6 style="padding: 10px 20px 10px 10px;">
+                <div style="color: #fff; margin-top: 5px;">
+                    <div *ngIf="timeIn">
+                        <label class="dash-timesheet-label pull-left">Time In </label>
+                        <label class="dash-timesheet-time" style="float: right;">{{ timeIn }}</label>
+                    </div>
+                    <div *ngIf="lunchOut">
+                        <label class="dash-timesheet-label pull-left">Lunch Out</label>
+                        <label class="dash-timesheet-time" style="float: right;">{{ lunchOut }}</label>
+                    </div>
+                    <div *ngIf="lunchIn">	
+                        <label class="dash-timesheet-label pull-left">Lunch In</label>
+                        <label class="dash-timesheet-time" style="float: right;">{{ lunchIn }}</label>
+                    </div>
+                    <div *ngIf="timeOut">	
+                        <label class="dash-timesheet-label pull-left">Time Out</label>
+                        <label class="dash-timesheet-time" style="float: right;">{{ timeOut }}</label>
+                    </div>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-card>
+
+    <ion-list>
+        <ion-row>
+
+            <ion-col col-6 style="padding-right: 0px;">
+                <ion-card class="dash-card " color="light">
+                    <div class="ft-imba">
+                        <div class="ft ft-absent-employees">                        
+                            <div class="ft-top"> <span class="ft-icon icon-dash-timesheets"></span>
+                                <div class="ft-label">timesheets</div>
+                                <div class="dash-missing">
+                                    <div class="ftl">{{ timesheetCounts.missing || '0' }} Missing</div>
+                                    <div class="ftl">{{ timesheetCounts.pending || '0' }} Pending</div> 
+                                    <div class="ftl">{{ timesheetCounts.rejected || '0' }} Rejected</div>
+                                </div>
+                            </div>                        
+                        </div>
+                    </div>
+                </ion-card>
+            </ion-col>
+            <ion-col col-6>
+                <ion-card class="dash-card " color="light">
+                    <div class="ft-imba">
+                        <div class="ft ft-absent-employees">                        
+                            <div class="ft-top"> <span class="ft-icon icon-dash-attendance"></span>
+                                <div class="ft-label">attendance</div>
+                                <div class="dash-missing">
+                                    <div class="ftl">{{ attendance.absences || '0' }} Hr(s) Absences</div>
+                                    <div class="ftl">{{ attendance.tardiness || '0' }} Hr(s) Tardy</div>
+                                    <div class="ftl">{{ attendance.undertime || '0' }} Hr(s) undertime</div>
+                                </div>
+                            </div>                        
+                        </div>
+                    </div>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-6 style="padding-right: 0px;">
+                <ion-card class="dash-card " color="light">
+                        <div class="ft ft-mypayslipsdate">                       
+                            <div class="ft-top"> 
+                                <ion-icon class="ft-icon" ios="ios-locate-outline" md="md-locate"></ion-icon>
+                                <div class="ft-label">missed <br>punches</div>
+                                <div class="ft-lusah">
+                                    <div class="ftl color-blue" style="font-size: 16px;">{{ missedPunch || '0' }}</div>
+                                </div>
+                            </div> 
+                            <div class="ft-bot" (click)="goto('members/miss-punch')"><span>view</span></div>                       
+                        </div>
+                </ion-card>
+            </ion-col>
+            <ion-col col-6>
+                <ion-card class="dash-card " color="light">
+                    <div class="ft ft-mypayslipsdate">                       
+                        <div class="ft-top"> 
+                            <span class="ft-icon icon-dash-nextshifts"></span>
+                            <div class="ft-label">next shift</div>
+                            <div class="ft-lusah">
+                                <div class="ftl color-blue"><span class="icon-dash-nextpaydate" style="font-size: 10px;"></span> {{ nextShift.shift_date | date: 'mediumDate' }}</div>
+                                    <div class="color-gray ftl">{{ nextShift.start_time }} - {{ nextShift.end_time }}</div>
+                                </div>
+                                <div class="ft-lusah" *ngIf="nextShift.flexible == '1' && nextShift.required_login == 'yes'">
+                                    <div class="ftl color-blue"><span class="icon-dash-nextpaydate" style="font-size: 10px;"></span> {{ nextShift.shift_date | date: 'mediumDate' }}</div>
+                                <div class="color-gray ftl">You are on a {{ nextShift.shift_name }}</div>
+                                    <div class="color-gray ftl">Latest clock-in:</div>
+                                    <div class="color-gray ftl">{{ (nextShift.start_time) || '~ '}}</div>
+                                </div>
+                                <div class="ft-lusah" *ngIf="nextShift.flexible == '1' && nextShift.required_login == 'no'">
+                                    <div class="ftl color-blue"><span class="icon-dash-nextpaydate" style="font-size: 10px;"></span> {{ nextShift.shift_date | date: 'mediumDate' }}</div>
+                                <div class="color-gray ftl">You are on a {{ nextShift.shift_name }}</div>
+                                <div class="color-gray ftl">No clock-in is required</div>
+                            </div>
+                        </div> 
+                        <div class="ft-bot" (click)="goto('members/shift')" routerDirection="root"><span>view</span></div>
+                    </div>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="dashPaycheck == '1'">
+            <ion-col col-6 style="padding-right: 0px;">
+                <ion-card class="dash-card " color="light">
+                    <div class="ft ft-mypayslipsdate">                       
+                        <div class="ft-top"> 
+                            <span class="ft-icon icon-dash-mypayslips"></span>
+                            <div class="ft-label">my payslips</div>
+                            <div class="ft-lusah">
+                                <ng-container *ngIf="payslips">
+                                    <div class="ftl" *ngFor="let pp of payslips;  let i=index">
+                                        <span style="color: #1172ad;" *ngIf="i<3">{{ pp.payroll_date }}</span>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div> 
+                        <div class="ft-bot" (click)="goto('members/payslip')" routerDirection="root"><span>view</span></div>
+                    </div>
+                </ion-card>
+            </ion-col>
+            <ion-col col-6>
+                <ion-card class="dash-card " color="light">
+                    <div class="ft-imba">
+                        <div class="ft ft-absent-employees">                        
+                            <div class="ft-top"> <span class="ft-icon icon-dash-nextpaydate"></span>
+                                <div class="ft-label">next<br>pay date</div>
+                                <div class="ft-val">{{ nextPay.first_payroll_date | date:'mediumDate' }}
+                                    <div class="ft-period"> Pay Period:<br>
+                                        {{ nextPay.cut_off_from | date:'MMM dd' }} - {{ nextPay.cut_off_to | date: 'mediumDate' }}</div>
+                                </div>
+                            </div>                        
+                        </div>
+                    </div>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+
+        <ion-item-divider style="background: transparent;">
+            <ion-label style="font-size: 14px; padding-top: 10px;">Leaves</ion-label>
+            <div class="dash-toggle-icon-cont" style="padding-top: 10px;" slot="end" (click)="offToggle('leaves')">            
+                <ion-icon ios="ios-arrow-down" md="ios-arrow-down" *ngIf="dashLeaves == 0"></ion-icon>
+                <ion-icon ios="ios-arrow-up" md="ios-arrow-up" *ngIf="dashLeaves == 1"></ion-icon>
+            </div>
+        </ion-item-divider>
+        <ion-row *ngIf="dashLeaves == '1'" style="background-color: #ededed;">
+            
+            <div class="tiles-block dash-box-shadow" *ngFor="let leave of leaveCredits; let i = index">
+                <div class="ft ft-mypayslipsdate" style="position: relative; height: 130px;">
+                    <div class="ft-label">{{ leave.leave_type }}</div>
+                    <div>
+                        <canvas baseChart
+                        [data]="[leave.remaining_leave_credits, leave.used_lc]"
+                        [labels]="doughnutChartLabels"
+                        [options]="kripyKremeOpts"
+                        [colors]="krispyKremeColors"
+                        [chartType]="doughnutChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                    <div class="leave_credits_left">{{ leave.remaining_leave_credits }}</div>
+                    <div class="credits_left">left</div>
+                    <div class="right days_credit">{{ leave.a_leave_credits }}</div>
+                </div>
+            </div>
+        </ion-row>
+    </ion-list>
+
+</ion-content>

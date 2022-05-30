@@ -1,0 +1,180 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Leaves
+    </ion-title>
+  </ion-toolbar>
+
+  <div class="ion-padding segment-div" style="padding-bottom: 0px;">
+      <ion-segment [(ngModel)]="selectedSegment" mode="md" class="md">
+          <ion-segment-button value="balance" mode="md" style="color: #fff;">
+          Balance
+          </ion-segment-button>
+          <ion-segment-button value="history" mode="md" style="color: #fff;">
+          History
+          </ion-segment-button>
+      </ion-segment>
+  </div>
+</ion-header>
+
+<ion-content>
+    <div [ngSwitch]="selectedSegment" style="width: 100%;">
+        <div *ngSwitchCase="'balance'" style="width: 100%;">
+            <ion-list [class.fade-out]="leaveBalances" *ngIf="!leaveBalances && fetchingBalance">            
+                <ion-item *ngFor="let number of fakeUsers" lines="full">
+                    <ion-label>
+                        <ion-skeleton-text animated style="width: 300px"></ion-skeleton-text>
+                        <ion-skeleton-text animated style="width: 130px"></ion-skeleton-text>
+                    </ion-label>
+                </ion-item>
+            </ion-list>
+            
+            <ion-list *ngIf="leaveBalances">
+                
+                <ion-item *ngFor="let liv of leaveBalances" lines="full" (click)="applyThisLeave(liv)">
+                    <ion-label>
+                        <p>
+                            {{ liv.leave_type || '~' }}
+                        </p>
+                        
+                        <span class="paycheck-range">Used {{ liv.leave_units }} | Total {{ liv.leave_credits }} {{ liv.leave_units }}</span>
+                    </ion-label>
+                    <ion-note slot="end" class="ion-text-end" style="padding-right: 5px;">
+                        {{ liv.remaining_leave_credits || '0' }}<br>
+                        <span class="paycheck-range" style="color: #3c4f5e; font-weight: normal;">{{ liv.leave_units || "~" }} left</span>
+                    </ion-note>
+                    
+                </ion-item>
+                
+            </ion-list>
+            <div *ngIf="!leaveBalances && !fetchingBalance">
+                <div class="ion-text-center" class="no-record-found-cont">   
+                    <div class="no-record-found-icon">
+                        <span class="icon-no-record"></span>
+                    </div>             
+                    <div class="no-record-holder">No Data Found.</div>
+                </div>
+            </div>
+        </div>
+        <div *ngSwitchCase="'history'" style="width: 100%;">
+            <div style="position: fixed; width: 100%;z-index: 999999; top: 110px;">
+                <ng-container>
+                    <div class="ion-padding" style="padding-bottom: 15px !important;">
+                        <ion-segment [(ngModel)]="sssSegment" mode="ios" color="ashima">
+                            <ion-segment-button value="approved">
+                            Approved
+                            </ion-segment-button>
+                            <ion-segment-button value="pending">
+                            Pending
+                            </ion-segment-button>
+                            <ion-segment-button value="reject">
+                            Rejected
+                            </ion-segment-button>
+                        </ion-segment>
+                    </div>
+                </ng-container>
+            </div>
+
+            <div [ngSwitch]="sssSegment" style="width: 100%;">
+                <div *ngSwitchCase="'approved'" style="width: 100%;">
+                    <ion-list style="margin-top: 50px; width: 100%;">
+                        <div *ngIf="approveList" style="width: 100%;">
+                            <div *ngFor="let appL of approveList" style="width: 100%;">
+                                <ion-item>
+                                    
+                                    <label class="capitalize">{{ appL.leave_type || '~' }}</label>
+                                    
+                                    <ion-note slot="end" class="" style="max-width: 70%;">
+                                    <span style="text-transform: none;">{{ appL.date_start | date:'dd-MMM-yy' }} to {{ appL.date_end | date:'dd-MMM-yy' }}</span><br>
+                                    <span class="paycheck-range" style="color: #3c4f5e; font-weight: normal;">{{ appL.total_leave_requested || "~" }} {{ appL.leave_units || "credit(s)" }}</span>
+                                    </ion-note>
+                                </ion-item>
+                            </div>
+                        </div>
+                        <div *ngIf="!approveList && !fetchingApprove">
+                            <div class="ion-text-center no-record-found-cont">   
+                                <div class="no-record-found-icon">
+                                    <span class="icon-no-record"></span>
+                                </div>             
+                                <div class="no-record-holder">No Data Found.</div>
+                            </div>
+                        </div>
+                    </ion-list>
+                    <ion-list [class.fade-out]="approveList" *ngIf="!approveList && fetchingApprove">            
+                        <ion-item *ngFor="let number of fakeUsers" lines="full">
+                            <ion-label>
+                                <ion-skeleton-text animated style="width: 300px"></ion-skeleton-text>
+                                <ion-skeleton-text animated style="width: 130px"></ion-skeleton-text>
+                            </ion-label>
+                        </ion-item>
+                    </ion-list>
+                    <ion-infinite-scroll (ionInfinite)="doInfiniteApprove($event)" *ngSwitchCase="'approved'" threshold="50px">
+                        <ion-infinite-scroll-content>
+                        </ion-infinite-scroll-content>
+                    </ion-infinite-scroll>
+                </div>
+                <div *ngSwitchCase="'pending'">
+                    <ion-list style="margin-top: 50px;">
+                        <div *ngIf="pendingList">
+                            <div *ngFor="let appL of pendingList">
+                                <ion-item>
+                                    <!-- <div item-start> -->
+                                        <label class="capitalize">{{ appL.leave_type || '~' }}</label>
+                                    <!-- </div> -->
+    
+                                    <ion-note slot="end" class="" style="max-width: 70%;">
+                                    <span style="text-transform: none;">{{ appL.date_start | date:'dd-MMM-yy' }} to {{ appL.date_end | date:'dd-MMM-yy' }}</span><br>
+                                    <span class="paycheck-range" style="color: #3c4f5e; font-weight: normal;">{{ appL.total_leave_requested || "~" }} {{ appL.leave_units || "credit(s)" }}</span>
+                                    </ion-note>
+                                </ion-item>
+                            </div>
+                        </div>
+                        <div *ngIf="!pendingList && !fetchingPending">
+                            <div class="ion-text-center no-record-found-cont">   
+                                <div class="no-record-found-icon">
+                                    <span class="icon-no-record"></span>
+                                </div>             
+                                <div class="no-record-holder">No Data Found.</div>
+                            </div>
+                        </div>
+                    </ion-list>
+                    <ion-infinite-scroll (ionInfinite)="doInfinitePending($event)" *ngSwitchCase="'approved'" threshold="50px">
+                        <ion-infinite-scroll-content>
+                        </ion-infinite-scroll-content>
+                    </ion-infinite-scroll>
+                </div>
+                <div *ngSwitchCase="'reject'">
+                    <ion-list style="margin-top: 50px;">
+                        <div *ngIf="rejectList">
+                            <div *ngFor="let appL of rejectList">
+                                <ion-item>
+                                    <label class="capitalize">{{ appL.leave_type || '~' }}</label>
+                                    
+                                    <ion-note slot="end" class="" style="max-width: 70%;">
+                                    <span style="text-transform: none;">{{ appL.date_start | date:'dd-MMM-yy' }} to {{ appL.date_end | date:'dd-MMM-yy' }}</span><br>
+                                    <span class="paycheck-range" style="color: #3c4f5e; font-weight: normal;">{{ appL.total_leave_requested || "~" }} {{ appL.leave_units || "credit(s)" }}</span>
+                                    </ion-note>
+                                </ion-item>
+                            </div>
+                        </div>
+                        <div *ngIf="!rejectList && !fetchingReject">
+                            <div class="ion-text-center no-record-found-cont">   
+                                <div class="no-record-found-icon">
+                                    <span class="icon-no-record"></span>
+                                </div>             
+                                <div class="no-record-holder">No Data Found.</div>
+                            </div>
+                        </div>
+                    </ion-list>
+                    <ion-infinite-scroll (ionInfinite)="doInfiniteReject($event)" *ngSwitchCase="'approved'" threshold="50px">
+                        <ion-infinite-scroll-content>
+                        </ion-infinite-scroll-content>
+                    </ion-infinite-scroll>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>

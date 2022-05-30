@@ -1,0 +1,149 @@
+ion-content{
+    --ion-background-color:#fff;
+    --overflow: hidden;
+}
+
+ion-item.login-inp {
+    --ion-background-color:#000;
+}
+
+ion-toolbar {
+    --background: transparent;
+    --ion-color-base: transparent !important;
+}
+.inner-scroll {
+    padding-top: 0 !important;
+}
+
+.header-ios ion-toolbar:last-child {
+    --border-width: 0;
+}
+
+.new-login {
+    width: 100%;
+    input {
+        height: 100%;
+        // margin-top: 4px;
+        width: 80%;
+        margin-left: 6px;
+    }
+}
+.loginInput {
+    background: transparent;
+}
+
+ion-content.loginBg{
+    --background: url('/assets/imgs/bgLogin.png') 0 0/100% 100% no-repeat;
+}
+// ion-icon {
+//     color: #ffffff;
+//     margin-top: 14px;
+//     font-size: 1.4em;
+//     margin-left: -10px;
+//     vertical-align: top;
+//     &.icon-ios {
+//         font-size: 1.6em;
+//     }
+// }    
+.forgot-btn {
+    margin-top: 15px;
+    height: 30px;
+    button {
+        font-size: 100%;
+    }
+}
+.scroll-content {
+    overflow-y: hidden !important;
+    padding-bottom: 0 !important;
+    
+}
+
+.login-logo {
+    max-width: 70%;
+}
+div {
+    .login-logo {
+        margin-top: -120px;
+        @media ( max-width : 320px) {
+            margin-top: -20px;
+            margin-bottom: 10px;
+        }
+    }
+}
+.login-btn {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.passLock {
+    margin-left: 6px;position: absolute;
+}
+.passInput {
+    padding-left: 25px;
+}
+.nullBg {
+    background-color: #1172ad;
+}
+.eyeOfAgamoto {
+    margin: auto;
+    position: absolute; 
+    height: 43px;
+}
+.scroll-content {
+    padding-bottom: 0 !important;
+ }
+.item-md.item-block .item-inner {
+    border-bottom: none;
+}
+.login-inp {
+    background-color: #000;
+    opacity: 0.5;
+    border: 1px solid #bac2c6;
+    border-radius: 5px;
+}
+ion-icon {
+    color: #fff;
+}
+ion-input {
+    color: #fff;
+    font-size: 14px;
+}
+
+#login-img {
+    animation: fadein 1s;
+    -moz-animation: fadein 1s; /* Firefox */
+    -webkit-animation: fadein 1s; /* Safari and Chrome */
+    -o-animation: fadein 1s; /* Opera */
+}
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-moz-keyframes fadein { /* Firefox */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-webkit-keyframes fadein { /* Safari and Chrome */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-o-keyframes fadein { /* Opera */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity: 1;
+    }
+}

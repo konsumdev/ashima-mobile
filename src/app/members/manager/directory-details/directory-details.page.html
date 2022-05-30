@@ -1,0 +1,222 @@
+
+
+<ion-header>
+    <ion-toolbar color="ashima-mg">
+      <ion-buttons slot="start">
+            <ion-back-button defaultHref="directory"></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content #content >
+    <div class="mob-parent-b">
+        <div class="prof-pic-background-b">
+            <div class="background-container-b" [style.backgroundImage]="'url(' + profImg + ')'"></div>
+            <div class="prof-detail-b">
+                <div class="prof-edit" style="display : none;">
+                    <span class="ion-edit"></span>
+                </div>
+                <div class="prof-settings" style="display : none;">
+                    <span class="ion-gear-b"></span>
+                </div>
+                <div class="prof-pic-holder-b" [style.backgroundImage]="'url(' + profImg + ')'"></div>
+                <div class="prof-info-b">
+                    <label class="prof-name-b">
+                        {{ (employee) ? employee.full_name : "~" }}
+                    </label>
+                    <label class="prof-position-b">{{ (employee) ? employee.email : "~" }}</label>
+                    <label class="prof-position-b"></label>
+                </div>
+            </div>
+            <div class="dark-profile-bg"></div>
+        </div>
+    </div>
+    
+    <div padding style="padding-bottom: 15px !important; background-color: #fff; position: relative;">
+        <ion-segment [(ngModel)]="tsheets" mode="ios" color="ashima">
+            <ion-segment-button value="contact">
+            Contact
+            </ion-segment-button>
+            <ion-segment-button value="personal">
+            Personal
+            </ion-segment-button>
+            <ion-segment-button value="employment">
+            Employment
+            </ion-segment-button>
+            <ion-segment-button value="shift">
+            Shift
+            </ion-segment-button>
+        </ion-segment>
+    </div>
+
+    <div [ngSwitch]="tsheets">
+        <ion-item-group *ngSwitchCase="'contact'" class="ash-listing" no-lines>
+            <div *ngIf="employee">
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Address</div>
+                        <div class="emp-detail-label-info">{{ employee.address }}</div>
+                    </ion-label>
+                </ion-item>
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Primary Mobile No.</div>
+                        <div class="emp-detail-label-info">{{ employee.mobile }}</div>
+                    </ion-label>
+                </ion-item>
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Secondary Mobile No.</div>
+                        <div class="emp-detail-label-info">{{ (employee.second_mob) ? employee.second_mob : "N/A" }}</div>
+                    </ion-label>
+                </ion-item>
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Telephone</div>
+                        <div class="emp-detail-label-info">{{ (employee.telephone) ? employee.telephone : "N/A" }}</div>
+                    </ion-label>
+                </ion-item>
+            </div>
+        </ion-item-group>
+    </div>
+    <div [ngSwitch]="tsheets">
+        <ion-item-group *ngSwitchCase="'personal'" class="ash-listing" no-lines>
+            <div *ngIf="employee">
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Name</div>
+                        <div class="emp-detail-label-info">{{ employee.first_name }} {{ employee.middle_name }} {{ employee.last_name }}</div>
+                    </ion-label>
+                </ion-item>
+  
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Nickname</div>
+                        <div class="emp-detail-label-info">{{ (employee.nickname) ? employee.nickname : "~" }}</div>
+                    </ion-label>
+                </ion-item>
+                
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Citizenship</div>
+                        <div class="emp-detail-label-info">{{ (employee.citizenship) ? employee.citizenship : "~" }}</div>
+                    </ion-label>
+                </ion-item>
+
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Date of Birth</div>
+                        <div class="emp-detail-label-info">{{ (employee.birthday) ? (employee.birthday | date: 'dd-MMM-yy') : '' }}</div>
+                    </ion-label>
+                </ion-item>
+
+         
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Gender</div>
+                        <div class="emp-detail-label-info">{{ employee.gender }}</div>
+                    </ion-label>
+                </ion-item>
+
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Marital Status</div>
+                        <div class="emp-detail-label-info">{{ employee.marital_stat }}</div>
+                    </ion-label>
+                </ion-item>
+            </div>
+        </ion-item-group>
+    </div>
+    <div [ngSwitch]="tsheets">
+        <ion-item-group *ngSwitchCase="'employment'" class="ash-listing" no-lines>
+            <div *ngIf="employee">
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Employee ID</div>
+                        <div class="emp-detail-label-info">{{ employee.id }}</div>
+                    </ion-label>
+                </ion-item>
+
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Employment Status</div>
+                        <div class="emp-detail-label-info">{{ employee.employee_stat }}</div>
+                    </ion-label>
+                </ion-item>
+
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Job Position</div>
+                        <div class="emp-detail-label-info">{{ employee.position }}</div>
+                    </ion-label>
+                </ion-item>
+
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Rank</div>
+                        <div class="emp-detail-label-info">{{ employee.rank }}</div>
+                    </ion-label>
+                </ion-item>
+                
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Department</div>
+                        <div class="emp-detail-label-info">{{ employee.department }}</div>
+                    </ion-label>
+                </ion-item>
+                
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Cost Center</div>
+                        <div class="emp-detail-label-info">{{ employee.cost_center }}</div>
+                    </ion-label>
+                </ion-item>
+
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Location Assigned</div>
+                        <div class="emp-detail-label-info">{{ employee.location_asgnd }}</div>
+                    </ion-label>
+                </ion-item>
+
+                <ion-item class="overwrite-input-wrapper">
+                    <ion-label>
+                        <div class="emp-detail-label">Date Hired</div>
+                        <div class="emp-detail-label-info">{{ employee.hire_date | date: 'dd-MMM-yy' }}</div>
+                    </ion-label>
+                </ion-item>
+            </div>
+        </ion-item-group>
+    </div>
+    <div [ngSwitch]="tsheets">
+        <ion-item-group *ngSwitchCase="'shift'" class="ash-listing" no-lines>
+            <div *ngIf="employee">
+
+                <ion-item class="overwrite-input-wrapper" *ngFor="let day of weekdays; let i = index">
+                    <ion-label>
+                        <div class="emp-detail-label">{{ day }}</div>
+                        <div class="emp-detail-label-info" *ngIf="isArray(employee.shifts[i])">{{ sh }}</div>
+                        <div class="emp-detail-label-info" *ngIf="!isArray(employee.shifts[i])">{{ employee.shifts[i] }}</div>
+                    </ion-label>
+                </ion-item>
+
+                <!-- <ion-item *ngFor="let day of weekdays; let i = index">
+                    {{ day }}
+                    <ion-note item-end>
+                        <ng-container *ngIf="employee.shifts">
+                            <div *ngIf="isArray(employee.shifts[i])">
+                                <ng-container *ngFor="let sh of employee.shifts[i]">
+                                    {{ sh }}
+                                </ng-container>
+                            </div>
+                            <div *ngIf="!isArray(employee.shifts[i])">
+                                {{ employee.shifts[i] }}
+                            </div>                            
+                        </ng-container>
+                    </ion-note>
+                </ion-item> -->
+            </div>
+        </ion-item-group>
+    </div>
+</ion-content>

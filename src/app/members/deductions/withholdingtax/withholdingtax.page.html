@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Withholding Tax
+    </ion-title>
+  </ion-toolbar>
+
+  <div>
+    <ion-segment [(ngModel)]="wtax" color="ashima">
+        <ion-segment-button value="normal">
+          Withholding Tax 
+        </ion-segment-button>
+        <ion-segment-button value="fixed">
+          Withholding Tax (Fixed)
+        </ion-segment-button>
+    </ion-segment>
+  </div>
+</ion-header>
+
+<ion-content>
+    <div [ngSwitch]="wtax">
+        <ion-list *ngSwitchCase="'normal'" class="ash-listing">
+            <div *ngIf="withTax">
+                <div *ngFor="let wt of withTax">
+                    <ion-item lines="full">
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col>
+                                    <div class="ion-text-left">
+                                        <label>{{ wt.pay_date | date:'dd-MMM-yy' }}</label>
+                                    </div>
+                                </ion-col>
+                                <ion-col size="4">
+                                    <label>{{ (wt.pay_coverage_from | date:'dd-MMM-yy') || 'dd-MMM-yy' }}</label><br>
+                                    <div class="paycheck-range">{{ (wt.pay_coverage_to | date:'dd-MMM-yy') || 'dd-MMM-yy' }}</div>
+                                </ion-col>
+                                
+                                <ion-col>
+                                    <ion-note class="capitalize timesheet-total-hrs-list net-pay" style="float: right;">
+                                        {{ wt.pp_withholding_tax || "0.00" }} Php
+                                    </ion-note>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-item>
+                </div>                    
+            </div>
+            <div *ngIf="!withTax">
+              <div class="no-record-found-cont ion-text-center">   
+                <div class="no-record-found-icon">
+                    <span class="icon-no-record"></span>
+                </div>             
+                <div class="no-record-holder">No Data Found.</div>
+              </div>
+            </div>
+        </ion-list>
+    </div>
+    <div [ngSwitch]="wtax">
+        <ion-list *ngSwitchCase="'fixed'" class="ash-listing">
+            <div *ngIf="withTaxF">
+                <div *ngFor="let wtf of withTaxF">
+                    <ion-item lines="full">
+                      <ion-grid>
+                          <ion-row>
+                              <ion-col>
+                                  <div class="ion-text-left">
+                                      <label>{{ wtf.pay_date | date:'dd-MMM-yy' }}</label>
+                                  </div>
+                              </ion-col>
+                              <ion-col size="4">
+                                  <label>{{ (wtf.pay_coverage_from | date:'dd-MMM-yy') || 'dd-MMM-yy' }}</label><br>
+                                  <div class="paycheck-range">{{ (wtf.pay_coverage_to | date:'dd-MMM-yy') || 'dd-MMM-yy' }}</div>
+                              </ion-col>
+                              
+                              <ion-col>
+                                  <ion-note class="capitalize timesheet-total-hrs-list net-pay" style="float: right;">
+                                      {{ wtf.pp_withholding_tax || "0.00" }} Php
+                                  </ion-note>
+                              </ion-col>
+                          </ion-row>
+                      </ion-grid>
+                  </ion-item>
+                </div>                    
+            </div>
+            <div *ngIf="!withTaxF">
+              <div class="no-record-found-cont ion-text-center">   
+                <div class="no-record-found-icon">
+                    <span class="icon-no-record"></span>
+                </div>             
+                <div class="no-record-holder">No Data Found.</div>
+              </div>
+            </div>
+        </ion-list>
+    </div>
+</ion-content>

@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar color="ashima-mg">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Overtime
+    </ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar class="ashima-body-cont">
+      <ion-buttons slot="start">
+          <button ion-button class="bar-button-arrow" (click)="prevDate()">
+              <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+          </button>
+      </ion-buttons>
+      <!-- <ion-title>{{myDate | date: 'dd-MMM-yy'}}</ion-title> -->
+      <ion-title>
+          <ion-datetime displayFormat="DD-MMM-YYYY" placeholder="myDate" (ionChange)="onChangeDate()" [(ngModel)]="myDate"></ion-datetime>
+      </ion-title>
+      <ion-buttons slot="end">
+          <button ion-button class="bar-button-arrow" (click)="nextDate()">
+              <ion-icon ios="ios-arrow-forward" md="md-arrow-forward"></ion-icon>
+          </button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content
+            pullingIcon="refresh-circle">
+        </ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list [class.fade-out]="overtimes" *ngIf="!overtimes && fetching">
+        <ion-item *ngFor='let fake of fakeTsheets' class='fakeItem'>
+            <div>
+                <div class="sidebar-menu-pp left mngr-todo-item-pp" style="background-image: url('assets/imgs/default-profile-pic.png'); top: 7px; left: 10px;"></div>
+                <div style="margin-left: 55px;">
+                    <h2 style="max-width: 80%;"></h2>
+                    <h3 style="max-width: 40%;"></h3>
+                </div>
+            </div>
+            <ion-note item-end style="width: 45%;">
+                <h2 style="max-width: 40%;"></h2>
+                <h3 style="max-width: 80%;"></h3>
+                <p style="max-width: 30%;"></p>
+            </ion-note>
+        </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="overtimes">
+        <ng-container *ngFor="let emp of overtimes">
+            <ion-item>
+                <ion-avatar item-start class="applicant-avatar">
+                    <img *ngIf="!emp.profile_image" src="assets/imgs/default-profile-pic.png">
+                    <img *ngIf="emp.profile_image" [src]="apiUrl + '/uploads/companies/' + emp.company_id + '/' + emp.profile_image">
+                </ion-avatar>
+                
+                <div class="applicant-info" style="width: 40% !important;">
+                    <div class="applicant-name">{{ emp.first_name }} {{ emp.last_name }}</div>
+                    <div class="applicant-id">{{ emp.payroll_cloud_id }}</div>
+                </div>
+
+                <ion-note item-end class="application-info" style="width: 50% !important;">
+                    <div class="application-time">{{ emp.from }} </div>
+                    <div class="application-status">to {{ emp.to }} </div>
+                    <div class="application-status">{{ emp.overtime_status }} ({{ emp.no_of_hours }} hrs)</div>
+                </ion-note>
+            </ion-item>
+        </ng-container>
+
+    </ion-list>
+
+    <div *ngIf="!overtimes">
+        <div class="no-record-found-cont ion-text-center">   
+            <div class="no-record-found-icon">
+                <span class="icon-no-record"></span>
+            </div>             
+            <div class="no-record-holder">No Data Found.</div>
+        </div>
+    </div>
+</ion-content>

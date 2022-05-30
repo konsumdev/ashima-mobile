@@ -1,0 +1,71 @@
+.prof-number {
+    padding: 0 0 0 10px !important;
+}
+
+ion-label {
+    font-family: open_sanslight !important;
+
+    .emp-detail-label {
+        font-size: 14px;
+        color: #1172ad;
+    }
+    
+    .emp-detail-label-info {
+        font-size: 16px;
+        padding-left: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+}
+
+ion-toolbar {
+    --background: transparent !important;
+    --ion-color-base: transparent !important;
+    --border-width: 0 !important;
+}
+
+.toolbar-background.toolbar-background-ios {
+    background: transparent !important; 
+}
+
+.toolbar-background.toolbar-background-md {
+    background: transparent !important; 
+}
+
+ion-content {
+    --offset-top: 44px !important;
+
+    .prof-pic-holder-b {
+        height: 120px !important;
+        width: 120px !important;
+    }
+
+    .prof-detail-b {
+        margin-top: -245px !important;
+    }
+
+    .prof-contact-display, .prof-email-display {
+        padding-left: 5px !important; 
+        overflow: hidden !important; 
+        text-overflow: ellipsis !important; 
+        white-space: nowrap !important; 
+        width: 135px !important; 
+    }
+
+    .prof-contact-info span {
+        font-size: 12px !important;
+
+    }
+
+    .prof-info-b {
+        margin-bottom: 10px !important;
+    }
+
+    .dark-profile-bg {
+        background-color: #fff;
+    }
+}
+
+

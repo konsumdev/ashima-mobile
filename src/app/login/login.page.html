@@ -1,0 +1,47 @@
+
+<ion-content fullscreen class="ashima-body-cont ion-text-center vertical-align-content">
+	<img *ngIf="loginBg" [src]="loginBg" id="login-img" style="position: absolute; width: 100%; object-fit: cover; height: auto background-size: cover;" class="loginBg">
+    <ion-grid>
+        <ion-row style="margin: auto;">
+            <ion-col col-12>
+                <ion-row>
+                  <ion-col>
+                    <div>
+                        <img *ngIf="!isFocus" class="login-logo" src="assets/imgs/konsum-logo.png">
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <form name="loginForm" id="loginForm" (ngSubmit)="submitLogin()" [formGroup]="creds">
+                    <ion-row>
+                        <ion-col>
+                            <ion-item class="login-inp">
+                                <ion-label style="margin: 0px;"><ion-icon name="person" style="font-size: 20px;"></ion-icon></ion-label>
+                                <input clearInput value="{{ usrnm }}" style="font-size: 14px;width: 90%;background: transparent;border: 0;color: #fff;" type="text" autocapitalize="off" placeholder="Email/Mobile" formControlName="id" id="email">
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <ion-item class="login-inp">
+                                <ion-label style="margin: 0px;"><ion-icon name="lock" style="font-size: 20px;"></ion-icon></ion-label>
+                                <input clearInput value="{{ pswrd }}" style="font-size: 14px;width: 90%;background: transparent;border: 0;color: #fff;" type="{{type}}" placeholder="Password" formControlName="pass" id="password" #password>
+                                
+                                <ion-icon name="eye-off" color="gray" (click)="showHide()" *ngIf="!showPass" slot="end" style="font-size: 25px;"></ion-icon>
+                                <ion-icon name="eye" color="gray" (click)="showHide()" *ngIf="showPass" slot="end" style="font-size: 25px;"></ion-icon>
+                                
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+                    
+                    <ion-row>
+                      <ion-col>
+                          <div>
+                            <button class="login-btn" expand="block">Login</button>                            
+                          </div>
+                      </ion-col>
+                    </ion-row>
+                </form>
+            </ion-col>
+          </ion-row>
+    </ion-grid>
+</ion-content>

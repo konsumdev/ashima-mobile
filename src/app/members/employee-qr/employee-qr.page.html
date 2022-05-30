@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-toolbar color="ashima">
+        <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>
+        Employee QR Code
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    
+        <img src="{{ qrUrl }}" class="center_img" *ngIf="ayyDee">
+        <p class="center_id" *ngIf="ayyDee">{{ayyDee}}</p>
+        <p class="center_id" *ngIf="!ayyDee">Getting QR ... </p>
+    
+    
+</ion-content>

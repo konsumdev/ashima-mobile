@@ -1,0 +1,361 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Overtime
+    </ion-title>
+    <ion-buttons slot="end">
+        <ion-button (click)="applyOtModal()" routerDirection="forward">
+          <ion-icon slot="icon-only" name="add"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <div>
+    <ion-segment [(ngModel)]="tsheets" color="ashima">
+        <ion-segment-button value="all">
+        All
+        </ion-segment-button>
+        <ion-segment-button value="approved" (click)="approveClick()">
+        Approved
+        </ion-segment-button>
+        <ion-segment-button value="pending" (click)="pendingClick()">
+        Pending
+        </ion-segment-button>
+        <ion-segment-button value="reject" (click)="rejectClick()">
+        Rejected
+        </ion-segment-button>
+    </ion-segment>
+  </div>
+
+</ion-header>
+
+<ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefreshAll($event)">
+        <ion-refresher-content>
+        </ion-refresher-content>
+    </ion-refresher>
+    <ion-refresher slot="fixed" *ngIf="tsheets == 'approved'" (ionRefresh)="doRefreshApproved($event)">
+      <ion-refresher-content>
+      </ion-refresher-content>
+  </ion-refresher>
+  <ion-refresher slot="fixed" *ngIf="tsheets == 'pending'" (ionRefresh)="doRefreshPending($event)">
+      <ion-refresher-content>
+      </ion-refresher-content>
+  </ion-refresher>
+  <ion-refresher slot="fixed" *ngIf="tsheets == 'reject'" (ionRefresh)="doRefreshReject($event)">
+      <ion-refresher-content>
+      </ion-refresher-content>
+  </ion-refresher>
+
+    <div [ngSwitch]="tsheets">
+        <ng-container *ngSwitchCase="'all'">
+            <ion-list [class.fade-out]="allOt" *ngIf="!allOt && fetchingAll">            
+            <ion-item *ngFor="let number of fakeUsers">
+                <ion-grid>
+                    <ion-row>
+                    <ion-col>
+                        <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                        <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+                    </ion-col>
+                    <ion-col size="6">
+                        <div class="ion-text-right" style="margin-left: 30px;">
+                            <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                            <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                        </div>
+                    </ion-col>
+                    <ion-col>
+                        <div class="ion-text-right" style="margin-left: 30px;margin-right: 5px;">
+                            <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                            <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                        </div>
+                        
+                    </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item>
+            </ion-list>
+            <ion-list class="ash-listing" lines="full">
+                <div *ngIf="allOt">
+                    <div *ngFor="let overtime of allOt">
+                        <ion-item detail-push (click)="gotoDetails(overtime)" routerDirection="forward">
+
+                            <ion-grid>
+                                <ion-row>
+                                    <ion-col>
+                                        <label>{{ overtime.overtime_date_applied | date:'dd-MMM-yy' }}</label> <br>
+                                        <span *ngIf="overtime.overtime_status != 'reject'" class="font-13" 
+                                        [ngClass]="{'approve-color': overtime.overtime_status == 'approved',
+                                        'no-sched-color': overtime.overtime_status == 'pending'}">{{ overtime.overtime_status || '' }}</span>
+                                        <span *ngIf="overtime.overtime_status == 'reject'" class="font-13" 
+                                        [ngClass]="'reject-color'">Rejected</span>
+                                    </ion-col>
+
+                                    <ion-col size="6">
+                                        <div class="ion-text-center">
+                                            <label>{{ overtime.overtime_from | date:'dd-MMM-yy' }} - {{ (overtime.start_time) || "00:00" }}</label><br>
+                                            <span class="font-12">{{ overtime.overtime_to | date:'dd-MMM-yy' }} - {{ (overtime.end_time) || "00:00" }}</span>
+                                        </div>
+                                    </ion-col>
+
+                                    <ion-col>
+                                        <div class="ion-text-end" style="padding-right: 5px;">
+                                            <label>{{ (overtime.no_of_hours | number:'.1-2') || "0.00" }}</label><br>
+                                            <span >hrs</span>
+                                        </div>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </ion-item>
+                    </div>
+                </div>            
+            </ion-list>
+            <div *ngIf="!allOt && !fetchingAll">
+                <div class="no-record-found-cont ion-text-center">   
+                    <div class="no-record-found-icon">
+                        <span class="icon-no-record"></span>
+                    </div>             
+                    <div class="no-record-holder">No Data Found.</div>
+                </div>
+            </div>
+            <ion-infinite-scroll (ionInfinite)="doInfiniteAll($event)" *ngSwitchCase="'all'" threshold="50px">
+                <ion-infinite-scroll-content>
+                </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+        </ng-container>
+    </div>
+
+    <div [ngSwitch]="tsheets">
+        <ng-container *ngSwitchCase="'approved'">
+        <ion-list [class.fade-out]="allApprove" *ngIf="!allApprove && fetchingApprove">            
+            <ion-item *ngFor="let number of fakeUsers">
+                <ion-grid>
+                    <ion-row>
+                    <ion-col>
+                        <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                        <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+                    </ion-col>
+                    <ion-col size="6">
+                        <div class="ion-text-right" style="margin-left: 30px;">
+                            <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                            <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                        </div>
+                    </ion-col>
+                    <ion-col>
+                        <div class="ion-text-right" style="margin-left: 30px;margin-right: 5px;">
+                            <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                            <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                        </div>
+                        
+                    </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item>
+        </ion-list>
+            <ion-list class="ash-listing" lines="full">
+                <div *ngIf="allApprove">
+                    <div *ngFor="let overtime of allApprove">
+                        <ion-item detail-push (click)="gotoDetails(overtime)" routerDirection="forward">
+
+                            <ion-grid>
+                                <ion-row>
+                                    <ion-col>
+                                        <label>{{ overtime.overtime_date_applied | date:'dd-MMM-yy' }}</label> <br>
+                                        <span *ngIf="overtime.overtime_status != 'reject'" class="font-13" 
+                                        [ngClass]="{'approve-color': overtime.overtime_status == 'approved',
+                                        'no-sched-color': overtime.overtime_status == 'pending'}">{{ overtime.overtime_status || '' }}</span>
+                                        <span *ngIf="overtime.overtime_status == 'reject'" class="font-13" 
+                                        [ngClass]="'reject-color'">Rejected</span>
+                                    </ion-col>
+
+                                    <ion-col size="6">
+                                        <div class="ion-text-center">
+                                            <label>{{ overtime.overtime_from | date:'dd-MMM-yy' }} - {{ (overtime.start_time) || "00:00" }}</label><br>
+                                            <span class="font-12">{{ overtime.overtime_to | date:'dd-MMM-yy' }} - {{ (overtime.end_time) || "00:00" }}</span>
+                                        </div>
+                                    </ion-col>
+
+                                    <ion-col>
+                                    <div class="ion-text-end" style="padding-right: 5px;">
+                                        <label>{{ (overtime.no_of_hours | number:'.1-2') || "0.00" }}</label><br>
+                                        <span >hrs</span>
+                                    </div>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </ion-item>
+                    </div>
+                </div>            
+            </ion-list>
+            <div *ngIf="!allApprove && !fetchingApprove">
+                <div class="no-record-found-cont ion-text-center">   
+                    <div class="no-record-found-icon">
+                        <span class="icon-no-record"></span>
+                    </div>             
+                    <div class="no-record-holder">No Data Found.</div>
+                </div>
+            </div>
+            <ion-infinite-scroll (ionInfinite)="doInfiniteApprove($event)" *ngSwitchCase="'approved'" threshold="50px">
+                <ion-infinite-scroll-content>
+                </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+        </ng-container>
+    </div>
+
+    <div [ngSwitch]="tsheets">
+        <ng-container *ngSwitchCase="'pending'">
+        <ion-list [class.fade-out]="allPending" *ngIf="!allPending && fetchingPending">            
+            <ion-item *ngFor="let number of fakeUsers">
+                <ion-grid>
+                    <ion-row>
+                    <ion-col>
+                        <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                        <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+                    </ion-col>
+                    <ion-col size="6">
+                        <div class="ion-text-right" style="margin-left: 30px;">
+                            <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                            <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                        </div>
+                    </ion-col>
+                    <ion-col>
+                        <div class="ion-text-right" style="margin-left: 30px;margin-right: 5px;">
+                            <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                            <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                        </div>
+                        
+                    </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item>
+        </ion-list>
+            <ion-list class="ash-listing" lines="full">
+                <div *ngIf="allPending">
+                    <div *ngFor="let overtime of allPending">
+                        <ion-item detail-push (click)="gotoDetails(overtime)" routerDirection="forward">
+
+                            <ion-grid>
+                                <ion-row>
+                                    <ion-col>
+                                        <label>{{ overtime.overtime_date_applied | date:'dd-MMM-yy' }}</label> <br>
+                                        <span *ngIf="overtime.overtime_status != 'reject'" class="font-13" 
+                                        [ngClass]="{'approve-color': overtime.overtime_status == 'approved',
+                                        'no-sched-color': overtime.overtime_status == 'pending'}">{{ overtime.overtime_status || '' }}</span>
+                                        <span *ngIf="overtime.overtime_status == 'reject'" class="font-13" 
+                                        [ngClass]="'reject-color'">Rejected</span>
+                                    </ion-col>
+
+                                    <ion-col size="6">
+                                        <div class="ion-text-center">
+                                            <label>{{ overtime.overtime_from | date:'dd-MMM-yy' }} - {{ (overtime.start_time) || "00:00" }}</label><br>
+                                            <span class="font-12">{{ overtime.overtime_to | date:'dd-MMM-yy' }} - {{ (overtime.end_time) || "00:00" }}</span>
+                                        </div>
+                                    </ion-col>
+
+                                    <ion-col>
+                                    <div class="ion-text-end" style="padding-right: 5px;">
+                                        <label>{{ (overtime.no_of_hours | number:'.1-2') || "0.00" }}</label><br>
+                                        <span >hrs</span>
+                                    </div>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </ion-item>
+                    </div>
+                </div>            
+            </ion-list>
+            <div *ngIf="!allPending && !fetchingPending">
+                <div class="no-record-found-cont ion-text-center">   
+                    <div class="no-record-found-icon">
+                        <span class="icon-no-record"></span>
+                    </div>             
+                    <div class="no-record-holder">No Data Found.</div>
+                </div>
+            </div>
+            <ion-infinite-scroll (ionInfinite)="doInfinitePending($event)" *ngSwitchCase="'pending'" threshold="50px">
+                <ion-infinite-scroll-content>
+                </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+        </ng-container>
+    </div>
+
+    <div [ngSwitch]="tsheets">
+        <ng-container *ngSwitchCase="'reject'">
+            <ion-list [class.fade-out]="allReject" *ngIf="!allReject && fetchingReject">            
+            <ion-item *ngFor="let number of fakeUsers">
+                <ion-grid>
+                    <ion-row>
+                    <ion-col>
+                        <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                        <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+                    </ion-col>
+                    <ion-col size="6">
+                        <div class="ion-text-right" style="margin-left: 30px;">
+                            <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                            <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                        </div>
+                    </ion-col>
+                    <ion-col>
+                        <div class="ion-text-right" style="margin-left: 30px;margin-right: 5px;">
+                            <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                            <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                        </div>
+                        
+                    </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item>
+            </ion-list>
+            <ion-list class="ash-listing" lines="full">
+                <div *ngIf="allReject">
+                    <div *ngFor="let overtime of allReject">
+                        <ion-item detail-push (click)="gotoDetails(overtime)" routerDirection="forward">
+
+                            <ion-grid>
+                                <ion-row>
+                                    <ion-col>
+                                        <label>{{ overtime.overtime_date_applied | date:'dd-MMM-yy' }}</label> <br>
+                                        <span *ngIf="overtime.overtime_status != 'reject'" class="font-13" 
+                                        [ngClass]="{'approve-color': overtime.overtime_status == 'approved',
+                                        'no-sched-color': overtime.overtime_status == 'pending'}">{{ overtime.overtime_status || '' }}</span>
+                                        <span *ngIf="overtime.overtime_status == 'reject'" class="font-13" 
+                                        [ngClass]="'reject-color'">Rejected</span>
+                                    </ion-col>
+
+                                    <ion-col size="6">
+                                        <div class="ion-text-center">
+                                            <label>{{ overtime.overtime_from | date:'dd-MMM-yy' }} - {{ (overtime.start_time) || "00:00" }}</label><br>
+                                            <span class="font-12">{{ overtime.overtime_to | date:'dd-MMM-yy' }} - {{ (overtime.end_time) || "00:00" }}</span>
+                                        </div>
+                                    </ion-col>
+
+                                    <ion-col>
+                                        <div class="ion-text-end" style="padding-right: 5px;">
+                                            <label>{{ (overtime.no_of_hours | number:'.1-2') || "0.00" }}</label><br>
+                                            <span >hrs</span>
+                                        </div>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </ion-item>
+                    </div>
+                </div>            
+            </ion-list>
+            <div *ngIf="!allReject && !fetchingReject">
+                <div class="no-record-found-cont ion-text-center">   
+                    <div class="no-record-found-icon">
+                        <span class="icon-no-record"></span>
+                    </div>             
+                    <div class="no-record-holder">No Data Found.</div>
+                </div>
+            </div>
+            <ion-infinite-scroll (ionInfinite)="doInfiniteReject($event)" *ngSwitchCase="'reject'" threshold="50px">
+                <ion-infinite-scroll-content>
+                </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+        </ng-container>
+    </div>
+
+</ion-content>

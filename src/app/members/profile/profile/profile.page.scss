@@ -1,0 +1,100 @@
+ion-toolbar {
+    --background: transparent;
+    --ion-color-base: transparent !important;
+}
+ion-item {
+    font-size: 14px !important;
+    --border-color: #efefef;
+}
+.header-ios ion-toolbar:last-child {
+    --border-width: 0;
+}
+.prof-detail-b {
+    margin-top: -250px;
+}
+.prof-pic-holder-b {
+    height: 120px;
+    width: 120px;
+}
+.dark-profile-bg {
+    opacity: 0.25;
+}
+.prof-name-b {
+    font-size: 20px;
+}
+.prof-info-b {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+.prof-position-b {
+    font-size: 14px;
+}
+.scroll-content {
+    margin-top: 0px !important;
+}
+.toolbar-background.toolbar-background-ios {
+    background: transparent !important;        
+}
+.toolbar-background.toolbar-background-md {
+    background: transparent !important;        
+}
+.prof-contact-info {
+    ion-icon {
+        color: #fff !important;
+    }
+    span {
+        font-size: 12px !important;
+    }
+    a {
+        font-size: 12px !important;
+    }
+}
+.dark-profile-bg {
+    height: 50%;
+}
+.prof-email {
+    width: 50% !important;
+    .prof-email-display {
+        text-align: left;
+        padding-left: 5px;
+        @media ( max-width : 320px) {
+            padding-left: 25px;
+        }
+    }
+    ion-icon {
+        position: relative;
+        left: 0px;
+        @media ( max-width : 320px) {
+            position: absolute;
+            left: 20px;
+        }
+    }
+}
+.prof-number {
+    width: 50% !important;
+    .prof-contact-display {
+        color: #fff;
+        padding-left: 0px;
+    }
+    ion-icon {
+        position: relative;
+        // right: 155px;
+    }
+}
+.prof-number.right {
+    padding: 0 0 0 15px;
+}
+.item-block {
+    padding-left: 10px;
+    padding-right: 10px; 
+}
+button.item {
+    font-family: open_sanslight;
+    color: #666;
+    .item-inner {
+        padding: 5px 0px;
+    }
+}
+.prof-info-b label {
+    text-transform: capitalize; 
+}

@@ -74,4 +74,38 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  /** ashima color **/
+  --ion-color-ashima: #1172ad;
+  --ion-color-ashima-rgb: 17, 114, 173;
+  --ion-color-ashima-contrast: #ffffff;
+  --ion-color-ashima-contrast-rgb: 255, 255, 255;
+  --ion-color-ashima-shade: #0f6498;
+  --ion-color-ashima-tint: #2980b5;
+
+  /** ashima manager color **/
+  --ion-color-ashima-mg: #f2f9fc;
+  --ion-color-ashima-mg-rgb: 242,249,252;
+  --ion-color-ashima-mg-contrast: #3c4f5e;
+  --ion-color-ashima-mg-contrast-rgb: 0,0,0;
+  --ion-color-ashima-mg-shade: #d5dbde;
+  --ion-color-ashima-mg-tint: #f3fafc;
+}
+
+.ion-color-ashima {
+  --ion-color-base: var(--ion-color-ashima);
+  --ion-color-base-rgb: var(--ion-color-ashima-rgb);
+  --ion-color-contrast: var(--ion-color-ashima-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-ashima-contrast-rgb);
+  --ion-color-shade: var(--ion-color-ashima-shade);
+  --ion-color-tint: var(--ion-color-ashima-tint);
+}
+
+.ion-color-ashima-mg {
+  --ion-color-base: var(--ion-color-ashima-mg);
+  --ion-color-base-rgb: var(--ion-color-ashima-mg-rgb);
+  --ion-color-contrast: var(--ion-color-ashima-mg-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-ashima-mg-contrast-rgb);
+  --ion-color-shade: var(--ion-color-ashima-mg-shade);
+  --ion-color-tint: var(--ion-color-ashima-mg-tint);
 }

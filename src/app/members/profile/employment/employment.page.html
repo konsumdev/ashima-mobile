@@ -1,0 +1,144 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="members/profile"></ion-back-button>
+      </ion-buttons>
+    <ion-title>Employment Details</ion-title>
+  </ion-toolbar>
+  <div class="ion-padding">
+      <ion-segment [(ngModel)]="pDetails" mode="ios" color="ashima">
+          <ion-segment-button value="basicInfo">
+          Details
+          </ion-segment-button>
+          <ion-segment-button value="govIds">
+          Gov. ID's
+          </ion-segment-button>
+          <ion-segment-button value="history">
+          History
+          </ion-segment-button>
+      </ion-segment>
+  </div>
+</ion-header>
+
+<ion-content>
+    <div [ngSwitch]="pDetails">
+        <ion-list *ngSwitchCase="'basicInfo'" class="ash-listing">
+                    
+            <ion-item lines="full">                
+                Employee ID
+                <ion-note slot="end">
+                {{ empDetails.payroll_cloud_id || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Employee Status
+                <ion-note slot="end">
+                {{ empDetails.employee_status || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Job Position
+                <ion-note slot="end">
+                {{ empDetails.position_name || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Rank
+                <ion-note slot="end">
+                {{ empDetails.rank_name || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Department
+                <ion-note slot="end">
+                {{ empDetails.department_name || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Cost Center
+                <ion-note slot="end">
+                {{ empDetails.cost_center_code || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Location Assigned
+                <ion-note slot="end">
+                {{ empDetails.location_and_offices_name || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Project
+                <ion-note slot="end">
+                {{ empDetails.project_name || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Employment Type
+                <ion-note slot="end">
+                {{ empDetails.employment_type_name || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Date Hired
+                <ion-note slot="end">
+                {{ empDetails.date_hired | date:'dd-MMM-yy' }}
+                </ion-note>
+            </ion-item>
+        
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'govIds'" class="ash-listing">
+            <ion-item lines="full">                
+                TIN
+                <ion-note slot="end">
+                {{ empDetails.tin || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                UMID
+                <ion-note slot="end">
+                {{ empDetails.umid || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                SSS
+                <ion-note slot="end">
+                {{ empDetails.sss	 || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                PhilHealth
+                <ion-note slot="end">
+                {{ empDetails.phil_health || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                HDMF
+                <ion-note slot="end">
+                {{ empDetails.hdmf || "~" }}
+                </ion-note>
+            </ion-item>
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'history'" class="ash-listing">
+            <div *ngIf="empHistory">
+                <div *ngFor="let his of empHistory">
+                    <ion-item (click)="gotoHistory(his)"  lines="full">
+                        {{ his.effective_date | date:'dd-MMM-yy' }}
+                        <ion-note slot="end" style="max-width: 70%;">
+                        {{ his.position_name || "~" }}
+                        </ion-note>
+                    </ion-item>
+                </div>                    
+            </div>
+            <div *ngIf="!empHistory">
+                <div class="no-record-found-cont">
+                    <div class="no-record-found-icon">
+                        <span class="icon-no-record"></span>
+                    </div>
+                    <div class="no-record-holder">No data found.</div>
+                </div>
+            </div>
+        </ion-list>
+    </div>
+</ion-content>

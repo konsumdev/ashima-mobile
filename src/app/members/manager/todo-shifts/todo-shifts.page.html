@@ -1,0 +1,66 @@
+
+
+
+<ion-header class="ashima-body-cont">
+  <ion-toolbar color="ashima-mg">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title id="page_title">Shift Changes</ion-title>
+      
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher *ngIf="shifts" slot="fixed">
+      <ion-refresher-content
+          pullingIcon="refresh-circle">
+      </ion-refresher-content>
+  </ion-refresher>
+  
+  <ion-list *ngIf="!shifts && !fetching">
+      <div class="no-record-found-cont">
+          <div class="no-record-found-icon">
+              <span class="icon-no-record"></span>
+          </div>
+          <div class="no-record-holder">No data found.</div>
+      </div>
+  </ion-list>
+
+  <ion-list *ngIf="shifts">
+      <ng-container *ngFor="let tt of shifts">
+          <ion-list-header>
+              {{tt.date | date:'EEEE, dd-MMM-yy'}}
+          </ion-list-header>
+          <ion-item-sliding *ngFor="let emp of tt.employees">
+              <ion-item>
+                <ion-avatar item-start class="applicant-avatar">
+                    <img *ngIf="!emp.profile_image" src="assets/imgs/default-profile-pic.png">
+                    <img *ngIf="emp.profile_image" [src]="apiUrl + '/uploads/companies/' + emp.company_id + '/' + emp.profile_image">
+                </ion-avatar>
+
+                <div class="applicant-info">
+                    <div class="applicant-name">{{ emp.full_name }}</div>
+                    <div class="applicant-id">{{ emp.payroll_cloud_id }}</div>
+                </div>
+
+                <ion-note item-end class="application-info">
+                    <div class="application-time">to : {{ tt.date+" "+emp.start_time | date:'shortTime'  }} - {{ tt.date+" "+emp.end_time | date:'shortTime'  }}</div>
+                    <div class="application-status">fr : {{ emp.orig_start_time }} - {{ emp.orig_end_time }}</div>
+                </ion-note>
+              </ion-item>
+              <!-- <ion-item-options>
+                  <button ion-button color="ash-red" icon-start (click)="rejectTodo(emp.employee_work_schedule_application_id)">
+                      <ion-icon name="md-close"></ion-icon>
+                      Reject
+                  </button>
+                  <button ion-button color="ash-blue" icon-start (click)="approveTodo(emp.employee_work_schedule_application_id, emp.check_payroll_lock_closed)">
+                      <ion-icon name="md-checkmark"></ion-icon>
+                      Approve
+                  </button>
+              </ion-item-options> -->
+          </ion-item-sliding>
+      </ng-container>
+  </ion-list>
+</ion-content>
+

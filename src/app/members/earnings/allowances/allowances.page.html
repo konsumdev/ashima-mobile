@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Allowances
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list [class.fade-out]="allowances" *ngIf="!allowances && fetchingAll">            
+        <ion-item *ngFor="let number of fakeUsers">
+            <ion-grid>
+                <ion-row>
+                <ion-col>
+                    <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                    <p><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></p>
+                </ion-col>
+                <ion-col>
+                    <div class="ion-text-right" style="margin-left: 30px;margin-right: 5px;">
+                        <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                        <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                    </div>
+                    
+                </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-item>
+    </ion-list>
+    <ion-list>
+        <div *ngIf="allowances">
+            <div *ngFor="let allwnc of allowances">
+                <ion-item lines="full">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col>
+                                <label>{{ allwnc.name || '~' }}</label><br>
+                                <div class="paycheck-range">{{ allwnc.frequency || '~' }}</div>
+                            </ion-col>
+                            <ion-col>
+                                <ion-note class="capitalize timesheet-total-hrs-list net-pay" style="float: right;">
+                                    {{ allwnc.value || '0.00' }} Php<br>
+                                    <span class="timesheet-hrs-word">{{ allwnc.pay_out_schedule || "~" }}</span>
+                                </ion-note>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-item>
+            </div> 
+        </div>
+        <div *ngIf="!allowances && !fetchingAll" class="no-record-found-cont">
+            <div class="no-record-found-icon">
+                <span class="icon-no-record"></span>
+            </div>
+            <div class="no-record-holder">No data found.</div>
+        </div>
+    </ion-list>
+</ion-content>

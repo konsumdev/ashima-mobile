@@ -1,0 +1,45 @@
+.applicant-info {
+    width: 40%;
+    font-size: 14px;
+    padding-left: 5px;
+    
+    .applicant-name {
+        color:#1174ad;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .applicant-id {
+        font-size: 10px;
+    }
+}
+
+.application-info {
+    width: 50%;
+    
+    .application-time {
+        color: #7b7b7b;
+        font-size: 14px;
+    }
+    
+    .application-status {
+        font-size: 12px;
+    }
+
+    .ot-no-of-hrs {
+        font-size: 18px;
+        font-weight: bold;
+    }
+}
+
+.applicant-avatar {
+    img {
+        width: 33px !important;
+        height: 33px !important;
+        object-position: center center;
+        border: 1px solid #eee;
+        object-fit: cover;
+
+    }
+}

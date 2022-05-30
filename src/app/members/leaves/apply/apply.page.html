@@ -1,0 +1,125 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-back-button  defaultHref="leaves" (click)="gotoBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Apply Leave
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="finalRecal" (click)="applyLeave()" [disabled]="!reason || !leaveRequest">
+        Submit
+      </ion-button>
+      <ion-button *ngIf="!finalRecal" (click)="recalcReq()">
+        Calculate
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card>        
+        <fieldset class="overview-fs">
+            <legend class="leave_type_legend">{{ leaveName }} Leave Balance</legend>
+            <div class="pull-left" style="margin-left: 10px;">
+                <label><span style="margin-right: 31px;">Leave Used :</span><span class="leave_used">~</span></label><br>
+                <label><span style="margin-right: 15px;">Leave Balance :</span><span class="remaining_leave_balance">{{ myParam.remaining_leave_credits }} {{ myParam.leave_units }}</span></label>
+                <input type="hidden" class="previous_credits" name="previous_credits" value="" />
+            </div>	
+        </fieldset>
+    </ion-card>
+    <ion-list>
+        <ion-row>
+            <ion-col size="5">
+                <ion-item class="partial_dee">
+                    <ion-label>Partial Day</ion-label>
+                    <ion-checkbox [(ngModel)]="isPartial" (click)="recalc()"></ion-checkbox>
+                </ion-item>
+            </ion-col>
+            <ion-col size="7">
+                <ion-item class="partial_dee" *ngIf="isPartial" (press)="pressEvent($event)" (click)="recalc()">
+                    <ion-label>Half Day</ion-label>
+                    <ion-checkbox [(ngModel)]="isHalf"></ion-checkbox>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="isHalf">
+            <ion-col size="12">
+                <ion-item>
+                    <ion-label>Half Day</ion-label>
+                    <ion-select value="first_half" placeholder="First Half" [(ngModel)]="whatHalf">
+                        <ion-select-option value="first_half">First Half</ion-select-option>
+                        <ion-select-option value="second_half">Second Half</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        
+        <ion-row style="border: none;">
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label>Leave Request From</ion-label><br>                    
+                </ion-item>
+                <ion-label class="shift-label" id="start_shift_msg">{{ startMsg }}</ion-label>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="7">
+                <ion-item>
+                    <ion-datetime displayFormat="DD-MMM-YYYY" placeholder="DD-MMM-YYYY" min="{{currentYear}}" (ionChange)="onChangeDate()" [(ngModel)]="dateFrom"></ion-datetime>
+                </ion-item>                
+            </ion-col>
+            
+            <ion-col size="5">
+                <ion-item>
+                    <ion-datetime [disabled]="!isPartial" displayFormat="hh:mm a" placeholder="00:00 am" [(ngModel)]="dis_startTime" (ionChange)="onChangeTime()"></ion-datetime>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        
+        <ion-row style="border: none;">
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label>Leave Request To</ion-label>
+                </ion-item>
+                <ion-label class="shift-label" id="end_shift_msg">{{ endMsg }}</ion-label>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="7">
+                <ion-item *ngIf="!isPartial">
+                    <ion-datetime displayFormat="DD-MMM-YYYY" placeholder="DD-MMM-YYYY" min="{{currentYear}}" (ionChange)="onChangeDateTo()" [(ngModel)]="dateTo"></ion-datetime>
+                </ion-item>
+            </ion-col>
+            
+            <ion-col size="5">
+                <ion-item>
+                    <ion-datetime [disabled]="!isPartial" displayFormat="hh:mm a" placeholder="00:00 am" [(ngModel)]="dis_endTime" (ionChange)="onChangeTime()"></ion-datetime>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label>Reason</ion-label>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <ion-item style="margin-left: 20px;">
+                    <ion-textarea rows="2" placeholder="Type here" [(ngModel)]="reason"></ion-textarea>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <ion-item lines="none">                        
+                    
+                    <ion-label>Total Leave Requested: <em>{{ korewa_suji_desu_ka(leaveRequest) ? (leaveRequest | number:'.3') : leaveRequest }}</em></ion-label>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ion-list>
+</ion-content>

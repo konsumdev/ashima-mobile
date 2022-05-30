@@ -3,11 +3,25 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Ionic App</title>
+  <title>Ashima Employee Portal</title>
 
   <base href="/" />
 
   <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  
+  <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self' data: gap:
+      *;
+  script-src 'self' 'unsafe-inline' 'unsafe-eval'
+      *;
+  style-src 'self' 'unsafe-inline' 'unsafe-eval'
+      *;
+  media-src 'self' 'unsafe-inline' 'unsafe-eval'
+      *;
+  img-src * data:;
+  connect-src 'self' 'unsafe-inline' 'unsafe-eval'
+  *; 
+">
   <meta name="format-detection" content="telephone=no" />
   <meta name="msapplication-tap-highlight" content="no" />
 
@@ -16,10 +30,12 @@
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+  <script src="https://maps.google.com/maps/api/js?key=AIzaSyBwF41A7OVNXDpDFgYEEOxxSO_yVu5jLi4"></script>
 </head>
 
 <body>
-  <app-root></app-root>
+  <app-root style="font-family:  open_sanslight;"></app-root>
 </body>
 
 </html>

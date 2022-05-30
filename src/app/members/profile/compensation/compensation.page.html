@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="members/profile"></ion-back-button>
+      </ion-buttons>
+    <ion-title>Compensation Details</ion-title>
+  </ion-toolbar>
+  <div class="ion-padding">
+      <ion-segment [(ngModel)]="pDetails" mode="ios" color="ashima">
+          <ion-segment-button value="basicInfo">
+          Details
+          </ion-segment-button>
+          <ion-segment-button value="history">
+          History
+          </ion-segment-button>
+      </ion-segment>
+  </div>
+</ion-header>
+
+<ion-content>
+    <div [ngSwitch]="pDetails">
+        <ion-list *ngSwitchCase="'basicInfo'" class="ash-listing">
+                    
+            <ion-item lines="full">                
+                Basic Pay
+                <ion-note slot="end">
+                {{ compDet.basic_pay || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Hourly Rate
+                <ion-note slot="end">
+                {{ compDet.hourly_rate || "~" }}
+                </ion-note>
+            </ion-item>
+            <ion-item lines="full">                
+                Bank Account No.
+                <ion-note slot="end">
+                {{ compDet.bank_account_no || "~" }}
+                </ion-note>
+            </ion-item>
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'history'" class="ash-listing">
+            <div *ngIf="compHis">
+                <div *ngFor="let his of compHis">
+                    <ion-item (click)="gotoHistory(his)" routerDirection="forward" lines="full">
+                        {{ his.effective_date | date:'dd-MMM-yy' }}
+                        <ion-note slot="end" style="max-width: 70%;">
+                        {{ his.current_basic_pay || "~" }}
+                        </ion-note>
+                    </ion-item>
+                </div>                    
+            </div>
+            <div *ngIf="!compHis">
+                <div class="no-record-found-cont">
+                    <div class="no-record-found-icon">
+                        <span class="icon-no-record"></span>
+                    </div>
+                    <div class="no-record-holder">No data found.</div>
+                </div>
+            </div>
+        </ion-list>
+    </div>
+</ion-content>

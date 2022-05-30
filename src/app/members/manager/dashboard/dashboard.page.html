@@ -1,0 +1,483 @@
+<ion-header class="ashima-body-cont">
+    <ion-toolbar color="ashima-mg">
+    	<ion-buttons slot="start">
+      		<ion-menu-button></ion-menu-button>
+    	</ion-buttons>
+    	<ion-title>
+      		Dashboard
+    	</ion-title>
+  	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item-divider style="background-color: transparent; margin-bottom: 0;">
+            <div class="dashboard-tile-header">Workforce at a Glance</div>
+            <!-- <div class="dash-toggle-icon-cont" (click)="offToggle('workforce')">            
+                <ion-icon ios="{{toggleWorkforce}}" md="{{toggleWorkforce}}"></ion-icon>
+            </div> -->
+        </ion-item-divider>
+        <div *ngIf="dashWorkforce == '1'">
+            <ion-row>
+                <ion-col col-6 style="padding-right: 0px;">
+                    <ion-card class="dash-card" color="light">
+                        <div class="ft-imba">
+                            <div class="ft ft-absent-employees">                        
+                                <div class="ft-top"> <span class="ft-icon icon-dash-attendance"></span>
+                                    <div class="ft-label">headcount</div>
+                                    <div class="ft-val head-counter">{{ headCount || "0" }}</div>
+                                </div>                        
+                            </div>
+                        </div>
+                    </ion-card>
+                </ion-col>
+                <ion-col col-6>
+                    <ion-card class="dash-card" color="light">
+                        <div class="ft of_visible dash-card-height">
+                            <a href="#/manager-timesheets">
+                                <div class="ft-top dash-card-height"> <span class="ft-icon icon-dash-employeesclockedin"></span>
+                                    <div class="ft-label">employees <br>clocked-in</div>
+                                    <div>
+                                        <div class="ft-val clockin-counter">
+                                            {{ clockedIn || "0" }}
+                                        </div>
+                                        <!-- <div class="schedule-holder">
+                                            <ng-container *ngIf="schedule">{{ schedule.name || "~" }}</ng-container>
+                                            <ng-container *ngIf="!schedule">~</ng-container>
+                                        </div>
+                                        <div class="sched-time-holder">
+                                            <ng-container *ngIf="schedule">{{ schedule.start }} - {{ schedule.end }}</ng-container>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-6 style="padding-right: 0px;">
+                    <ion-card class="dash-card" color="light">
+                        <div class="ft of_visible dash-card-height">
+                            <a (click)="goto('NoShowPage')">
+                                <div class="ft-top dash-card-height"> <span class="ft-icon icon-no-record font-25"></span>
+                                    <div class="ft-label">no show</div>
+                                    <div>
+                                        <div class="ft-val no-show-count">
+                                            <ng-container *ngIf="noShowEmp">{{ noShowEmp.count_no_show || "0" }}</ng-container>
+                                            <ng-container *ngIf="!noShowEmp">0</ng-container>
+                                        </div>
+                                        <!-- <div class="schedule-holder">
+                                            <ng-container *ngIf="schedule">{{ schedule.name || "~" }}</ng-container>
+                                            <ng-container *ngIf="!schedule">~</ng-container>
+                                        </div>
+                                        <div class="sched-time-holder">
+                                            <ng-container *ngIf="schedule">{{ schedule.start }} - {{ schedule.end }}</ng-container>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </ion-card>
+                </ion-col>
+                <ion-col col-6>
+                    <ion-card class="dash-card" color="light">
+                        <div class="ft-imba">
+                            <div class="ft ft-mypayslipsdate">
+                                <a (click)="goto('OnLeavePage')">
+                                    <div class="ft-top" > <span class="ft-icon icon-dash-employeesonleave gly-rotate-45 font-25"></span>
+                                        <div class="ft-label">out on leave <span class="dash-card-label">
+                                            ({{ (onLeaves) ? onLeaves.count_out_on_leave : '0' }})</span></div>
+        
+                                        <div class="ft2-inner" *ngIf="onLeaves">
+                                            <div class="employee-listing dash-listing" *ngIf="onLeaves.count_out_on_leave > 0">
+                                                <ul class="cont_employee_tardy dash-ul" *ngIf="onLeaves.employees">
+                                                    <li class="height-30" *ngFor="let employee of onLeaves.employees; let i=index">
+                                                        <div class="clearfix box-employee-set height-23" *ngIf="i<2">
+                                                            <div class="small-avatar dash-small-avatar" *ngIf="employee.profile_image" [style.backgroundImage]="'url(' + baseUrl + '/uploads/companies/' + employee.company_id + '/' + employee.profile_image +')'"></div>
+                                                            <div class="small-avatar dash-small-avatar default-avatar" *ngIf="!employee.profile_image"></div>
+                                                            <div class="overflow-hidden box-employee-name-set">
+                                                                <div class="employeeName pull-left text-to-dot-dot dash-name-list">{{employee.first_name | titlecase}} {{employee.last_name| titlecase}}</div>
+                                                                <div class="text-to-dot-dot dash-name-cloud-id">{{employee.leave_type}} | {{employee.date_start}} - {{employee.date_end}}</div>
+                                                            </div>
+                                                        </div>
+                                                    </li>                                            
+                                                </ul>
+                                            </div>
+                                            <div class="on-leave-null" *ngIf="onLeaves.count_out_on_leave <= 0">
+                                                <label class="text-center">No employees out on leave today.</label>
+                                            </div>
+                                        </div>
+        
+                                        
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-6 style="padding-right: 0px;">
+                    <ion-card class="dash-card" color="light">
+                        <div class="ft of_visible">
+                            <a (click)="goto('EarlyBirdsPage')">
+                                <div class="ft-top dash-card-height"> <span class="ft-icon "></span>
+                                    <div class="ft-label">early birds 
+                                        <span *ngIf="earlyBirdEmp" class="dash-card-label">({{ earlyBirdEmp.count }})</span>
+                                        <span *ngIf="!earlyBirdEmp" class="dash-card-label" >(0)</span>
+                                    </div>
+                                    
+                                    <div class="ft2-inner">
+                                        <div class="employee-listing dash-listing"  *ngIf="earlyBirdEmp">
+                                            <ul class="cont_employee_tardy dash-ul" *ngIf="earlyBirdEmp.count > 0">
+                                                <li *ngFor="let employee of earlyBirdEmp.early_emps;  let i=index">
+                                                    <div class="clearfix box-employee-set height-23 m-top-20" *ngIf="i<1">
+                                                        <div class="small-avatar dash-small-avatar" *ngIf="employee.profile_image" [style.backgroundImage]="'url(' + apiUrl + '/uploads/companies/' + employee.company_id + '/' + employee.profile_image +')'"></div>
+                                                        <div class="small-avatar dash-small-avatar default-avatar" *ngIf="!employee.profile_image"></div>
+                                                        <div class="overflow-hidden box-employee-name-set">
+                                                            <div class="employeeName pull-left text-to-dot-dot dash-name-list">{{employee.first_name | titlecase}} {{employee.last_name | titlecase}}</div>
+                                                            <div class="text-to-dot-dot dash-name-cloud-id">{{employee.payroll_cloud_id}} | {{employee.minutes_early}} min</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                
+                                            </ul>
+                                            <!-- <ul class="cont_employee_tardy dash-ul" *ngIf="earlyBirdEmp.count <= 0">
+                                                <li class="dash-list-null">
+                                                    <div>No data found.</div>
+                                                </li>
+                                            </ul> -->
+
+                                            <div class="cont_employee_tardy" *ngIf="earlyBirdEmp.count <= 0">
+                                                <div class="on-leave-null" style="padding-left: 5px;">
+                                                    <label class="text-center">No tardy found.</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <!-- <div>
+                                        <div class="schedule-holder">
+                                            <ng-container *ngIf="schedule">{{ schedule.name || "~" }}</ng-container>
+                                            <ng-container *ngIf="!schedule">~</ng-container>
+                                        </div>
+                                        <div class="sched-time-holder">
+                                            <ng-container *ngIf="schedule">{{ schedule.start }} - {{ schedule.end }}</ng-container>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </a>
+                        </div>
+                    </ion-card>
+                </ion-col>
+                <ion-col col-6>
+                    <ion-card class="dash-card" color="light">
+                        <div class="ft of_visible dash-card-height">
+                            <a href="#/manager-tardiness">
+                                <div class="ft-top dash-card-height"> <span class="ft-icon "></span>
+                                    <div class="ft-label">tardy list 
+                                        <span *ngIf="tardyEmp" class="dash-card-label">({{ tardyEmp.tardiness }})</span>
+                                        <span *ngIf="!tardyEmp" class="dash-card-label">(0)</span>
+                                    </div>
+        
+                                    <div class="ft2-inner">
+                                        <div class="employee-listing dash-listing" *ngIf="tardyEmp">
+                                            <ul class="cont_employee_tardy dash-ul" *ngIf="tardyEmp.tardiness > 0">
+                                                <li *ngFor="let employee of tardyEmp.employees;  let i=index">
+                                                    <span style="float: left;margin-top: 5px;">{{ i+1 }}. &nbsp;</span>
+                                                    <div class="clearfix box-employee-set height-23" style="float: left; width: 80%;" *ngIf="i<3">
+                                                        
+                                                        <div class="small-avatar dash-small-avatar" *ngIf="employee.profile_image" [style.backgroundImage]="'url(' + baseUrl + '/uploads/companies/' + employee.company_id + '/' + employee.profile_image +')'"></div>
+                                                        <div class="small-avatar dash-small-avatar default-avatar" *ngIf="!employee.profile_image"></div>
+                                                        <div class="overflow-hidden box-employee-name-set">
+                                                            <div class="employeeName pull-left text-to-dot-dot dash-name-list">{{employee.first_name | titlecase}} {{employee.last_name | titlecase}}</div>
+                                                            <div class="text-to-dot-dot dash-name-cloud-id">{{employee.payroll_cloud_id}}</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+
+                                            <!-- <ul class="cont_employee_tardy dash-ul" *ngIf="tardyEmp.tardiness <= 0">
+                                                <li class="dash-list-null">
+                                                    <div *ngIf="!tardyEmp.employees">No data found.</div>
+                                                </li>
+                                            </ul> -->
+                                            
+                                            <div class="cont_employee_tardy" *ngIf="tardyEmp.tardiness <= 0">
+                                                <div class="on-leave-null" style="padding-left: 5px;">
+                                                    <label class="text-center">No tardy found.</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- <div>
+                                        <div class="schedule-holder">
+                                            <ng-container *ngIf="schedule">{{ schedule.name || "~" }}</ng-container>
+                                            <ng-container *ngIf="!schedule">~</ng-container>
+                                        </div>
+                                        <div class="sched-time-holder">
+                                            <ng-container *ngIf="schedule">{{ schedule.start }} - {{ schedule.end }}</ng-container>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </a>                    
+                        </div>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+        </div>
+
+        <ng-container *ngIf="isApprover">
+            <ion-item-divider style="background-color: transparent; margin-bottom: 0;">
+                <div class="dashboard-tile-header">To Do</div>
+                <!-- <div class="dash-toggle-icon-cont" (click)="offToggle('todos')">            
+                    <ion-icon ios="{{toggleTodos}}" md="{{toggleTodos}}"></ion-icon>
+                </div>  -->
+            </ion-item-divider>
+            
+            <div *ngIf="dashTodos == '1'">
+                <ion-row>
+                    <ion-col col-6 style="padding-right: 0px;">
+                        <ion-card class="dash-card" color="light">
+                            <div class="ft ft-mypayslipsdate">
+                                <div class="ft-top dash-card-height"> <span class="ft-icon icon-dash-employeesonleave"></span>
+                                    <div class="ft-label">approve leave <br>requests</div>
+                                    <div class="ft-lusah">
+                                        <div class="ftl"><span style="font-size: 20px; padding-top: 65px; position: relative;">{{ todoLeave || "0" }}</span></div>
+                                    </div>
+                                </div>
+                                <div class="ft-bot" (click)="goto('members/todo-leaves')">view</div>
+                            </div>
+                        </ion-card>
+                    </ion-col>
+                    <ion-col col-6 >
+                        <ion-card class="dash-card" color="light">
+                            <div class="ft ft-mypayslipsdate">
+                                <div class="ft-top dash-card-height"> <span class="ft-icon icon-menu-overtime"></span>
+                                    <div class="ft-label">approve overtime <br>requests</div>
+                                    <div class="ft-lusah">
+                                        <div class="ftl"><span style="font-size: 20px; padding-top: 65px; position: relative;">{{ todoOt || "0" }}</span></div>
+                                    </div>
+                                </div>
+                                <div class="ft-bot" (click)="goto('members/todo-overtime')">view</div>
+                            </div>
+                        </ion-card>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-6 style="padding-right: 0px;">
+                        <ion-card class="dash-card" color="light">
+                            <div class="ft ft-mypayslipsdate">
+                                <div class="ft-top dash-card-height"> <span class="ft-icon icon-menu-shifts"></span>
+                                    <div class="ft-label">approve shift <br>change</div>
+                                    <div class="ft-lusah">
+                                        <div class="ftl"><span style="font-size: 20px; padding-top: 65px; position: relative;">{{ todoShift || "0" }}</span></div>
+                                    </div>
+                                </div>
+                                <div class="ft-bot" (click)="goto('members/todo-shifts')">view</div>
+                            </div>
+                        </ion-card>
+                    </ion-col>
+                    <ion-col col-6 >
+                        <ion-card class="dash-card" color="light">
+                            <div class="ft ft-mypayslipsdate">
+                                <div class="ft-top dash-card-height"> <span class="ft-icon icon-menu-news"></span>
+                                    <div class="ft-label">approve <br>timesheets</div>
+                                    <div class="ft-lusah">
+                                        <div class="ftl"><span style="font-size: 20px; padding-top: 65px; position: relative;">{{ todoTime || "0" }}</span></div>
+                                    </div>
+                                </div>
+                                <div class="ft-bot" (click)="goto('members/todo-timesheets')">view</div>
+                            </div>
+                        </ion-card>
+                    </ion-col>
+                </ion-row>
+            </div>
+        </ng-container>
+
+        <ion-item-divider style="background-color: transparent; margin-bottom: 0;">
+            <div class="dashboard-tile-header">Manage My Team</div>
+            <!-- <div class="dash-toggle-icon-cont" (click)="offToggle('team')">            
+                <ion-icon ios="{{toggleTeam}}" md="{{toggleTeam}}"></ion-icon>
+            </div> -->
+        </ion-item-divider>
+        <div *ngIf="dashTeam == '1'">
+            <ion-row>
+                <ion-col col-6 style="padding-right: 0px;">
+                    <ion-card class="dash-card" color="light">
+                        <div class="ft of_visible dash-card-height">
+                            <!-- <a ng-click="managerdash.gotoMissSheets(managerdash.employees_missing_timesheet_count.employees)"> -->
+                                <div class="ft-top dash-card-height"> <span class="ft-icon "></span>
+                                    <div class="ft-label">missing <br>timesheets</div>
+                                    <div>
+                                        <div class="ft-val missing-count">
+                                            <ng-container *ngIf="missingTsheets">{{ missingTsheets.employees_missing_timesheet_count || "0" }}</ng-container>
+                                            <ng-container *ngIf="!missingTsheets">0</ng-container>
+                                        </div>
+                                        <div class="missing-yesterday">
+                                            Yesterday
+                                        </div>
+                                        <div class="missing-paydate">
+                                            Pay Date: 
+                                            <ng-container *ngIf="missingTsheets">{{ missingTsheets.next_pay_period || "~" }}</ng-container>
+                                            <ng-container *ngIf="!missingTsheets">~</ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- </a> -->
+                        </div>
+                    </ion-card>
+                </ion-col>
+                <ion-col col-6>
+                    <ion-card class="dash-card" color="light">
+                        <!-- <a ng-click="managerdash.gotoMissPunch(managerdash.team_missed_punches_count.missed_punches)"> -->
+                            <div class="ft ft-mypayslipsdate">
+                                <div class="ft-top dash-card-height"> <span class="ft-icon "></span>
+                                    <div class="ft-label">team missed<br>punches 
+                                        <span class="dash-card-label">
+                                            ({{ (missedPunch) ? missedPunch.missed_punches_count : '0' }})
+                                        </span>
+                                    </div>
+        
+                                    <div class="ft2-inner">
+                                        <div class="employee-listing dash-listing">
+                                            <ng-container *ngIf="missedPunch">
+                                                <ul class="cont_employee_tardy dash-ul">
+                                                    <li *ngFor="let employee of missedPunch.missed_punches;  let i=index">
+                                                        <div class="clearfix box-employee-set height-23" style="margin-top: 15px;" *ngIf="i<2">
+                                                            <div class="small-avatar dash-small-avatar" *ngIf="employee.profile_image" [style.backgroundImage]="'url(' + baseUrl + '/uploads/companies/' + employee.company_id + '/' + employee.profile_image +')'"></div>
+                                                            <div class="small-avatar dash-small-avatar default-avatar" *ngIf="!employee.profile_image"></div>
+                                                            <div class="overflow-hidden box-employee-name-set">
+                                                                <div class="employeeName pull-left text-to-dot-dot dash-name-list">{{employee.first_name | titlecase}} {{employee.last_name | titlecase}}</div>
+                                                                <div class="text-to-dot-dot dash-name-cloud-id">{{employee.payroll_cloud_id}}</div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </ng-container>
+                                            <ng-container *ngIf="!missedPunch">
+                                                <ul class="cont_employee_tardy dash-ul m-top-20">
+                                                    <li class="dash-list-null">
+                                                        <div>No data found.</div>
+                                                    </li>
+                                                </ul>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+        
+                                </div>
+                            </div>
+                        <!-- </a> -->
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+        </div>
+
+        <ion-item-divider style="background-color: transparent; margin-bottom: 0;">
+            <div class="dashboard-tile-header">Events</div>
+            <!-- <div class="dash-toggle-icon-cont" (click)="offToggle('events')">            
+                <ion-icon ios="{{toggleEvents}}" md="{{toggleEvents}}"></ion-icon>
+            </div> -->
+        </ion-item-divider>
+        <div *ngIf="dashEvents == '1'">
+            <ion-row>
+                <ion-col col-6 style="padding-right: 0px;">
+                    <ion-card class="dash-card" color="light">
+                        <div class="ft ft-mypayslipsdate" (click)="goto('BirthdaysPage')">
+                            <div class="ft-top dash-card-height"> <span class="ft-icon "></span>
+                                <div class="ft-label">birthdays <span class="dash-card-label">({{ (birthdays) ? birthdays.length : '0' }})</span></div>
+                                <div class="ft2-inner">
+                                    <div class="employee-listing dash-listing">
+                                        <ul class="cont_employee_tardy dash-ul" *ngIf="birthdays" style="margin-top: 25px;">
+                                            <li *ngFor="let bd of birthdays;  let i=index" style="height: 28px;">
+                                                <div class="clearfix box-employee-set height-23" *ngIf="i<2">
+                                                    <div class="small-avatar dash-small-avatar" *ngIf="bd.profile_image" [style.backgroundImage]="'url(' + baseUrl + '/uploads/companies/' + bd.company_id + '/' + bd.profile_image +')'"></div>
+                                                    <div class="small-avatar dash-small-avatar default-avatar" *ngIf="!bd.profile_image"></div>
+                                                    <div class="overflow-hidden box-employee-name-set">
+                                                        <div class="employeeName pull-left text-to-dot-dot dash-name-list">{{bd.first_name | titlecase}} {{bd.last_name | titlecase}}</div>
+                                                        <div class="dash-name-cloud-id">{{bd.date_of_birth}}</div>
+                                                    </div>
+                                                </div>
+                                            </li>                                    
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="cont_employee_tardy" *ngIf="!birthdays">
+                                    <div class="on-leave-null">
+                                        <label class="text-center" style="padding-left: 5px;">No birthdays found.</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="ft-bot" *ngIf="birthdays"><a (click)="goto('BirthdaysPage')">view</a></div> -->
+                            
+                        </div>
+                    </ion-card>
+                </ion-col>
+                <ion-col col-6>
+                    <ion-card class="dash-card" color="light">
+                        <div class="ft ft-mypayslipsdate">
+                            <div class="ft-top dash-card-height"> <span class="ft-icon "></span>
+                                <div class="ft-label">anniversaries</div>
+                                <div class="ft2-inner">
+                                    <div class="employee-listing dash-listing">
+                                        <ul class="cont_employee_tardy dash-ul" *ngIf="anniversaries">
+                                            <li *ngFor="let anniv of anniversaries;  let i=index">
+                                                <div class="clearfix box-employee-set height-23" *ngIf="i<2">
+                                                    <div class="small-avatar dash-small-avatar" *ngIf="anniv.profile_image" [style.backgroundImage]="'url(' + baseUrl + '/uploads/companies/' + anniv.company_id + '/' + anniv.profile_image +')'"></div>
+                                                    <div class="small-avatar dash-small-avatar default-avatar" *ngIf="!anniv.profile_image"></div>
+                                                    <div class="overflow-hidden box-employee-name-set">
+                                                        <div class="employeeName pull-left dash-name-list">{{anniv.first_name | titlecase}} {{anniv.last_name | titlecase}}</div>
+                                                        <div class="dash-name-cloud-id">{{anniv.num_of_years}} {{anniv.year_text}} {{anniv.company_name}}</div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="cont_employee_tardy" *ngIf="!anniversaries">
+                                            <div class="on-leave-null">
+                                                <label class="text-center" style="padding-left: 5px;">No anniversaries found.</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-6 style="padding-right: 0px;">
+                    <ion-card class="dash-card" color="light">
+                        <div class="ft ft-mypayslipsdate">
+                            <div class="ft-top dash-card-height"> <span class="ft-icon "></span>
+                                <div class="ft-label">upcoming <br>holiday</div>
+                                
+                                <div class="ft2-inner">
+                                    <div class="employee-listing" style="height: 40px; margin-left: -7px; margin-top: 0px; width: 149px;">
+                                        <ul class="cont_employee_tardy" style="list-style: none; padding-left: 20px;">
+                                            <li style="border: medium none; height: 20px; margin-bottom: 10px;" *ngIf="holidays">
+                                                <div class="clearfix box-employee-set" style="height: 23px;">
+                                                    <div class="overflow-hidden box-employee-name-set" style="height: 22px;">
+                                                        <div class="employeeName pull-left" style="font-size: 16px; margin-top: -10px; color: #1172ad; text-transform: uppercase; font-weight: 700;">{{ holidays.month}}</div>
+                                                        <div class="employeeName pull-left" style="font-size: 12px; color: #1172ad;position: absolute;">{{holidays.year}}</div>
+                                                        <div style="font-size: 12px; margin-top: 25px; position: absolute; line-height: 11px; color: #666;">{{holidays.holiday_name}}</div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 60px; position: absolute;" *ngIf="!holidays">
+                                    <label style="color: #666; font-size: 12px;" class="text-center">No holidays found.</label>
+                                </div>
+                            </div>
+                        </div>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+        </div>
+    </ion-list>
+</ion-content>
+

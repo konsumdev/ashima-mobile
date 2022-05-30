@@ -1,0 +1,90 @@
+ion-segment.ios {
+    padding: 16px;
+    padding-bottom: 15px;
+    background: #fff;
+}
+ion-item {
+    font-size: 14px !important;
+    --border-color: #efefef;
+}
+.sc-ion-segment-md-h {
+    --color-checked: #7ecdff;
+}
+
+.slide-zoom {
+    position: absolute;
+    top: 0;
+    font-family: 'open_sanslight';
+    overflow-y: scroll;
+    bottom: 0px;
+}
+.swiper-slide {
+    font-size: 14px;
+}
+.net-pay {
+    color: #1172ad !important;
+}
+.timesheet-hrs-word {
+    font-size: 12px;
+    text-align: right;
+    color: #1172ad;
+    font-weight: normal;
+}
+ion-note {
+    color: #1172ad !important;
+}
+.scroll-content {
+    margin-top: 180px !important;
+}
+.fixed-content {
+    margin-top: 180px !important;
+}
+
+.summary-header-cont {
+    padding: 10px 0px;
+}
+
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    .summary-table-row {
+        min-width: 280px;
+    }
+}
+
+@media screen 
+  and (device-width: 360px) 
+  and (device-height: 640px) 
+  and (-webkit-device-pixel-ratio: 4) {
+    .summary-table-row {
+        min-width: 320px;
+    }
+}
+
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 667px) 
+  and (-webkit-min-device-pixel-ratio: 2) { 
+    .summary-table-row {
+        min-width: 330px;
+    }
+}
+
+@media only screen 
+  and (min-device-width: 414px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 3) { 
+    .summary-table-row {
+        min-width: 380px;
+    }
+}
+
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 812px) 
+  and (-webkit-min-device-pixel-ratio: 3) { 
+    .summary-table-row {
+        min-width: 340px;
+    }
+}

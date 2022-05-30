@@ -1,0 +1,142 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-back-button  defaultHref="timesheets" (click)="gotoBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+        {{ modalTitle }}
+    </ion-title>
+    <ion-buttons slot="end">
+        <ion-button (click)="onSubmit()" [disabled]="!reason || !totalHrs">
+          Submit
+        </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+        Time Entry
+    </ion-card-header>
+    <ion-list >
+        <div class="timesheet-tard-cont" style="font-family: open_sanslight; padding: 15px; ">
+            <div class="timesheet-content-body">
+                <div class="timesheet-content-cap">Clock In</div>
+                <div class="timesheet-content-value">{{ logDetails.time_in_date || "" }} | {{ logDetails.time_in || "--:--" }}</div>
+            </div>
+
+            <div *ngIf="logDetails.enable_lunch_break == 'yes'">
+              <ng-container *ngIf="logDetails.lunch_in_date || logDetails.lunch_out">
+                  <div class="timesheet-content-body">
+                      <div class="timesheet-content-cap" [ngClass]="{ 'filed-in-data': break_schedule_1=='fixed' }">Lunch Out</div>
+                      <div class="timesheet-content-value">{{ logDetails.lunch_out_date || "" }} | {{ logDetails.lunch_out || "--:--" }}</div>
+                  </div>
+                  <div class="timesheet-content-body">
+                      <div class="timesheet-content-cap" [ngClass]="{ 'filed-in-data': break_schedule_1=='fixed' }">Lunch In</div>
+                      <div class="timesheet-content-value">{{ logDetails.lunch_in_date || "" }} | {{ logDetails.lunch_in || "--:--" }}</div>
+                  </div>
+              </ng-container>
+            </div>
+
+            <div *ngIf="logDetails.break1_out_date || logDetails.break1_in_date">
+                <div class="timesheet-content-body">
+                    <div class="timesheet-content-cap">First Break Out</div>
+                    <div class="timesheet-content-value">{{ logDetails.break1_out_date || "" }} | {{ logDetails.break1_out || "--:--" }}</div>
+                </div>
+                <div class="timesheet-content-body">
+                    <div class="timesheet-content-cap">First Break In</div>
+                    <div class="timesheet-content-value">{{ logDetails.break1_in_date || "" }} | {{ logDetails.break1_in || "--:--" }}</div>
+                </div>
+            </div>
+
+            <div *ngIf="logDetails.break2_out_date || logDetails.break2_in_date">
+                <div class="timesheet-content-body">
+                    <div class="timesheet-content-cap">Second Break Out</div>
+                    <div class="timesheet-content-value">{{ logDetails.break2_out_date || "" }} | {{ logDetails.break2_out || "--:--" }}</div>
+                </div>
+                <div class="timesheet-content-body">
+                    <div class="timesheet-content-cap">Second Break In</div>
+                    <div class="timesheet-content-value">{{ logDetails.break2_in_date || "" }} | {{ logDetails.break2_in || "--:--" }}</div>
+                </div>
+            </div>
+
+            <div class="timesheet-content-body">
+                <div class="timesheet-content-cap">Clock Out</div>
+                <div class="timesheet-content-value">{{ logDetails.time_out_date || "" }} | {{ logDetails.time_out || "--:--" }}</div>
+            </div>
+        </div>
+    </ion-list>  
+  </ion-card>
+
+  <ion-list lines="full">
+      <ion-item>
+          <ion-label>Working Half Day</ion-label>
+          <ion-toggle [(ngModel)]="halfDay" color="ashima"></ion-toggle>
+      </ion-item>
+      <ion-item>
+          <ion-label>Date</ion-label>
+          <ion-datetime displayFormat="DD-MMM-YYYY" placeholder="Select date/time" (ionChange)="onChangeDate()" [(ngModel)]="currentDate"></ion-datetime>
+      </ion-item>
+      <ion-item no-lines>
+          <ion-label>Reason</ion-label>
+      </ion-item>
+      <ion-item>
+          <ion-textarea rows="2" [(ngModel)]="reason" placeholder="Provide a reason."></ion-textarea>
+      </ion-item>
+      <ion-item>
+          <ion-label>Time In</ion-label>
+          <ion-datetime displayFormat="DD-MMM-YY hh:mm A" min="{{ minDate }}" max="{{ maxDate }}" placeholder="Select date/time" (ionChange)="onSelectDate()" [(ngModel)]="timeIn"></ion-datetime>
+      </ion-item>
+
+      <div *ngIf="hasLunch && !halfDay">
+          <ion-item>
+              <ion-label>Lunch Out</ion-label>
+              <ion-datetime displayFormat="DD-MMM-YY hh:mm A" min="{{ minDate }}" max="{{ maxDate }}" placeholder="Select date/time" (ionChange)="onSelectDate()" [(ngModel)]="lunchOut"></ion-datetime>
+          </ion-item>
+
+          <ion-item>
+              <ion-label>Lunch In</ion-label>
+              <ion-datetime displayFormat="DD-MMM-YY hh:mm A" min="{{ minDate }}" max="{{ maxDate }}" placeholder="Select date/time" (ionChange)="onSelectDate()" [(ngModel)]="lunchIn"></ion-datetime>
+          </ion-item>
+      </div>
+  
+      <div *ngIf="hasBreakOne">
+          <ion-item>
+              <ion-label>First Break Out</ion-label>
+              <ion-datetime displayFormat="DD-MMM-YY hh:mm A" min="{{ minDate }}" max="{{ maxDate }}" placeholder="Select date/time" (ionChange)="onSelectDate()" [(ngModel)]="firstBreakOut"></ion-datetime>
+          </ion-item>
+
+          <ion-item>
+              <ion-label>First Break In</ion-label>
+              <ion-datetime displayFormat="DD-MMM-YY hh:mm A" min="{{ minDate }}" max="{{ maxDate }}" placeholder="Select date/time" (ionChange)="onSelectDate()" [(ngModel)]="firstBreakIn"></ion-datetime>
+          </ion-item>
+      </div>
+
+      <div *ngIf="hasBreakTwo">
+          <ion-item>
+              <ion-label>Second Break Out</ion-label>
+              <ion-datetime displayFormat="DD-MMM-YY hh:mm A" min="{{ minDate }}" max="{{ maxDate }}" placeholder="Select date/time" (ionChange)="onSelectDate()" [(ngModel)]="secondBreakOut"></ion-datetime>
+          </ion-item>
+
+          <ion-item>
+              <ion-label>Second Break In</ion-label>
+              <ion-datetime displayFormat="DD-MMM-YY hh:mm A" min="{{ minDate }}" max="{{ maxDate }}" placeholder="Select date/time" (ionChange)="onSelectDate()" [(ngModel)]="secondBreakIn"></ion-datetime>
+          </ion-item>
+      </div>
+
+      <ion-item>
+          <ion-label>Time Out</ion-label>
+          <ion-datetime displayFormat="DD-MMM-YY hh:mm A" min="{{ minDate }}" max="{{ maxDate }}" placeholder="Select date/time" (ionChange)="onSelectDate(true)" [(ngModel)]="timeOut"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+          <ion-label class="bold-me">Total Hours</ion-label>
+          <ion-note item-end class="bold-me">
+              <span *ngIf="isPristine">{{ (totalHrs | number:".2") || '0.00' }}</span>
+              <ion-spinner *ngIf="!isPristine" name="dots"></ion-spinner>
+          </ion-note>
+      </ion-item>
+
+  </ion-list>
+</ion-content>

@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Documents
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <div *ngIf="documentDetails">
+        <div *ngFor="let doc of documentDetails">
+            <ion-item lines="full">
+                <ion-label>
+                    <h3>{{ doc.date_requested | date:'dd-MMM-yy' }}</h3>
+                    <p class="approve-color" *ngIf="doc.approval_status == 'Approved'">Approve</p>
+                    <p class="reject-color" *ngIf="doc.approval_status == 'Rejected'">Rejected</p>
+                    <p class="no-sched-color" *ngIf="doc.approval_status == 'Pending'">Pending</p>
+                </ion-label>
+                                
+                <ion-note slot="end" class="capitalize timesheet-total-hrs-list" style="max-width: 70%;">
+                {{ doc.document_name || "~" }}<br>
+                <span class="timesheet-hrs-word">{{ doc.document_type || "~" }}</span>
+                </ion-note>
+            </ion-item>
+        </div>                    
+    </div>
+    <div *ngIf="!documentDetails" class="no-record-found-cont">
+      <div class="no-record-found-icon">
+          <span class="icon-no-record"></span>
+      </div>
+      <div class="no-record-holder">No data found.</div>
+    </div>
+  </ion-list>
+</ion-content>

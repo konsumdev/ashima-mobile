@@ -1,0 +1,435 @@
+@font-face {
+  font-family: 'ashimaicon';
+  src:  url('fonts/ashimaicon.eot?v7gg1u');
+  src:  url('fonts/ashimaicon.eot?v7gg1u#iefix') format('embedded-opentype'),
+    url('fonts/ashimaicon.ttf?v7gg1u') format('truetype'),
+    url('fonts/ashimaicon.woff?v7gg1u') format('woff'),
+    url('fonts/ashimaicon.svg?v7gg1u#ashimaicon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-ashima-"], [class*=" icon-ashima-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'ashimaicon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-ashima-minus:before {
+  content: "\e927";
+}
+.icon-ashima-insurance:before {
+  content: "\e926";
+}
+.icon-ashima-learners-data:before {
+  content: "\e924";
+}
+.icon-ashima-service-record:before {
+  content: "\e925";
+}
+.icon-ashima-notice-for-step-increment:before {
+  content: "\e923";
+}
+.icon-ashima-salary-adjustment:before {
+  content: "\e922";
+}
+.icon-ashima-career-service:before {
+  content: "\e916";
+}
+.icon-ashima-educational-details:before {
+  content: "\e91a";
+}
+.icon-ashima-employment-details:before {
+  content: "\e91b";
+}
+.icon-ashima-oragnization:before {
+  content: "\e91c";
+}
+.icon-ashima-other-information:before {
+  content: "\e91d";
+}
+.icon-ashima-personal-details:before {
+  content: "\e91e";
+}
+.icon-ashima-reference:before {
+  content: "\e91f";
+}
+.icon-ashima-seminars:before {
+  content: "\e920";
+}
+.icon-ashima-special-skills:before {
+  content: "\e921";
+}
+.icon-ashima-third-party:before {
+  content: "\e914";
+}
+.icon-ashima-government-loans2:before {
+  content: "\e915";
+}
+.icon-ashima-other-earnings:before {
+  content: "\e917";
+}
+.icon-ashima-allowances:before {
+  content: "\e918";
+}
+.icon-ashima-other-deductions:before {
+  content: "\e919";
+}
+.icon-ashima-de-minimis-balance:before {
+  content: "\e90c";
+}
+.icon-ashima-allowance-balance:before {
+  content: "\e90d";
+}
+.icon-ashima-contributions-balance:before {
+  content: "\e90e";
+}
+.icon-ashima-gross-and-net-earnings:before {
+  content: "\e90f";
+}
+.icon-ashima-leave-balance:before {
+  content: "\e910";
+}
+.icon-ashima-timesheet2:before {
+  content: "\e911";
+}
+.icon-ashima-bulk-employee:before {
+  content: "\e912";
+}
+.icon-ashima-import-guide:before {
+  content: "\e913";
+}
+.icon-ashima-leave-history:before {
+  content: "\e90b";
+}
+.icon-ashima-attendance:before {
+  content: "\e90a";
+}
+.icon-ashima-overtime2:before {
+  content: "\e909";
+}
+.icon-ashima-gender:before {
+  content: "\e901";
+}
+.icon-ashima-gender2:before {
+  content: "\e902";
+}
+.icon-ashima-hired-employee:before {
+  content: "\e903";
+}
+.icon-ashima-last-payroll-head-count:before {
+  content: "\e904";
+}
+.icon-ashima-mail2:before {
+  content: "\e905";
+}
+.icon-ashima-new-employee:before {
+  content: "\e906";
+}
+.icon-ashima-phone2:before {
+  content: "\e907";
+}
+.icon-ashima-head-count2:before {
+  content: "\e908";
+}
+.icon-ashima-announcement:before {
+  content: "\e900";
+}
+.icon-ashima-add-circ:before {
+  content: "\e80e";
+}
+.icon-ashima-hazard-pay:before {
+  content: "\e80c";
+}
+.icon-ashima-open-balance:before {
+  content: "\e80d";
+}
+.icon-ashima-login:before {
+  content: "\e806";
+}
+.icon-ashima-phone:before {
+  content: "\e80a";
+}
+.icon-ashima-home:before {
+  content: "\e80b";
+}
+.icon-ashima-undertime:before {
+  content: "\e805";
+}
+.icon-ashima-missing:before {
+  content: "\e807";
+}
+.icon-ashima-pending:before {
+  content: "\e808";
+}
+.icon-ashima-all-logs:before {
+  content: "\e809";
+}
+.icon-ashima-regular-shift:before {
+  content: "\e804";
+}
+.icon-ashima-night-shift:before {
+  content: "\e800";
+}
+.icon-ashima-compressed-shift:before {
+  content: "\e801";
+}
+.icon-ashima-flexible-shift:before {
+  content: "\e802";
+}
+.icon-ashima-split-shift:before {
+  content: "\e803";
+}
+.icon-ashima-absent-employees:before {
+  content: "\e64e";
+}
+.icon-ashima-clock:before {
+  content: "\e64f";
+}
+.icon-ashima-plane:before {
+  content: "\e650";
+}
+.icon-ashima-service-charge:before {
+  content: "\e64d";
+}
+.icon-ashima-payroll-approval-group:before {
+  content: "\e64c";
+}
+.icon-ashima-minimum-wage:before {
+  content: "\e649";
+}
+.icon-ashima-night-differential:before {
+  content: "\e64a";
+}
+.icon-ashima-tardiness:before {
+  content: "\e64b";
+}
+.icon-ashima-hdmf:before {
+  content: "\e645";
+}
+.icon-ashima-philhealth:before {
+  content: "\e646";
+}
+.icon-ashima-sss:before {
+  content: "\e647";
+}
+.icon-ashima-gsis:before {
+  content: "\e648";
+}
+.icon-ashima-mobile-clockin:before {
+  content: "\e644";
+}
+.icon-ashima-timesheet-adjustment:before {
+  content: "\e642";
+}
+.icon-ashima-withholdingtax-rules:before {
+  content: "\e643";
+}
+.icon-ashima-withholdingtax:before {
+  content: "\e641";
+}
+.icon-ashima-government-loans:before {
+  content: "\e640";
+}
+.icon-ashima-target:before {
+  content: "\e63f";
+}
+.icon-ashima-recibo:before {
+  content: "\e63c";
+}
+.icon-ashima-money:before {
+  content: "\e63d";
+}
+.icon-ashima-shift:before {
+  content: "\e63e";
+}
+.icon-ashima-x:before {
+  content: "\e63b";
+}
+.icon-ashima-readonly:before {
+  content: "\e63a";
+}
+.icon-ashima-hours-worked:before {
+  content: "\e636";
+}
+.icon-ashima-night-diff:before {
+  content: "\e637";
+}
+.icon-ashima-absences:before {
+  content: "\e638";
+}
+.icon-ashima-calendar-2:before {
+  content: "\e639";
+}
+.icon-ashima-paintbrush:before {
+  content: "\e635";
+}
+.icon-ashima-trash-b:before {
+  content: "\e633";
+}
+.icon-ashima-trash-a:before {
+  content: "\e634";
+}
+.icon-ashima-trash:before {
+  content: "\e631";
+}
+.icon-ashima-trash-outline:before {
+  content: "\e632";
+}
+.icon-ashima-calculator:before {
+  content: "\e630";
+}
+.icon-ashima-file-manager:before {
+  content: "\e62f";
+}
+.icon-ashima-file-2:before {
+  content: "\e62b";
+}
+.icon-ashima-termination:before {
+  content: "\e62c";
+}
+.icon-ashima-leaves-2:before {
+  content: "\e62d";
+}
+.icon-ashima-cash-advance-2:before {
+  content: "\e62e";
+}
+.icon-ashima-loans:before {
+  content: "\e626";
+}
+.icon-ashima-contributions:before {
+  content: "\e627";
+}
+.icon-ashima-other-benefits:before {
+  content: "\e628";
+}
+.icon-ashima-deminimis:before {
+  content: "\e629";
+}
+.icon-ashima-commissions:before {
+  content: "\e62a";
+}
+.icon-ashima-alert-static:before {
+  content: "\e621";
+}
+.icon-ashima-alert:before {
+  content: "\e622";
+}
+.icon-ashima-alert-circle:before {
+  content: "\e623";
+}
+.icon-ashima-i:before {
+  content: "\e624";
+}
+.icon-ashima-check:before {
+  content: "\e625";
+}
+.icon-ashima-mail:before {
+  content: "\e620";
+}
+.icon-ashima-align-left:before {
+  content: "\e61e";
+}
+.icon-ashima-file:before {
+  content: "\e61f";
+}
+.icon-ashima-edit:before {
+  content: "\e61d";
+}
+.icon-ashima-person-stalker:before {
+  content: "\e61b";
+}
+.icon-ashima-clipboard:before {
+  content: "\e61c";
+}
+.icon-ashima-info:before {
+  content: "\e61a";
+}
+.icon-ashima-add-circle:before {
+  content: "\e618";
+}
+.icon-ashima-add:before {
+  content: "\e619";
+}
+.icon-ashima-upload:before {
+  content: "\e617";
+}
+.icon-ashima-calendar:before {
+  content: "\e608";
+}
+.icon-ashima-forward-tail:before {
+  content: "\e606";
+}
+.icon-ashima-back-tail:before {
+  content: "\e607";
+}
+.icon-ashima-arrow-left-last:before {
+  content: "\e604";
+}
+.icon-ashima-arrow-left-first:before {
+  content: "\e605";
+}
+.icon-ashima-expenses:before {
+  content: "\e603";
+}
+.icon-ashima-more:before {
+  content: "\e616";
+}
+.icon-ashima-arrow-right:before {
+  content: "\e610";
+}
+.icon-ashima-arrow-left:before {
+  content: "\e611";
+}
+.icon-ashima-arrow-down:before {
+  content: "\e612";
+}
+.icon-ashima-arrow-up:before {
+  content: "\e613";
+}
+.icon-ashima-arrow-forward:before {
+  content: "\e614";
+}
+.icon-ashima-arrow-back:before {
+  content: "\e615";
+}
+.icon-ashima-settings:before {
+  content: "\e60f";
+}
+.icon-ashima-notification:before {
+  content: "\e60d";
+}
+.icon-ashima-new:before {
+  content: "\e60e";
+}
+.icon-ashima-export:before {
+  content: "\e601";
+}
+.icon-ashima-search:before {
+  content: "\e602";
+}
+.icon-ashima-cash-advance:before {
+  content: "\e609";
+}
+.icon-ashima-payroll:before {
+  content: "\e60a";
+}
+.icon-ashima-overtime:before {
+  content: "\e60b";
+}
+.icon-ashima-leaves:before {
+  content: "\e60c";
+}
+.icon-ashima-timesheet:before {
+  content: "\e600";
+}
+

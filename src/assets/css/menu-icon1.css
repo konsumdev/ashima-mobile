@@ -1,0 +1,105 @@
+@font-face {
+    font-family: 'menu-icon';
+    src:    url('fonts/menu-icon.eot?ll0u27');
+    src:    url('fonts/menu-icon.eot?ll0u27#iefix') format('embedded-opentype'),
+        url('fonts/menu-icon.ttf?ll0u27') format('truetype'),
+        url('fonts/menu-icon.woff?ll0u27') format('woff'),
+        url('fonts/menu-icon.svg?ll0u27#menu-icon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'menu-icon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-menu-deductions:before {
+    content: "\e901";
+}
+.icon-menu-earnings:before {
+    content: "\e905";
+}
+.icon-menu-leaves:before {
+    content: "\e906";
+}
+.icon-rn-header:before {
+    content: "\e900";
+}
+.icon-dash-timesheets:before {
+    content: "\e609";
+}
+.icon-dash-attendance:before {
+    content: "\e61f";
+}
+.icon-dash-nextshifts:before {
+    content: "\e619";
+}
+.icon-dash-nextpayrollpreparation:before {
+    content: "\e61a";
+}
+.icon-dash-nextpaydate:before {
+    content: "\e61b";
+}
+.icon-dash-mypayslips:before {
+    content: "\e61c";
+}
+.icon-dash-employeesonleave:before {
+    content: "\e61d";
+}
+.icon-dash-employeesclockedin:before {
+    content: "\e61e";
+}
+.icon-menu-todo:before {
+    content: "\e60d";
+}
+.icon-menu-shifts:before {
+    content: "\e600";
+}
+.icon-menu-profile:before {
+    content: "\e601";
+}
+.icon-menu-pay:before {
+    content: "\e602";
+}
+.icon-menu-overtime:before {
+    content: "\e603";
+}
+.icon-menu-news:before {
+    content: "\e604";
+}
+.icon-menu-hours:before {
+    content: "\e605";
+}
+.icon-menu-filemanager:before {
+    content: "\e606";
+}
+.icon-menu-dashboard:before {
+    content: "\e607";
+}
+.icon-menu-benefits:before {
+    content: "\e608";
+}
+.icon-menu-contact:before {
+    content: "\e60f";
+}
+.icon-menu-logout:before {
+    content: "\e611";
+}
+.icon-target:before {
+    content: "\e612";
+}
+.icon-menu-settings:before {
+    content: "\e610";
+}
+

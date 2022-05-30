@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Shifts
+    </ion-title>
+  </ion-toolbar>
+  
+  <ion-toolbar color="ashima">
+
+      <ion-title class="calendar-subheader" slot="start" style="text-align: left;">{{ viewTitle }}</ion-title>
+
+      <ion-buttons slot="end">
+        <ion-button (click)="today()">Today</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <calendar 
+    [eventSource]="eventSource" 
+    [calendarMode]="calendar.mode" 
+    [currentDate]="calendar.currentDate"
+    (onEventSelected)="onEventSelected($event)"
+    (onTitleChanged)="onViewTitleChanged($event)"
+    (onTimeSelected)="onTimeSelected($event)" 
+    startHour="6"
+    endHour="20"
+    step="30"
+    startingDayWeek="1">
+    </calendar>
+
+    <ion-list>
+        <ion-item lines="full">
+            <label class="work-day">Work Day</label>
+            <ion-note slot="end" *ngIf="!selectedShift.holiday">
+                <h3 class="font-10">{{ selectedShift.abb }}</h3>
+                <p *ngIf="selectedShift.schedule">{{ selectedShift.schedule.start_time }} - {{ selectedShift.schedule.end_time }}</p>
+            </ion-note>
+            <ion-note slot="end" *ngIf="selectedShift.holiday">
+                <h3 class="font-10">{{ selectedShift.holiday.hour_type_name || "~" }}</h3>
+                <p>{{ selectedShift.holiday.holiday_name || "~" }}</p>
+            </ion-note>
+        </ion-item>
+        <ion-item *ngIf="!selectedShift.holiday && selectedShift.schedule" lines="full">
+            Clock In
+            <ion-note slot="end">
+                <span *ngIf="selectedShift.schedule">{{ selectedShift.schedule.start_time || "~"}}</span>
+            </ion-note>
+        </ion-item>
+        <ion-item *ngIf="!selectedShift.holiday && selectedShift.schedule" lines="full">
+            Clock Out
+            <ion-note slot="end">
+                <span *ngIf="selectedShift.schedule">{{ selectedShift.schedule.end_time || "~"}}</span>
+            </ion-note>
+        </ion-item>
+        <ion-item lines="full">
+            <span class="shift-next-day-day">Next Shift: {{ (nextShift.server_date | date:"dd-MMM") || "~" }}</span><br>
+            <span style="font-size: 14px; font-weight: 600; color: #666;">{{ nextShift.abb || "~" }}</span><br>
+            <ng-container *ngIf="nextShift.schedule" class="pull-right">
+                <span class="shift-next-day-day">{{ nextShift.schedule.start_time || "~" }}</span> - 
+                <span class="shift-next-day-day">{{ nextShift.schedule.end_time || "~" }}</span><br>
+            </ng-container>
+        </ion-item>
+    </ion-list>
+</ion-content>

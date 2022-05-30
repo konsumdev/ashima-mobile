@@ -1,0 +1,331 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Contributions
+    </ion-title>
+  </ion-toolbar>
+
+  <div class="segment-div ion-padding" style="padding-bottom: 0px;">
+      <ion-segment [(ngModel)]="selectedSegment" mode="md" (ionChange)="onSegmentChanged($event)">
+          <ion-segment-button value="sss" mode="md" style="color: #fff;">
+          SSS
+          </ion-segment-button>
+          <ion-segment-button value="phic" mode="md" style="color: #fff;">
+          PHIC
+          </ion-segment-button>
+          <ion-segment-button value="hdmf" mode="md" style="color: #fff;">
+          HDMF
+          </ion-segment-button>
+      </ion-segment>
+  </div>
+  <div>
+      <ng-container *ngIf="selectedSegment == 'sss'">
+          <div style="padding-bottom: 15px !important;">
+              <ion-segment [(ngModel)]="sssSegment" mode="ios" color="ashima">
+                  <ion-segment-button value="summary" mode="ios">
+                  Summary
+                  </ion-segment-button>
+                  <ion-segment-button value="history" mode="ios">
+                  History
+                  </ion-segment-button>
+              </ion-segment>
+          </div>
+      </ng-container>
+      <ng-container *ngIf="selectedSegment == 'phic'">
+          <div style="padding-bottom: 15px !important;">
+              <ion-segment [(ngModel)]="phicSegment" mode="ios" color="ashima">
+                  <ion-segment-button value="summaryp">
+                  Summary
+                  </ion-segment-button>
+                  <ion-segment-button value="historyp">
+                  History
+                  </ion-segment-button>
+              </ion-segment>
+          </div>
+      </ng-container>
+      <ng-container *ngIf="selectedSegment == 'hdmf'">
+          <div style="padding-bottom: 15px !important;">
+              <ion-segment [(ngModel)]="hdmfSegment" mode="ios" color="ashima">
+                  <ion-segment-button value="summaryh">
+                  Summary
+                  </ion-segment-button>
+                  <ion-segment-button value="mandatory">
+                  Mandatory
+                  </ion-segment-button>
+                  <ion-segment-button value="voluntary">
+                  Voluntary
+                  </ion-segment-button>
+              </ion-segment>
+          </div>
+      </ng-container>
+  </div>
+</ion-header>
+
+<ion-content>
+    <ion-slides [options]="slideOpts" (ionSlideDidChange)="onSlideChanged($event)">
+        <ion-slide>
+            <div [ngSwitch]="sssSegment">
+                <div *ngSwitchCase="'summary'">
+                    <ion-list class="ash-listing">
+                        <div class="summary-header-cont" style="width: 100%;">
+                            <div class="summary-head-content" style="width: 100%;">
+                                <div class="summary-table-row">
+                                    <div class="my-contribution-label"><label>My SSS Contribution</label></div>
+                                    <div class="my-contribution-detail" *ngIf="sssSummary">
+                                        <div class="my-contribution-date">{{ (sssSummary.sss_date | date: 'dd-MMM-yy' || '~')  }}</div>
+                                        <div class="my-contribution-amount">{{ sssSummary.my_SSS_contribution || '0.00' }} Php</div>
+                                    </div>
+                                    <div class="my-contribution-detail" *ngIf="!sssSummary">
+                                        <div class="my-contribution-date"></div>
+                                        <div class="my-contribution-amount">0.00 Php</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="summary-table-row" style="background-color: #eee;">
+                                    <div class="my-contribution-label"><label>Number of Contributions (Employee)</label></div>
+                                    <div class="my-contribution-detail">
+                                        <div class="my-contribution-date"></div>
+                                        <div class="my-contribution-amount" *ngIf="sssSummary">{{ sssSummary.my_SSS_contribution_count || '0' }}</div>
+                                        <div class="my-contribution-amount" *ngIf="!sssSummary">0</div>
+                                    </div>
+                                </div>
+                            
+                                <div class="summary-table-row">
+                                    <div class="my-contribution-label"><label>Employer SSS Contribution</label></div>
+                                    <div class="my-contribution-detail" *ngIf="sssSummary">
+                                        <div class="my-contribution-date">{{ (sssSummary.sss_date | date: 'dd-MMM-yy' || '~')  }}</div>
+                                        <div class="my-contribution-amount">{{ sssSummary.pp_sss_employer || '0.00' }} Php</div>
+                                    </div>
+                                    <div class="my-contribution-detail" *ngIf="!sssSummary">
+                                        <div class="my-contribution-date"></div>
+                                        <div class="my-contribution-amount">0.00 Php</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="summary-table-row" style="background-color: #eee;">
+                                    <div class="my-contribution-label"><label>Number of Contributions (Employer)</label></div>
+                                    <div class="my-contribution-detail">
+                                        <div class="my-contribution-date"></div>
+                                        <div class="my-contribution-amount"  *ngIf="sssSummary">{{ sssSummary.my_SSS_contribution_count || '0' }}</div>
+                                        <div class="my-contribution-amount"  *ngIf="!sssSummary">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ion-list>
+                </div>
+                <div *ngSwitchCase="'history'">
+                    <ion-list class="ash-listing">
+                        <div *ngIf="sssHistory">
+                            <div *ngFor="let sss of sssHistory">
+                                <ion-item>
+                                    {{ sss.pp_sss || '0.00' }} Php<br>
+                                    <label class="timesheet-hrs-word">{{ sss.pay_date | date:'dd-MMM-yy' }}</label>
+                                    
+                                    <ion-note item-end class="capitalize timesheet-total-hrs-list" style="max-width: 70%;">
+                                    {{ sss.pp_sss_to_date || "0.00" }}<br>
+                                    <span class="timesheet-hrs-word">Contribution to Date</span>
+                                    </ion-note>
+                                </ion-item>
+                            </div>                    
+                        </div>
+                        <div *ngIf="!sssHistory">
+                            <div class="no-record-found-cont">
+                                <div class="no-record-found-icon">
+                                    <span class="icon-no-record"></span>
+                                </div>
+                                <div class="no-record-holder">No data found.</div>
+                            </div>
+                        </div>
+                    </ion-list>                        
+                </div>
+                
+            </div>
+        </ion-slide>
+
+        <ion-slide>
+            <div [ngSwitch]="phicSegment">
+                <div *ngSwitchCase="'summaryp'">
+                    <ion-list class="ash-listing">
+                        <div class="summary-header-cont">
+                            <div class="summary-head-content">
+                                <div class="summary-table-row">
+                                    <div class="my-contribution-label"><label>My PHIC Contribution</label></div>
+                                    <div class="my-contribution-detail" *ngIf="phicSummary">
+                                        <div class="my-contribution-date">{{ phicSummary.philhealth_date | date:'dd-MMM-yy' }}</div>
+                                        <div class="my-contribution-amount">{{ phicSummary.my_PHIC_contribution || '0.00' }} Php</div>
+                                    </div>
+                                    <div class="my-contribution-detail" *ngIf="!phicSummary">
+                                        <div class="my-contribution-date"></div>
+                                        <div class="my-contribution-amount">0.00 Php</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="summary-table-row" style="background-color: #eee;">
+                                    <div class="my-contribution-label"><label>Number of Contributions (Employee)</label></div>
+                                    <div class="my-contribution-detail">
+                                        <div class="my-contribution-date"></div>
+                                        <div class="my-contribution-amount" *ngIf="phicSummary">{{ phicSummary.my_PHIC_contribution_count || '0' }}</div>
+                                        <div class="my-contribution-amount" *ngIf="!phicSummary">0</div>
+                                    </div>
+                                </div>
+                            
+                                <div class="summary-table-row">
+                                    <div class="my-contribution-label"><label>Employer PHIC Contribution</label></div>
+                                    <div class="my-contribution-detail" *ngIf="phicSummary">
+                                        <div class="my-contribution-date">{{ phicSummary.philhealth_date | date:'dd-MMM-yy' }}</div>
+                                        <div class="my-contribution-amount">{{ phicSummary.pp_philhealth_employer || '0.00' }} Php</div>
+                                    </div>
+                                    <div class="my-contribution-detail" *ngIf="!phicSummary">
+                                        <div class="my-contribution-date"></div>
+                                        <div class="my-contribution-amount">0.00 Php</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="summary-table-row" style="background-color: #eee;">
+                                    <div class="my-contribution-label"><label>Number of Contributions (Employer)</label></div>
+                                    <div class="my-contribution-detail">
+                                        <div class="my-contribution-date"></div>
+                                        <div class="my-contribution-amount">{{ phicSummary.my_PHIC_contribution_count || '0' }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ion-list>
+                </div>
+                <div *ngSwitchCase="'historyp'">
+                    <ion-list class="ash-listing">
+                        <div *ngIf="phicHistory">
+                            <div *ngFor="let ph of phicHistory">
+                                <ion-item>
+                                    {{ ph.pp_philhealth || '0.00' }} Php<br>
+                                    <label class="timesheet-hrs-word">{{ ph.pay_date | date:'dd-MMM-yy' }}</label>
+                                    
+                                    <ion-note item-end class="capitalize timesheet-total-hrs-list" style="max-width: 70%;">
+                                    {{ ph.pp_philhealth_to_date || "0.00" }}<br>
+                                    <span class="timesheet-hrs-word">Contribution to Date</span>
+                                    </ion-note>
+                                </ion-item>
+                            </div>                    
+                        </div>
+                        <div *ngIf="!phicHistory">
+                            <div class="no-record-found-cont">
+                                <div class="no-record-found-icon">
+                                    <span class="icon-no-record"></span>
+                                </div>
+                                <div class="no-record-holder">No data found.</div>
+                            </div>
+                        </div>
+                    </ion-list>
+                </div>
+            </div>
+        </ion-slide>
+        
+        <ion-slide>
+            <div [ngSwitch]="hdmfSegment">
+                <div *ngSwitchCase="'summaryh'">
+                    <ion-list class="ash-listing">
+                        <div class="summary-header-cont">
+                            <div class="summary-head-content">
+                                <div class="summary-table-row">
+                                    <div class="my-contribution-label"><label>My HDMF Mandatory Contribution</label></div>
+                                    <div class="my-contribution-detail" *ngIf="hdmfSummary">
+                                        <div class="my-contribution-date">{{ hdmfSummary.hdmf_date | date:'dd-MMM-yy' }}</div>
+                                        <div class="my-contribution-amount">{{ hdmfSummary.my_HDMF_contribution || "0.00" }} Php</div>
+                                    </div>
+                                    <div class="my-contribution-detail" *ngIf="!hdmfSummary">
+                                        <div class="my-contribution-date"></div>
+                                        <div class="my-contribution-amount">0.00 Php</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="summary-table-row" style="background-color: #eee;">
+                                    <div class="my-contribution-label"><label>Number of Contributions (Employee)</label></div>
+                                    <div class="my-contribution-detail">
+                                        <div class="my-contribution-date"></div>
+                                        <div class="my-contribution-amount"  *ngIf="hdmfSummary">{{ hdmfSummary.my_HDMF_contribution_count || "0" }}</div>
+                                        <div class="my-contribution-amount"  *ngIf="!hdmfSummary">0</div>
+                                    </div>
+                                </div>
+                            
+                                <div class="summary-table-row">
+                                    <div class="my-contribution-label"><label>Employer HDMF Mandatory Contribution</label></div>
+                                    <div class="my-contribution-detail" *ngIf="hdmfSummary">
+                                        <div class="my-contribution-date">{{ (hdmfSummary.hdmf_date | date:'dd-MMM-yy') || 'dd-MMM-yy' }}</div>
+                                        <div class="my-contribution-amount">{{ hdmfSummary.pp_hdmf_employer || "0.00" }} Php</div>
+                                    </div>
+                                    <div class="my-contribution-detail" *ngIf="!hdmfSummary">
+                                        <div class="my-contribution-date"></div>
+                                        <div class="my-contribution-amount">0.00 Php</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="summary-table-row" style="background-color: #eee;">
+                                    <div class="my-contribution-label"><label>Number of Contributions (Employer)</label></div>
+                                    <div class="my-contribution-detail">
+                                        <div class="my-contribution-date"></div>
+                                        <div class="my-contribution-amount" *ngIf="hdmfSummary">{{ hdmfSummary.my_HDMF_contribution_count || "0" }}</div>
+                                        <div class="my-contribution-amount" *ngIf="!hdmfSummary">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ion-list>
+                </div>
+                <div *ngSwitchCase="'mandatory'">
+                    <ion-list class="ash-listing">
+                        <div *ngIf="hdmfM">
+                            <div *ngFor="let mhdmf of hdmfM">
+                                <ion-item>
+                                    {{ mhdmf.pp_pagibig || '0.00' }} Php<br>
+                                    <label class="timesheet-hrs-word">{{ mhdmf.pay_date | date:'dd-MMM-yy' }}</label>
+                                    
+                                    <ion-note item-end class="capitalize timesheet-total-hrs-list" style="max-width: 70%;">
+                                    {{ mhdmf.pp_pagibig_to_date || "0.00" }} Php<br>
+                                    <span class="timesheet-hrs-word">Contribution to Date</span>
+                                    </ion-note>
+                                </ion-item>
+                            </div>                    
+                        </div>
+                        <div *ngIf="!hdmfM">
+                            <div class="no-record-found-cont">
+                                <div class="no-record-found-icon">
+                                    <span class="icon-no-record"></span>
+                                </div>
+                                <div class="no-record-holder">No data found.</div>
+                            </div>
+                        </div>
+                    </ion-list>
+                </div>
+                <div *ngSwitchCase="'voluntary'">
+                    <ion-list class="ash-listing">
+                        <div *ngIf="hdmfV">
+                            <div *ngFor="let vhdmf of hdmfV">
+                                <ion-item>
+                                    Pag Ibig II : {{ vhdmf.hdmf_modified || '0.00' }} Php<br>
+                                    <label class="timesheet-hrs-word">{{ vhdmf.pay_date | date:'dd-MMM-yy' }}</label>
+                                    
+                                    <ion-note item-end class="capitalize timesheet-total-hrs-list" style="max-width: 70%;">
+                                    {{ vhdmf.voluntary_contributions || "0.00" }}<br>
+                                    <span class="timesheet-hrs-word">Voluntary contribution</span>
+                                    </ion-note>
+                                </ion-item>
+                            </div>                    
+                        </div>
+                        <div *ngIf="!hdmfV">
+                            <div class="no-record-found-cont">
+                                <div class="no-record-found-icon">
+                                    <span class="icon-no-record"></span>
+                                </div>
+                                <div class="no-record-holder">No data found.</div>
+                            </div>
+                        </div>
+                    </ion-list>
+                </div>
+            </div>
+        </ion-slide>
+    </ion-slides>
+</ion-content>

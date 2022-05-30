@@ -1,0 +1,192 @@
+<ion-header>
+  <ion-toolbar color="ashima-mg">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Leaves
+    </ion-title>
+  </ion-toolbar>
+  <div class="segment-div-mg" style="padding-bottom: 0px;">
+    <ion-segment [(ngModel)]="selectedSegment" mode="md" class="md" color="ashima">
+        <ion-segment-button mode="md" value="balance">
+            Balance
+        </ion-segment-button>
+        <ion-segment-button mode="md" value="history">
+            History
+        </ion-segment-button>
+    </ion-segment>
+</div>
+</ion-header>
+
+<ion-content>
+    <div [ngSwitch]="selectedSegment">
+        <ion-item-group *ngSwitchCase="'balance'" class="ash-listing" no-lines>
+            <ion-list *ngIf="leaveBalances && !fetchingBalance">
+                <ng-container *ngFor="let emp of leaveBalances">
+                    <ion-item>
+                        <ion-avatar item-start class="applicant-avatar">
+                            <img *ngIf="!emp.profile_image" src="assets/imgs/default-profile-pic.png">
+                            <img *ngIf="emp.profile_image" [src]="apiUrl + '/uploads/companies/' + emp.company_id + '/' + emp.profile_image">
+                        </ion-avatar>
+                        
+                        <div class="applicant-info">
+                            <div class="applicant-name">{{ emp.first_name }} {{ emp.last_name }}</div>
+                            <div class="applicant-id">Leave Type:  {{ emp.leave_type }}</div>
+                        </div>
+
+                        <ion-note item-end class="application-info">
+                            <div class="application-time">{{ (emp.remaining_leave_credits | number:'.3-3') || "0.000" }}</div>
+                            <div class="application-status">{{ emp.leave_units || "" }} left</div>
+                        </ion-note>
+                    </ion-item>
+                </ng-container>
+            </ion-list>
+        </ion-item-group>
+
+        <ion-item-group *ngSwitchCase="'history'" class="ash-listing" no-lines>
+            <div class="ion-padding">
+                <ion-segment [(ngModel)]="sssSegment" mode="ios" color="ashima">
+                    <ion-segment-button value="all">
+                        All
+                    </ion-segment-button>
+                    <ion-segment-button value="approved">
+                        Approved
+                    </ion-segment-button>
+                    <ion-segment-button value="pending">
+                        Pending
+                    </ion-segment-button>
+                    <ion-segment-button value="reject">
+                        Rejected
+                    </ion-segment-button>
+                </ion-segment>
+            </div>
+
+            <div [ngSwitch]="sssSegment">
+                <div *ngSwitchCase="'reject'" >
+                    <ion-list *ngIf="rejectList">
+                        <ng-container *ngFor="let emp of rejectList">
+                            <ion-item>
+                                <ion-avatar item-start class="applicant-avatar">
+                                    <img *ngIf="!emp.profile_image" src="assets/imgs/default-profile-pic.png">
+                                    <img *ngIf="emp.profile_image" [src]="apiUrl + '/uploads/companies/' + emp.company_id + '/' + emp.profile_image">
+                                </ion-avatar>
+                                
+                                <div class="applicant-info" style="width: 40% !important;">
+                                    <div class="applicant-name">{{ emp.first_name }} {{ emp.last_name }}</div>
+                                    <div class="applicant-id">{{ (emp.leave_application_status == 'reject') ? "Rejected" : emp.leave_application_status }}</div>
+                                </div>
+        
+                                <ion-note item-end class="application-info" style="width: 50% !important;">
+                                    <div class="application-time">{{ (emp.date_start.split(" ")[0] | date : 'dd-MMM') }} to {{ (emp.date_end.split(" ")[0] | date : 'dd-MMM') }}</div>
+                                    <div class="application-status">{{ (emp.total_leave_requested | number:'.3-3') || "0.000" }} {{ emp.leave_units || 'credit(s)' }}</div>
+                                </ion-note>
+                            </ion-item>
+                        </ng-container>
+                    </ion-list>
+                    <div *ngIf="!rejectList">
+                        <div class="no-record-found-cont ion-text-center">   
+                            <div class="no-record-found-icon">
+                                <span class="icon-no-record"></span>
+                            </div>             
+                            <div class="no-record-holder">No Data Found.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngSwitchCase="'pending'">
+                    <ion-list *ngIf="pendingList">
+                        <ng-container *ngFor="let emp of pendingList">
+                            <ion-item>
+                                <ion-avatar item-start class="applicant-avatar">
+                                    <img *ngIf="!emp.profile_image" src="assets/imgs/default-profile-pic.png">
+                                    <img *ngIf="emp.profile_image" [src]="apiUrl + '/uploads/companies/' + emp.company_id + '/' + emp.profile_image">
+                                </ion-avatar>
+                                
+                                <div class="applicant-info" style="width: 40% !important;">
+                                    <div class="applicant-name">{{ emp.first_name }} {{ emp.last_name }}</div>
+                                    <div class="applicant-id">{{ (emp.leave_application_status == 'reject') ? "Rejected" : emp.leave_application_status }}</div>
+                                </div>
+        
+                                <ion-note item-end class="application-info" style="width: 50% !important;">
+                                    <div class="application-time">{{ (emp.date_start.split(" ")[0] | date : 'dd-MMM') }} to {{ (emp.date_end.split(" ")[0] | date : 'dd-MMM') }}</div>
+                                    <div class="application-status">{{ (emp.total_leave_requested | number:'.3-3') || "0.000" }} {{ emp.leave_units || 'credit(s)' }}</div>
+                                </ion-note>
+                            </ion-item>
+                        </ng-container>
+                    </ion-list>
+                    <div *ngIf="!pendingList">
+                        <div class="no-record-found-cont ion-text-center">   
+                            <div class="no-record-found-icon">
+                                <span class="icon-no-record"></span>
+                            </div>             
+                            <div class="no-record-holder">No Data Found.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div *ngSwitchCase="'approved'">
+                    <ion-list *ngIf="approveList">
+                        <ng-container *ngFor="let emp of approveList">
+                            <ion-item>
+                                <ion-avatar item-start class="applicant-avatar">
+                                    <img *ngIf="!emp.profile_image" src="assets/imgs/default-profile-pic.png">
+                                    <img *ngIf="emp.profile_image" [src]="apiUrl + '/uploads/companies/' + emp.company_id + '/' + emp.profile_image">
+                                </ion-avatar>
+                                
+                                <div class="applicant-info" style="width: 40% !important;">
+                                    <div class="applicant-name">{{ emp.first_name }} {{ emp.last_name }}</div>
+                                    <div class="applicant-id">{{ (emp.leave_application_status == 'reject') ? "Rejected" : emp.leave_application_status }}</div>
+                                </div>
+        
+                                <ion-note item-end class="application-info" style="width: 50% !important;">
+                                    <div class="application-time">{{ (emp.date_start.split(" ")[0] | date : 'dd-MMM') }} to {{ (emp.date_end.split(" ")[0] | date : 'dd-MMM') }}</div>
+                                    <div class="application-status">{{ (emp.total_leave_requested | number:'.3-3') || "0.000" }} {{ emp.leave_units || 'credit(s)' }}</div>
+                                </ion-note>
+                            </ion-item>
+                        </ng-container>
+                    </ion-list>
+                    <div *ngIf="!approveList">
+                        <div class="no-record-found-cont ion-text-center">   
+                            <div class="no-record-found-icon">
+                                <span class="icon-no-record"></span>
+                            </div>             
+                            <div class="no-record-holder">No Data Found.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngSwitchCase="'all'">
+                    <ion-list *ngIf="allHistory">
+                        <ng-container *ngFor="let emp of allHistory">
+                            <ion-item>
+                                <ion-avatar item-start class="applicant-avatar">
+                                    <img *ngIf="!emp.profile_image" src="assets/imgs/default-profile-pic.png">
+                                    <img *ngIf="emp.profile_image" [src]="apiUrl + '/uploads/companies/' + emp.company_id + '/' + emp.profile_image">
+                                </ion-avatar>
+                                
+                                <div class="applicant-info" style="width: 40% !important;">
+                                    <div class="applicant-name">{{ emp.first_name }} {{ emp.last_name }}</div>
+                                    <div class="applicant-id">{{ (emp.leave_application_status == 'reject') ? "Rejected" : emp.leave_application_status }}</div>
+                                </div>
+        
+                                <ion-note item-end class="application-info" style="width: 50% !important;">
+                                    <div class="application-time">{{ (emp.date_start.split(" ")[0] | date : 'dd-MMM') }} to {{ (emp.date_end.split(" ")[0] | date : 'dd-MMM') }}</div>
+                                    <div class="application-status">{{ (emp.total_leave_requested | number:'.3-3') || "0.000" }} {{ emp.leave_units || 'credit(s)' }}</div>
+                                </ion-note>
+                            </ion-item>
+                        </ng-container>
+                    </ion-list>
+                    <div *ngIf="!allHistory">
+                        <div class="no-record-found-cont ion-text-center">   
+                            <div class="no-record-found-icon">
+                                <span class="icon-no-record"></span>
+                            </div>             
+                            <div class="no-record-holder">No Data Found.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ion-item-group>
+    </div>
+</ion-content>

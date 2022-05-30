@@ -1,0 +1,59 @@
+<ion-header>
+    <ion-toolbar color="ashima">
+        <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>
+        Clock In
+        </ion-title>
+    </ion-toolbar>
+    <div>
+        <div class="clock-in-datetime">
+            <span class="clock-in-date">{{ myDate | date: 'dd-MMM-yy' }}</span><br>
+            <span class="clock-in-time">{{ time | date: 'hh:mm':'+0800' }}</span> <span class="clock-in-ampm">{{ time | date: 'a':'+0800' }}</span>
+        </div>
+    </div>
+</ion-header>
+
+<ion-content>
+    <div class="clock-in-msg" *ngIf="!canUseClockin">
+        <div>
+            <span>Clocking in through mobile is disabled.</span>
+        </div>
+    </div>
+    <div class="clock-in-msg" *ngIf="canUseClockin">
+        
+        <div>
+            <div *ngIf="isGPSOn">
+                <div *ngIf="!enablePhoto">
+                    <span>Tap the button below to </span><br><span>punch in or out.</span>
+                </div>
+                <div *ngIf="enablePhoto">
+                    <span>Tap the button below to punch in or out with photo capture.</span>
+                </div>
+            </div>
+            <div *ngIf="!isGPSOn">
+                    <div>
+                        <span>Location is required when clocking in.</span>
+                    </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <div id="map_canvas" style="height:88%;"></div>
+
+    <div class="clockemp-grp-btn" style="bottom: 40px;" *ngIf="canUseClockin"> 
+        
+        <ion-button (click)="testNativeCamera()" color="ashima" *ngIf="enablePhoto && isGPSOn">
+            Punch In/Out
+            <ion-icon slot="end" name="ios-camera"></ion-icon>
+        </ion-button>  
+        <ion-button (click)="noFotoClockin()" color="ashima" *ngIf="!enablePhoto && isGPSOn">
+            Punch In/Out
+        </ion-button>
+    </div>
+
+    <div class="clock-in-border-bot"></div>
+    
+</ion-content>

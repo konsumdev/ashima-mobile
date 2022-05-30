@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Other Deductions
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list [class.fade-out]="otherDed" *ngIf="!otherDed && fetchingAll">            
+        <ion-item *ngFor="let number of fakeUsers">
+            <ion-grid>
+                <ion-row>
+                <ion-col>
+                    <p><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></p>
+                    <p><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></p>
+                </ion-col>
+                <ion-col>
+                    <div class="ion-text-right" style="margin-left: 30px;margin-right: 5px;">
+                        <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                        <p ><ion-skeleton-text animated ></ion-skeleton-text></p>
+                    </div>
+                    
+                </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-item>
+    </ion-list>
+    <ion-list>
+        <div *ngIf="otherDed">
+            <div *ngFor="let od of otherDed">
+                <ion-item lines="full">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col>
+                                <label>{{ od.amount || '0.00' }}</label><br>
+                                <div class="paycheck-range">{{ od.deduction_name || '~' }}</div>
+                            </ion-col>
+                            <ion-col size="4">
+                                <div class="ion-text-center">
+                                    <label>{{ od.payroll_period | date:'dd-MMM-yy' }}</label>
+                                </div>
+                            </ion-col>
+                            <ion-col>
+                                <ion-note class="capitalize timesheet-total-hrs-list net-pay" style="float: right;">
+                                    {{ od.amount_to_date || '0.00' }} Php<br>
+                                    <span class="timesheet-hrs-word">To date</span>
+                                </ion-note>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-item>
+            </div> 
+        </div>
+        <div *ngIf="!otherDed && !fetchingAll" class="no-record-found-cont">
+            <div class="no-record-found-icon">
+                <span class="icon-no-record"></span>
+            </div>
+            <div class="no-record-holder">No data found.</div>
+        </div>
+    </ion-list>
+    <ion-infinite-scroll (ionInfinite)="doInfiniteAll($event)" threshold="100px" id="infinite-scroll">
+        <ion-infinite-scroll-content>
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

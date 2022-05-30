@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="ashima">
+    <ion-buttons slot="start">
+      <ion-back-button  defaultHref="overtime" (click)="gotoBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Overtime Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list *ngIf="passedDetails">
+        <ion-item>
+            Date Filed
+            <ion-note slot="end">
+                    {{ passedDetails.overtime_date_applied | date:'dd-MMM-yy' }}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            Start Date
+            <ion-note slot="end">
+                {{ passedDetails.overtime_from | date:'dd-MMM-yy' }} - {{ passedDetails.start_time }}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            End Date
+            <ion-note slot="end">
+                {{ passedDetails.overtime_to | date:'dd-MMM-yy' }} - {{ passedDetails.end_time }}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            No.of Hours
+            <ion-note slot="end">
+                {{ (passedDetails.no_of_hours | number:'.1-2') || "0.00" }}
+            </ion-note>
+        </ion-item>
+        <ion-item class="reason">
+            Purpose of Overtime
+            <br>
+            <div class="reason-val">{{ passedDetails.reason || "~" }}</div>                
+        </ion-item>
+        
+        <ion-item>
+            Status<br>
+            <div *ngFor="let approver of approvers" style="text-transform: capitalize; font-size: 13px; padding-left:15px;">
+                {{ approver.label}} : {{ approver.first_name }} {{ approver.last_name }}
+            </div>            
+        </ion-item>
+    </ion-list>
+</ion-content>

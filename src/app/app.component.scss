@@ -1,0 +1,67 @@
+
+ion-menu{
+    ion-content.ep_menu{
+        --background: #1172ad url('../assets/imgs/side-bar-menu-bg.png');
+    }
+    ion-content.mp_menu{
+        --background: #1172ad url('../assets/imgs/manager-bg.png');
+    }
+
+    .ep_menu{
+        .item, .label {
+            color: #eee !important;
+            padding: 8px 5px 8px 15px;
+            font-size: 20px !important;
+        }
+    }
+    .mp_menu{
+        .item, .label {
+            color: #3c4f5e !important;
+            padding: 15px 5px 10px 15px;
+            font-size: 20px !important;
+        }
+        .user-email-pic {
+            border-bottom: 1px solid #a7bccc;
+        }
+    }
+
+    
+}
+
+ion-item {
+    font-size: 14px !important;
+    --border-color: #efefef;
+}
+
+.ep_menu.bg-transparent {
+    background: transparent;
+    color: #fff;
+}
+.mp_menu.bg-transparent {
+    background: transparent;
+    color: #3c4f5e !important;
+}
+.bg-transparent.item-native {
+        background: transparent;
+    
+}
+ion-item.bg-transparent {
+    --ion-background-color: transparent;
+}
+
+.active {
+    font-weight: 700;
+    border-left: 3px solid;
+}
+.active-parent {
+    font-weight: 700;
+}
+.sub-item {
+    padding-left: 50px !important;
+}
+
+ion-segment.ios {
+    padding: 16px;
+    padding-bottom: 15px;
+    background: #fff;
+}

@@ -1,0 +1,58 @@
+<ion-header class="ashima-body-cont" no-border>
+  <ion-toolbar color="ashima-mg">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Employee Directory
+    </ion-title>
+  </ion-toolbar>
+  <ion-toolbar no-border-top *ngIf="showSearchBar">
+      <ion-searchbar placeholder="Search Employee" mode="ios" animated="true"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content #content>
+  <ion-list>
+      <div *ngIf="employees">
+          <ion-item-group *ngFor="let group of employees">
+
+              <ion-item-divider light mode="ios" id="scroll-letter-{{group.letter}}">{{group.letter}}</ion-item-divider>
+              <ion-item *ngFor="let contact of group.contacts" (click)="getDetails(contact.emp_id)">
+                  <div class="sidebar-menu-pp left mngr-todo-item-pp emp-dp" *ngIf="contact.profile_pic" [style.backgroundImage]="'url(' + apiUrl + '/uploads/companies/' + contact.company_id + '/' + contact.profile_pic +')'"></div>
+                  <div class="sidebar-menu-pp left mngr-todo-item-pp emp-dp default-dp" *ngIf="!contact.profile_pic"></div>                    
+                  <div class="directory-info-list-cont">
+                      <div class="directorty-emp-name">{{contact.full_name}}</div>
+                      <div class="directorty-emp-number">
+                          <span style="color: #1272ae !important;">{{contact.id}}</span>
+                      </div>
+                  </div>
+              </ion-item>                
+          </ion-item-group>
+          <div class="">
+              <!-- <ul class="ion-alpha-sidebar" [ngStyle]="calculateDimensionsForSidebar()">-->
+              <ul class="ion-alpha-sidebar">
+                
+                  <li *ngFor="let letter of alphabet" (click)="alphaScrollGoToList(letter)" tappable [ngStyle]="calculateLineHeight()">
+                      <a [ngClass]="{'alphaListDisable': letterChecker(letter)}">{{letter}}</a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+      <div *ngIf="!employees && !isFetching">
+          <div class="no-record-found-cont ion-text-center">   
+              <div class="no-record-found-icon">
+                  <span class="icon-no-record"></span>
+              </div>             
+              <div class="no-record-holder">No Data Found.</div>
+          </div>
+      </div>
+      <div *ngIf="!employees && isFetching">
+          <ion-item class="ion-text-center">                
+              <ion-spinner></ion-spinner>
+          </ion-item>
+      </div>
+  </ion-list>
+</ion-content>
+
